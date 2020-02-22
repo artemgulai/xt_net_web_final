@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace EPAM.VacancyPortal.Entities
 {
-    public class Skill
+    public class Vacancy
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int Level { get; set; }
+        public bool Remote { get; set; }
+        public int Salary { get; set; }
+        public List<Skill> Requirements { get; set; }
     }
 }
