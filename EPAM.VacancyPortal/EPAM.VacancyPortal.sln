@@ -5,6 +5,12 @@ VisualStudioVersion = 16.0.29509.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPAM.VacancyPortal.Entities", "EPAM.VacancyPortal.Entities\EPAM.VacancyPortal.Entities.csproj", "{EF349B9C-EFD9-48DD-B9C2-28129B21660A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{444C7D41-85CF-45D5-8DD8-4184370059E6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL", "DAL", "{23814A7B-D231-43A5-8CF9-CF836759C1EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPAM.VacancyPortal.DAL.Interfaces", "EPAM.VacancyPortal.DAL.Interfaces\EPAM.VacancyPortal.DAL.Interfaces.csproj", "{CAEE8074-7A4F-4B0C-8F7C-DC5F9ECEC79D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +21,17 @@ Global
 		{EF349B9C-EFD9-48DD-B9C2-28129B21660A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF349B9C-EFD9-48DD-B9C2-28129B21660A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF349B9C-EFD9-48DD-B9C2-28129B21660A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAEE8074-7A4F-4B0C-8F7C-DC5F9ECEC79D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAEE8074-7A4F-4B0C-8F7C-DC5F9ECEC79D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAEE8074-7A4F-4B0C-8F7C-DC5F9ECEC79D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAEE8074-7A4F-4B0C-8F7C-DC5F9ECEC79D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EF349B9C-EFD9-48DD-B9C2-28129B21660A} = {444C7D41-85CF-45D5-8DD8-4184370059E6}
+		{CAEE8074-7A4F-4B0C-8F7C-DC5F9ECEC79D} = {23814A7B-D231-43A5-8CF9-CF836759C1EA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF9DF2DE-6DED-4D20-9659-F0961ED74EC3}

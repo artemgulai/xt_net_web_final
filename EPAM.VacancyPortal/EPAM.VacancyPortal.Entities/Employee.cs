@@ -12,7 +12,7 @@ namespace EPAM.VacancyPortal.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string City { get; set; }
-        public bool Relocation { get; set }
+        public bool Relocation { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
         public string Role { get; set; }
