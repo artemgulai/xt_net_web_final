@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace EPAM.VacancyPortal.Entities
 {
-    public class Admin
+    public class City
     {
         public int Id { get; set; }
-        public string Login { get; set; }
-        public string Password { get; set; }
-        public string Role { get; set; }
-        public bool IsCandidate { get; set; }
+        public string Name { get; set; }
     }
 }
