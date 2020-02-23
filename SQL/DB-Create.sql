@@ -14,20 +14,23 @@ GO
 -- and employer lives
 CREATE TABLE Cities (
     Id INT PRIMARY KEY IDENTITY(1,1),
-    Name NVARCHAR(100) NOT NULL
+    Name NVARCHAR(100) NOT NULL,
+	CONSTRAINT Cities_Name_Unique UNIQUE (Name)
 );
 GO
 
 -- roles for registered users
 CREATE TABLE Roles (
     Id INT PRIMARY KEY IDENTITY(1,1),
-    Name NVARCHAR(100) NOT NULL
+    Name NVARCHAR(100) NOT NULL,
+	CONSTRAINT Roles_Name_Unique UNIQUE (Name)
 );
 GO
 
 CREATE TABLE Skills (
 	Id INT PRIMARY KEY IDENTITY(1,1), 
-	Name NVARCHAR (100) NOT NULL
+	Name NVARCHAR (100) NOT NULL,
+	CONSTRAINT Skills_Name_Unique UNIQUE (Name)
 );
 GO
 
@@ -39,7 +42,7 @@ CREATE TABLE Admins (
     Role_ID INT NOT NULL,
 	Candidate BIT NOT NULL,
 	CONSTRAINT FK_Role_ID FOREIGN KEY (Role_Id) REFERENCES Roles(Id),
-	CONSTRAINT Unique_Login_Admin UNIQUE (Login)
+	CONSTRAINT Admins_Login_Unique UNIQUE (Login)
 );
 GO
 
@@ -53,7 +56,7 @@ CREATE TABLE Employers (
     Role_Id INT NOT NULL,
 	CONSTRAINT FK_City_ID FOREIGN KEY (City_Id) REFERENCES Cities(Id),
 	CONSTRAINT FK_Employer_Role_ID FOREIGN KEY (Role_Id) REFERENCES Roles(Id),
-	CONSTRAINT Unique_Login_Employer UNIQUE (Login)
+	CONSTRAINT Employer_Login_Unique UNIQUE (Login)
 );
 GO
 
@@ -76,7 +79,8 @@ CREATE TABLE Vacancies_Skills (
 	Vacancy_Id INT NOT NULL,
 	Skill_Id INT NOT NULL,
 	CONSTRAINT FK_Vacancy_ID FOREIGN KEY (Vacancy_Id) REFERENCES Vacancies(Id) ON DELETE CASCADE,
-	CONSTRAINT FK_Skill_ID FOREIGN KEY (Skill_Id) REFERENCES Skills(Id) ON DELETE CASCADE
+	CONSTRAINT FK_Skill_ID FOREIGN KEY (Skill_Id) REFERENCES Skills(Id) ON DELETE CASCADE,
+	CONSTRAINT Vacancies_Skills_VacancyId_SkillId_Unique UNIQUE (Vacancy_Id, Skill_Id)
 );
 GO
 
@@ -102,9 +106,10 @@ CREATE TABLE Employees_Skills (
 	Id INT PRIMARY KEY IDENTITY(1,1),
 	Level INT NOT NULL,
 	Employee_Id INT NOT NULL,
-	Skill_ID INT NOT NULL,
+	Skill_Id INT NOT NULL,
 	CONSTRAINT FK_Employee_ID FOREIGN KEY (Employee_Id) REFERENCES Employees(Id) ON DELETE CASCADE,
-	CONSTRAINT FK_Employees_Skills_Skill_ID FOREIGN KEY (Skill_Id) REFERENCES Skills(Id) ON DELETE CASCADE
+	CONSTRAINT FK_Employees_Skills_Skill_ID FOREIGN KEY (Skill_Id) REFERENCES Skills(Id) ON DELETE CASCADE,
+	CONSTRAINT Employees_Skills_EmployeeId_SkillId_Unique UNIQUE (Employee_Id, Skill_Id)
 );
 GO
 

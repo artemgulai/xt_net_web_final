@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL", "DAL", "{23814A7B-D23
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPAM.VacancyPortal.DAL.Interfaces", "EPAM.VacancyPortal.DAL.Interfaces\EPAM.VacancyPortal.DAL.Interfaces.csproj", "{CAEE8074-7A4F-4B0C-8F7C-DC5F9ECEC79D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPAM.VacancyPortal.DAL.SqlServer", "EPAM.VacancyPortal.DAL.SqlServer\EPAM.VacancyPortal.DAL.SqlServer.csproj", "{61D35141-6BDF-4955-8436-374E3A295CF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPAM.VacancyPortal.Logger", "EPAM.VacancyPortal.Logger\EPAM.VacancyPortal.Logger.csproj", "{FF3862A1-1D11-44CB-A193-E59F56D3E9C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +29,14 @@ Global
 		{CAEE8074-7A4F-4B0C-8F7C-DC5F9ECEC79D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAEE8074-7A4F-4B0C-8F7C-DC5F9ECEC79D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAEE8074-7A4F-4B0C-8F7C-DC5F9ECEC79D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61D35141-6BDF-4955-8436-374E3A295CF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61D35141-6BDF-4955-8436-374E3A295CF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61D35141-6BDF-4955-8436-374E3A295CF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61D35141-6BDF-4955-8436-374E3A295CF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF3862A1-1D11-44CB-A193-E59F56D3E9C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF3862A1-1D11-44CB-A193-E59F56D3E9C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF3862A1-1D11-44CB-A193-E59F56D3E9C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF3862A1-1D11-44CB-A193-E59F56D3E9C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +44,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{EF349B9C-EFD9-48DD-B9C2-28129B21660A} = {444C7D41-85CF-45D5-8DD8-4184370059E6}
 		{CAEE8074-7A4F-4B0C-8F7C-DC5F9ECEC79D} = {23814A7B-D231-43A5-8CF9-CF836759C1EA}
+		{61D35141-6BDF-4955-8436-374E3A295CF9} = {23814A7B-D231-43A5-8CF9-CF836759C1EA}
+		{FF3862A1-1D11-44CB-A193-E59F56D3E9C6} = {444C7D41-85CF-45D5-8DD8-4184370059E6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF9DF2DE-6DED-4D20-9659-F0961ED74EC3}
