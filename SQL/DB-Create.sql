@@ -37,6 +37,7 @@ CREATE TABLE Admins (
     Login NVARCHAR(100) NOT NULL,
     Password NVARCHAR(100) NOT NULL,
     Role_ID INT NOT NULL,
+	Candidate BIT NOT NULL,
 	CONSTRAINT FK_Role_ID FOREIGN KEY (Role_Id) REFERENCES Roles(Id),
 	CONSTRAINT Unique_Login_Admin UNIQUE (Login)
 );
@@ -146,3 +147,11 @@ ALTER TABLE Admins WITH CHECK
    ADD CONSTRAINT CHK_Login_Admins  
    CHECK (dbo.get_Num_Employee_Logins(Login) = 0 AND dbo.get_Num_Employer_Logins(Login) = 0 );
 GO
+
+-- Initial data
+INSERT INTO Roles (Name) VALUES ('ADMIN');
+INSERT INTO Roles (Name) VALUES ('EMPLOYER');
+INSERT INTO Roles (Name) VALUES ('EMPLOYEE');
+
+INSERT INTO Admins (Login, Password, Role_ID, Candidate) 
+	VALUES ('admin', 'admin', (SELECT Id FROM Roles WHERE Name = 'ADMIN'), 0);
