@@ -17,11 +17,11 @@ namespace EPAM.VacancyPortal.BLL.Interfaces
         Skill Insert(Skill skill);
 
         /// <summary>
-        /// Invokes DAL's GetAll method.
+        /// Invokes DAL's SelectAll method.
         /// </summary>
         /// <returns>IEnumerable of Skills if a query is successfull, 
         /// otherwise empty List of Skills.</returns>
-        IEnumerable<Skill> GetAll();
+        IEnumerable<Skill> SelectAll();
 
         /// <summary>
         /// Invokes DAL's DeleteById method.

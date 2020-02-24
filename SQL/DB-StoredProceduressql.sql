@@ -52,3 +52,41 @@ CREATE PROCEDURE [dbo].[sp_DeleteSkillById]
 AS
 	DELETE FROM Skills WHERE Id = @Id
 GO
+
+-- Stored procedures for Admins table
+CREATE PROCEDURE [dbo].[sp_InsertAdmin]
+	@Login NVARCHAR(100),
+	@Password NVARCHAR(100),
+	@Role NVARCHAR(50)
+AS
+	INSERT INTO Admins 
+	(Login, Password, Role_ID, Candidate)
+	OUTPUT inserted.Id
+	VALUES (@Login, @Password, (SELECT Id FROM Roles where Name = @Role), 1)
+GO
+
+CREATE PROCEDURE [dbo].[sp_GetAllAdmins]
+AS
+	SELECT Admins.Id as Id, Login, Password, Name as Role, Candidate FROM Admins
+	JOIN Roles on Role_ID = Roles.Id
+GO
+
+CREATE PROCEDURE [dbo].[sp_GetAdminById]
+	@Id INT
+AS
+	SELECT Admins.Id as Id, Login, Password, Roles.Name as Role, Candidate FROM Admins
+	JOIN Roles on Role_ID = Roles.Id WHERE Admins.Id = @Id
+GO
+
+CREATE PROCEDURE [dbo].[sp_DeleteAdminById]
+	@Id INT
+AS
+	IF (@Id <> 1) THEN (DELETE FROM Admins WHERE Id = @Id)
+GO
+
+CREATE PROCEDURE [dbo].[sp_UpdateAdminById]
+	@Id INT,
+	@Candidate BIT
+AS
+	UPDATE Admins SET Candidate = @Candidate WHERE Id = @Id
+GO

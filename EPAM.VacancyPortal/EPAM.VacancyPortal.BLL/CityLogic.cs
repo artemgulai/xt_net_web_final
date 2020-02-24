@@ -44,11 +44,11 @@ namespace EPAM.VacancyPortal.BLL
             }
         }
 
-        public IEnumerable<City> GetAll()
+        public IEnumerable<City> SelectAll()
         {
             try
             {
-                return _cityDao.GetAll();
+                return _cityDao.SelectAll();
             }
             catch (SqlException)
             {

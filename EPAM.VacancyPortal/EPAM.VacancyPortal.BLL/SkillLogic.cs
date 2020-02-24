@@ -31,11 +31,11 @@ namespace EPAM.VacancyPortal.BLL
 
         }
 
-        public IEnumerable<Skill> GetAll()
+        public IEnumerable<Skill> SelectAll()
         {
             try
             {
-                return _skillDao.GetAll();
+                return _skillDao.SelectAll();
             }
             catch (SqlException)
             {

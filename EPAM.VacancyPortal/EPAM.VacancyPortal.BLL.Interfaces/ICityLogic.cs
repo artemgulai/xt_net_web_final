@@ -17,11 +17,11 @@ namespace EPAM.VacancyPortal.BLL.Interfaces
         City Insert(City city);
 
         /// <summary>
-        /// Invokes DAL's GetAll method.
+        /// Invokes DAL's SelectAll method.
         /// </summary>
         /// <returns>IEnumerable of Cities if a query is successfull, 
         /// otherwise empty List of Cities.</returns>
-        IEnumerable<City> GetAll();
+        IEnumerable<City> SelectAll();
 
         /// <summary>
         /// Invokes DAL's GetIdByName method.

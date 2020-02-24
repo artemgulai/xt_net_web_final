@@ -10,7 +10,7 @@ namespace EPAM.VacancyPortal.DAL.Interfaces
     public interface ISkillDao
     {
         Skill Insert(Skill skill);
-        IEnumerable<Skill> GetAll();
+        IEnumerable<Skill> SelectAll();
         int DeleteById(int id);
     }
 }

@@ -10,7 +10,7 @@ namespace EPAM.VacancyPortal.DAL.Interfaces
     public interface ICityDao
     {
         City Insert(City city);
-        IEnumerable<City> GetAll();
+        IEnumerable<City> SelectAll();
         int GetIdByName(string cityName);
         int DeleteById(int id);
         void DeleteAll();

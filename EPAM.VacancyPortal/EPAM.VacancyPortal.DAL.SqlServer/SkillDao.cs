@@ -25,11 +25,9 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                 cmd.Parameters.AddWithValue("Id",id);
 
                 con.Open();
-                int rowsAffected = 0;
-                rowsAffected = cmd.ExecuteNonQuery();
                 try
                 {
-                    rowsAffected = cmd.ExecuteNonQuery();
+                    int rowsAffected = cmd.ExecuteNonQuery();
                     return rowsAffected;
                 }
                 catch (SqlException e)
@@ -40,7 +38,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
             }
         }
 
-        public IEnumerable<Skill> GetAll()
+        public IEnumerable<Skill> SelectAll()
         {
             using (var con = new SqlConnection(_connectionString))
             {

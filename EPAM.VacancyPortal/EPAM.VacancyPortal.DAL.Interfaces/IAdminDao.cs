@@ -14,6 +14,5 @@ namespace EPAM.VacancyPortal.DAL.Interfaces
         IEnumerable<Admin> SelectAll();
         int Update(Admin admin);
         int DeleteById(int id);
-        void DeleteAll();
     }
 }
