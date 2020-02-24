@@ -81,7 +81,7 @@ GO
 CREATE PROCEDURE [dbo].[sp_DeleteAdminById]
 	@Id INT
 AS
-	IF (@Id <> 1) THEN (DELETE FROM Admins WHERE Id = @Id)
+	IF (@Id <> 1) DELETE FROM Admins WHERE Id = @Id
 GO
 
 CREATE PROCEDURE [dbo].[sp_UpdateAdminById]
