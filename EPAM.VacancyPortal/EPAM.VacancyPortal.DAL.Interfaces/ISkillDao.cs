@@ -11,6 +11,6 @@ namespace EPAM.VacancyPortal.DAL.Interfaces
     {
         Skill Insert(Skill skill);
         IEnumerable<Skill> GetAll();
-        void DeleteById(int id);
+        int DeleteById(int id);
     }
 }
