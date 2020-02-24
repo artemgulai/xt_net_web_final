@@ -7,19 +7,19 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Data.CommandType;
 
 namespace EPAM.VacancyPortal.DAL.SqlServer
 {
     public class CityDao : ICityDao
     {
+        private const System.Data.CommandType _storedProcedure = System.Data.CommandType.StoredProcedure;
         private readonly string _connectionString = Configuration.ConnectionString;
         public void DeleteAll()
         {
             using (var con = new SqlConnection(_connectionString))
             {
                 var cmd = new SqlCommand("sp_DeleteAllCities",con);
-                cmd.CommandType = StoredProcedure;
+                cmd.CommandType = _storedProcedure;
                 
                 con.Open();
                 try
@@ -39,7 +39,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
             using (var con = new SqlConnection(_connectionString))
             {
                 var cmd = new SqlCommand("sp_DeleteCityById", con);
-                cmd.CommandType = StoredProcedure;
+                cmd.CommandType = _storedProcedure;
 
                 cmd.Parameters.AddWithValue("Id",id);
 
@@ -64,6 +64,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
             using (var con = new SqlConnection(_connectionString))
             {
                 var cmd = new SqlCommand("sp_GetAllCities", con);
+                cmd.CommandType = _storedProcedure;
 
                 con.Open();
                 try
@@ -93,7 +94,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
             using (var con = new SqlConnection(_connectionString))
             {
                 var cmd = new SqlCommand("sp_GetCityId",con);
-                cmd.CommandType = StoredProcedure;
+                cmd.CommandType = _storedProcedure;
 
                 cmd.Parameters.AddWithValue("Name",cityName);
 
@@ -116,7 +117,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
             using (var con = new SqlConnection(_connectionString))
             {
                 var cmd = new SqlCommand("sp_InsertCity",con);
-                cmd.CommandType = StoredProcedure;
+                cmd.CommandType = _storedProcedure;
                 
                 cmd.Parameters.AddWithValue("Name",city.Name);
 
