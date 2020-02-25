@@ -18,5 +18,11 @@ namespace EPAM.VacancyPortal.Entities
         public string Role { get; set; }
         public int Experience { get; set; }
         public List<Skill> Skills { get; set; }
+
+        public override string ToString()
+        {
+            return $"Employee. Id = {Id}.{Environment.NewLine}" + 
+                $"{FirstName} {LastName}. {City}. Relocation: {Relocation}.";
+        }
     }
 }

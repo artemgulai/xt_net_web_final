@@ -53,8 +53,10 @@
     <Compile Include="AdminDao.cs" />
     <Compile Include="CityDao.cs" />
     <Compile Include="Configuration.cs" />
+    <Compile Include="EmployeeDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SkillDao.cs" />
+    <Compile Include="VacancyDao.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EPAM.VacancyPortal.DAL.Interfaces\EPAM.VacancyPortal.DAL.Interfaces.csproj">
