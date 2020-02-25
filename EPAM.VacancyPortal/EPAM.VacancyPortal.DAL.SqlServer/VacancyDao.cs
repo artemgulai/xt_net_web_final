@@ -1,0 +1,298 @@
+﻿using EPAM.VacancyPortal.DAL.Interfaces;
+using EPAM.VacancyPortal.Entities;
+using static EPAM.VacancyPortal.Logger.Logger;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EPAM.VacancyPortal.DAL.SqlServer
+{
+    public class VacancyDao : IVacancyDao
+    {
+        private const System.Data.CommandType _storedProcedure = System.Data.CommandType.StoredProcedure;
+        private readonly string _connectionString = Configuration.ConnectionString;
+
+        public Vacancy Insert(Vacancy vacancy,Employer employer)
+        {
+            using (var con = new SqlConnection())
+            {
+                var cmd = new SqlCommand("sp_InsertVacancy", con);
+                cmd.CommandType = _storedProcedure;
+
+                cmd.Parameters.AddWithValue("Name",vacancy.Name);
+                cmd.Parameters.AddWithValue("Salary",vacancy.Salary);
+                cmd.Parameters.AddWithValue("Remote",vacancy.Remote);
+                cmd.Parameters.AddWithValue("EmployerId",employer.Id);
+
+                con.Open();
+                try
+                {
+                    var id = (int)cmd.ExecuteScalar();
+                    vacancy.Id = id;
+                    vacancy.Requirements = new List<Skill>();
+                    return vacancy;
+                }
+                catch (SqlException e)
+                {
+                    Log.Error(e.Message);
+                    throw e;
+                }
+            }
+        }
+
+        public Vacancy SelectById(int id)
+        {
+            using (var con = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("sp_GetVacancyById",con);
+                cmd.CommandType = _storedProcedure;
+
+                cmd.Parameters.AddWithValue("Id",id);
+
+                con.Open();
+                try
+                {
+                    var result = cmd.ExecuteReader();
+                    Vacancy vacancy = null;
+                    if (result.Read())
+                    {
+                        vacancy = new Vacancy
+                        {
+                            Id = (int)result["Id"],
+                            Name = (string)result["Name"],
+                            Remote = (bool)result["Remote"],
+                            Salary = (int)result["Salary"],
+                            Requirements = new List<Skill>()
+                        };
+                    }
+                    return vacancy;
+                }
+                catch (SqlException e)
+                {
+                    Log.Error(e.Message);
+                    throw e;
+                }
+            }
+        }
+
+        public IEnumerable<Vacancy> SelectAll()
+        {
+            using (var con = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("sp_GetAllVacancies", con);
+                cmd.CommandType = _storedProcedure;
+
+                con.Open();
+                try
+                {
+                    var result = cmd.ExecuteReader();
+                    var vacancies = new List<Vacancy>();
+                    while (result.Read())
+                    {
+                        vacancies.Add(new Vacancy 
+                        {
+                            Id = (int)result["Id"],
+                            Name = (string)result["Name"],
+                            Salary = (int)result["Salary"],
+                            Remote = (bool)result["Remote"]
+                        });
+                    }
+                    return vacancies;
+                }
+                catch (SqlException e)
+                {
+                    Log.Error(e.Message);
+                    throw e;
+                }
+            }
+        }
+
+        public IEnumerable<Vacancy> SelectAllByEmployer(Employer employer)
+        {
+            using (var con = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("sp_GetAllVacanciesByEmployer",con);
+                cmd.CommandType = _storedProcedure;
+
+                cmd.Parameters.AddWithValue("EmployerId",con);
+
+                con.Open();
+                try
+                {
+                    var result = cmd.ExecuteReader();
+                    var vacancies = new List<Vacancy>();
+                    while (result.Read())
+                    {
+                        vacancies.Add(new Vacancy
+                        {
+                            Id = (int)result["Id"],
+                            Name = (string)result["Name"],
+                            Salary = (int)result["Salary"],
+                            Remote = (bool)result["Remote"]
+                        });
+                    }
+                    return vacancies;
+                }
+                catch (SqlException e)
+                {
+                    Log.Error(e.Message);
+                    throw e;
+                }
+            }
+        }
+
+        public int DeleteById(int id)
+        {
+            using (var con = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("sp_DeleteVacancyById",con);
+                cmd.CommandType = _storedProcedure;
+
+                cmd.Parameters.AddWithValue("Id",id);
+
+                con.Open();
+                try
+                {
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    return rowsAffected;
+                }
+                catch (SqlException e)
+                {
+                    Log.Error(e.Message);
+                    throw e;
+                }
+            }
+        }
+
+        public void DeleteAll()
+        {
+            using (var con = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("sp_DeleteAllVacancies",con);
+                cmd.CommandType = _storedProcedure;
+
+                con.Open();
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SqlException e)
+                {
+                    Log.Error(e.Message);
+                    throw e;
+                }
+            }
+        }
+
+        public int Update(Vacancy vacancy)
+        {
+            using (var con = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("sp_UpdateVacancy",con);
+                cmd.CommandType = _storedProcedure;
+
+                cmd.Parameters.AddWithValue("Id",vacancy.Id);
+                cmd.Parameters.AddWithValue("Name",vacancy.Name);
+                cmd.Parameters.AddWithValue("Salary",vacancy.Salary);
+                cmd.Parameters.AddWithValue("Remote",vacancy.Remote);
+
+                con.Open();
+                try
+                {
+                    var rowsAffected = cmd.ExecuteNonQuery();
+                    return rowsAffected;
+                }
+                catch (SqlException e)
+                {
+                    Log.Error(e.Message);
+                    throw e;
+                }
+            }
+        }
+
+        public int AddRequirement(Skill skill,Vacancy vacancy)
+        {
+            using (var con = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("sp_AddRequirementVacancy",con);
+                cmd.CommandType = _storedProcedure;
+
+                cmd.Parameters.AddWithValue("VacancyId",vacancy.Id);
+                cmd.Parameters.AddWithValue("SkillId",skill.Id);
+                cmd.Parameters.AddWithValue("Level",skill.Level);
+
+                con.Open();
+                try
+                {
+                    var rowsAdded = cmd.ExecuteNonQuery();
+                    return rowsAdded;
+                }
+                catch (SqlException e)
+                {
+                    Log.Error(e.Message);
+                    throw e;
+                }
+            }
+        }
+
+        public int RemoveRequirement(Skill skill,Vacancy vacancy)
+        {
+            using (var con = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("sp_RemoveRequirementVacancy",con);
+                cmd.CommandType = _storedProcedure;
+
+                cmd.Parameters.AddWithValue("VacancyId",vacancy.Id);
+                cmd.Parameters.AddWithValue("SkillId",skill.Id);
+
+                con.Open();
+                try
+                {
+                    var rowsAffected = cmd.ExecuteNonQuery();
+                    return rowsAffected;
+                }
+                catch (SqlException e)
+                {
+                    Log.Error(e.Message);
+                    throw e;
+                }
+            }
+        }
+
+        public IEnumerable<Skill> GetRequirementsByVacancy(Vacancy vacancy)
+        {
+            using (var con = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("sp_GetRequirementsByVacancy",con);
+                cmd.CommandType = _storedProcedure;
+
+                cmd.Parameters.AddWithValue("VacancyId",vacancy.Id);
+
+                con.Open();
+                try
+                {
+                    var result = cmd.ExecuteReader();
+                    var requirements = new List<Skill>();
+                    while(result.Read())
+                    {
+                        requirements.Add(new Skill
+                        { 
+                            Id = (int)result["Id"],
+                            Name = (string)result["Name"],
+                            Level = (int)result["Level"]
+                        });
+                    }
+                    return requirements;
+                }
+                catch (SqlException e)
+                {
+                    Log.Error(e.Message);
+                    throw e;
+                }
+            }
+        }
+    }
+}
