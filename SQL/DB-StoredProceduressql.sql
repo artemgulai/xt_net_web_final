@@ -90,3 +90,183 @@ CREATE PROCEDURE [dbo].[sp_UpdateAdminById]
 AS
 	UPDATE Admins SET Candidate = @Candidate WHERE Id = @Id
 GO
+
+-- Stored procedures for Employees table
+CREATE PROCEDURE [dbo].[sp_InsertEmployee]
+	@FirstName NVARCHAR(100),
+	@LastName NVARCHAR(100),
+	@Relocation BIT,
+	@Experience INT,
+	@Login NVARCHAR(100),
+	@Password NVARCHAR(100),
+	@City NVARCHAR(100)
+AS
+	INSERT INTO Employees (FirstName, LastName, Relocation, Experience, 
+							Login, Password, City_Id, Role_Id)
+	OUTPUT inserted.Id
+	VALUES (@FirstName, @LastName, @Relocation, @Experience,
+			@Login, @Password, (SELECT Id FROM Cities WHERE Name = @City),
+			(SELECT Id FROM Roles WHERE Name = 'EMPLOYEE'))
+GO
+
+CREATE PROCEDURE [dbo].[sp_GetAllEmployees]
+AS
+	SELECT Employees.Id as Id, FirstName, LastName, Relocation, Experience, Login, Password, 
+	Cities.Name AS City, Roles.Name AS Role FROM Employees
+	JOIN Cities ON City_Id = Cities.Id
+	JOIN Roles ON Role_Id = Roles.Id
+GO
+
+CREATE PROCEDURE [dbo].[sp_GetEmployeeById]
+	@Id INT
+AS
+	SELECT Employees.Id as Id, FirstName, LastName, Relocation, Experience, Login, Password, 
+	Cities.Name AS City, Roles.Name AS Role FROM Employees
+	JOIN Cities ON City_Id = Cities.Id
+	JOIN Roles ON Role_Id = Roles.Id
+	WHERE Employees.Id = @Id
+GO
+
+CREATE PROCEDURE [dbo].[sp_DeleteEmployeeById]
+	@Id INT
+AS
+	DELETE FROM Employees WHERE Id = @Id
+GO
+
+CREATE PROCEDURE [dbo].[sp_DeleteAllEmployees]
+AS
+	DELETE FROM Employees
+GO
+
+CREATE PROCEDURE [dbo].[sp_UpdateEmployee]
+	@Id INT,
+	@FirstName NVARCHAR(100),
+	@LastName NVARCHAR(100),
+	@Relocation BIT,
+	@Experience INT,
+	@Password NVARCHAR(100),
+	@City NVARCHAR(100)
+AS
+	UPDATE Employees SET
+		FirstName = @FirstName, LastName = @LastName,
+		Relocation = @Relocation, Experience = @Experience,
+		Password = @Password, 
+		City_Id = (SELECT Id FROM Cities WHERE Name = @City)
+	WHERE Id = @Id
+GO
+
+CREATE PROCEDURE [dbo].[sp_AddSkillEmployee]
+	@EmployeeId INT,
+	@SkillId INT,
+	@Level INT
+AS
+	INSERT INTO Employees_Skills
+	(Employee_Id, Skill_Id, Level)
+	VALUES (@EmployeeId, @SkillId, @Level)
+GO
+
+CREATE PROCEDURE [dbo].[sp_RemoveSkillEmployee]
+	@SkillId INT,
+	@EmployeeId INT
+AS
+	DELETE FROM Employees_Skills
+	WHERE Skill_Id = @SkillId AND Employee_Id = @EmployeeId
+GO
+
+CREATE PROCEDURE [dbo].[sp_UpdateSkillEmployee]
+	@SkillId INT,
+	@EmployeeId INT,
+	@Level INT
+AS
+	UPDATE Employees_Skills
+	SET Level = @Level
+	WHERE Skill_Id = @SkillId AND Employee_Id = @EmployeeId
+GO
+
+CREATE PROCEDURE [dbo].[sp_GetSkillsByEmployee]
+	@EmployeeId INT
+AS
+	SELECT Skills.Id as Id, Skills.Name as Name, Employees_Skills.Level as Level 
+	FROM Employees_Skills
+	JOIN Skills on Skills.Id = Skill_Id
+	WHERE Employee_Id = @EmployeeId
+GO
+
+-- Stored procedures for Vacancies table
+CREATE PROCEDURE [dbo].[sp_InsertVacancy]
+	@Name NVARCHAR(200),
+	@Salary INT,
+	@Remote BIT,
+	@EmployerId INT
+AS
+	INSERT INTO Vacancies (Name, Salary, Remote, Employer_Id)
+	OUTPUT inserted.Id
+	VALUES (@Name, @Salary, @Remote, @EmployerId)
+GO
+
+CREATE PROCEDURE [dbo].[sp_GetVacancyById]
+	@Id INT
+AS
+	SELECT Id, Name, Salary, Remote 
+	FROM Vacancies WHERE Id = @Id
+GO
+
+CREATE PROCEDURE [dbo].[sp_GetAllVacancies]
+AS
+	SELECT Id, Name, Salary, Remote 
+	FROM Vacancies
+GO
+
+CREATE PROCEDURE [dbo].[sp_GetAllVacanciesByEmployer]
+	@EmployerId INT
+AS
+	SELECT Id, Name, Salary, Remote 
+	FROM Vacancies WHERE Employer_Id = @EmployerId
+GO
+
+CREATE PROCEDURE [dbo].[sp_DeleteVacancyById]
+	@Id INT
+AS
+	DELETE FROM Vacancies WHERE Id = @Id
+GO
+
+CREATE PROCEDURE [dbo].[sp_DeleteAllVacancies]
+AS
+	DELETE FROM Vacancies
+GO
+
+CREATE PROCEDURE [dbo].[sp_UpdateVacancy]
+	@Id INT,
+	@Name NVARCHAR(200),
+	@Salary INT,
+	@Remote BIT
+AS
+	UPDATE Vacancies SET
+		Name = @Name, Salary = @Salary, Remote = @Remote
+	WHERE Id = @Id
+GO
+
+CREATE PROCEDURE [dbo].[sp_AddRequirementVacancy]
+	@VacancyId INT,
+	@SkillId INT,
+	@Level INT
+AS
+	INSERT INTO Vacancies_Skills (Vacancy_Id, Skill_Id, Level)
+	VALUES (@VacancyId, @SkillId, @Level)
+GO
+
+CREATE PROCEDURE [dbo].[sp_RemoveRequirementVacancy]
+	@VacancyId INT,
+	@SkillId INT
+AS
+	DELETE FROM Vacancies_Skills
+	WHERE Vacancy_Id = @VacancyId AND Skill_Id = @SkillId
+GO
+
+CREATE PROCEDURE [dbo].[sp_GetRequirementsByVacancy]
+	@VacancyId INT
+AS
+	SELECT Skills.Id as Id, Skills.Name as Name, Level FROM Vacancies_Skills
+	JOIN Skills on Skill_Id = Skills.Id
+	WHERE Vacancy_Id = @VacancyId
+GO
