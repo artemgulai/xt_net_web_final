@@ -1,0 +1,16 @@
+﻿@{
+    Page.Title = "Title goes here";
+    Layout = "~/Layouts/_MainLayout.cshtml";
+}
+
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="center content-container">
+        <div class="btn-group">
+            <a class="btn btn-primary mr-1" role="button" href="~/Pages/Auth/SignUp/Admin.cshtml">Sign up as Administrator</a>
+            <a class="btn btn-primary mr-1" role="button" href="~/Pages/Auth/SignUp/Employer.cshtml">Sign up as Employer</a>
+            <a class="btn btn-primary" role="button" href="~/Pages/Auth/SignUp/Employee.cshtml">Sign up as Employee</a>
+        </div>
+    </div>
+}
