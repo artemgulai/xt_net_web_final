@@ -270,3 +270,57 @@ AS
 	JOIN Skills on Skill_Id = Skills.Id
 	WHERE Vacancy_Id = @VacancyId
 GO
+
+-- Stored procedures for Employers table
+CREATE PROCEDURE [dbo].[sp_InsertEmployer]
+	@Name NVARCHAR(100),
+	@Login NVARCHAR(100),
+	@Password NVARCHAR(100),
+	@City NVARCHAR(100)
+AS
+	INSERT INTO Employers (Name, Login, Password, City_Id, Role_Id)
+	OUTPUT inserted.Id 
+	VALUES (@Name, @Login, @Password, 
+	(SELECT Id FROM Cities WHERE Name = @City),
+	(SELECT Id FROM Roles WHERE Name = 'EMPLOYER'))
+GO
+
+CREATE PROCEDURE [dbo].[sp_GetEmployerById]
+	@Id INT
+AS
+	SELECT Employers.Id as Id, Employers.Name as Name, Login, Password, Cities.Name as City, Roles.Name as Role
+	FROM Employers
+	JOIN Cities on Employers.City_Id = Cities.Id
+	JOIN Roles on Employers.Role_Id = Roles.Id
+	WHERE Employers.Id = @Id
+GO
+
+CREATE PROCEDURE [dbo].[sp_GetAllEmployers]
+AS
+	SELECT Employers.Id as Id, Employers.Name as Name, Login, Password, Cities.Name as City, Roles.Name as Role
+	FROM Employers
+	JOIN Cities on Employers.City_Id = Cities.Id
+	JOIN Roles on Employers.Role_Id = Roles.Id
+GO
+
+CREATE PROCEDURE [dbo].[sp_DeleteEmployerById]
+	@Id INT
+AS
+	DELETE FROM Employers WHERE Id = @Id
+GO
+
+CREATE PROCEDURE [dbo].[sp_DeleteAllEmployers]
+AS
+	DELETE FROM Employers
+GO
+
+CREATE PROCEDURE [dbo].[sp_UpdateEmployer]
+	@Id INT,
+	@Name NVARCHAR(100),
+	@Password NVARCHAR(100),
+	@City NVARCHAR(100)
+AS
+	UPDATE Employers SET Name = @Name, Password = @Password, 
+		City_Id = (SELECT Id FROM Cities WHERE Name = @City)
+	WHERE Id = @Id
+GO
