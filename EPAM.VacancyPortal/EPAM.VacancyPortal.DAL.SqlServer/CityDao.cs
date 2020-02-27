@@ -1,12 +1,12 @@
 ﻿using EPAM.VacancyPortal.DAL.Interfaces;
 using EPAM.VacancyPortal.Entities;
-using static EPAM.VacancyPortal.Logger.Logger;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using log4net;
 
 namespace EPAM.VacancyPortal.DAL.SqlServer
 {
@@ -14,6 +14,8 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
     {
         private const System.Data.CommandType _storedProcedure = System.Data.CommandType.StoredProcedure;
         private readonly string _connectionString = Configuration.ConnectionString;
+        private readonly ILog _logger = Configuration.Logger;
+        
         public void DeleteAll()
         {
             using (var con = new SqlConnection(_connectionString))
@@ -28,7 +30,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                 }
                 catch (SqlException e)
                 {
-                    Log.Error(e.Message);
+                    _logger.Error(e.Message);
                     throw e;
                 }
             }
@@ -51,7 +53,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                 }
                 catch (SqlException e)
                 {
-                    Log.Error(e.Message);
+                    _logger.Error(e.Message);
                     throw e;
                 }
             }
@@ -81,7 +83,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                 }
                 catch (SqlException e)
                 {
-                    Log.Error(e.Message);
+                    _logger.Error(e.Message);
                     throw e;
                 }
             }
@@ -104,7 +106,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                 }
                 catch (SqlException e)
                 {
-                    Log.Error(e.Message);
+                    _logger.Error(e.Message);
                     throw e;
                 }
             }
@@ -129,7 +131,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                 }
                 catch (SqlException e)
                 {
-                    Log.Error(e.Message);
+                    _logger.Error(e.Message);
                     throw e;
                 }
             }
