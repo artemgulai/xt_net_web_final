@@ -10,8 +10,10 @@ namespace EPAM.VacancyPortal.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
         public bool Remote { get; set; }
         public int Salary { get; set; }
+        public Employer Employer { get; set; }
         public List<Skill> Requirements { get; set; }
     }
 }
