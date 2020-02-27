@@ -42,7 +42,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
         {
             using (var con = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("sp_GetAllSkills",con);
+                var cmd = new SqlCommand("sp_SelectAllSkills",con);
                 cmd.CommandType = _storedProcedure;
 
                 con.Open();

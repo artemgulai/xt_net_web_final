@@ -69,7 +69,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
         {
             using (var con = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("sp_GetAllAdmins",con);
+                var cmd = new SqlCommand("sp_SelectAllAdmins",con);
                 cmd.CommandType = _storedProcedure;
 
                 con.Open();
@@ -102,7 +102,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
         {
             using (var con = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("sp_GetAdminById", con);
+                var cmd = new SqlCommand("sp_SelectAdminById", con);
                 cmd.CommandType = _storedProcedure;
 
                 cmd.Parameters.AddWithValue("Id",id);
@@ -126,6 +126,45 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                     else
                     {
                         Log.Warn($"Admin with Id = {id} not found in DB.");
+                    }
+                    return admin;
+                }
+                catch (SqlException e)
+                {
+                    Log.Error(e.Message);
+                    throw e;
+                }
+            }
+        }
+
+        public Admin SelectByLogin(string login)
+        {
+            using (var con = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("sp_SelectAdminByLogin",con);
+                cmd.CommandType = _storedProcedure;
+
+                cmd.Parameters.AddWithValue("Login",login);
+
+                con.Open();
+                try
+                {
+                    var result = cmd.ExecuteReader();
+                    Admin admin = null;
+                    if (result.Read())
+                    {
+                        admin = new Admin
+                        {
+                            Id = (int)result["Id"],
+                            Login = (string)result["Login"],
+                            Password = (string)result["Password"],
+                            Role = (string)result["Role"],
+                            IsCandidate = (bool)result["Candidate"]
+                        };
+                    }
+                    else
+                    {
+                        Log.Warn($"Admin with Login '{login}' not found in DB.");
                     }
                     return admin;
                 }

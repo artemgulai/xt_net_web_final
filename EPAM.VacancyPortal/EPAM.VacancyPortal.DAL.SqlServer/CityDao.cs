@@ -61,7 +61,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
         {
             using (var con = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("sp_GetAllCities", con);
+                var cmd = new SqlCommand("sp_SelectAllCities", con);
                 cmd.CommandType = _storedProcedure;
 
                 con.Open();
@@ -87,11 +87,11 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
             }
         }
 
-        public int GetIdByName(string cityName)
+        public int SelectIdByName(string cityName)
         {
             using (var con = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("sp_GetCityId",con);
+                var cmd = new SqlCommand("sp_SelectCityId",con);
                 cmd.CommandType = _storedProcedure;
 
                 cmd.Parameters.AddWithValue("Name",cityName);

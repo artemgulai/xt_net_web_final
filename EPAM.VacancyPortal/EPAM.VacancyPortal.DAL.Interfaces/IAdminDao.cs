@@ -11,6 +11,7 @@ namespace EPAM.VacancyPortal.DAL.Interfaces
     {
         Admin Insert(Admin admin);
         Admin SelectById(int id);
+        Admin SelectByLogin(string login);
         IEnumerable<Admin> SelectAll();
         int Update(Admin admin);
         int DeleteById(int id);

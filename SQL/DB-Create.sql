@@ -52,6 +52,7 @@ CREATE TABLE Employers (
     Name NVARCHAR(100) NOT NULL,
     Login NVARCHAR(100) NOT NULL,
     Password NVARCHAR(100) NOT NULL,
+	Logo NVARCHAR(MAX),
     City_Id INT NOT NULL,
     Role_Id INT NOT NULL,
 	CONSTRAINT FK_City_ID FOREIGN KEY (City_Id) REFERENCES Cities(Id),
@@ -64,6 +65,7 @@ GO
 CREATE TABLE Vacancies (
     Id INT PRIMARY KEY IDENTITY(1,1),
     Name NVARCHAR(200) NOT NULL,
+	Description NVARCHAR(MAX) NOT NULL,
 	Salary INT NOT NULL,
     Remote BIT NOT NULL,
 	Employer_Id INT NOT NULL,
@@ -90,6 +92,7 @@ CREATE TABLE Employees (
 	LastName NVARCHAR(100) NOT NULL,
 	Relocation BIT NOT NULL,
 	Experience INT NOT NULL,
+	Photo NVARCHAR(MAX),
 	Login NVARCHAR(100) NOT NULL,
 	Password NVARCHAR(100) NOT NULL,
 	City_Id INT NOT NULL,

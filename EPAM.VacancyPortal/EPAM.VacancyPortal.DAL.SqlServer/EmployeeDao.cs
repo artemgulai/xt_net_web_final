@@ -26,6 +26,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                 cmd.Parameters.AddWithValue("LastName",employee.LastName);
                 cmd.Parameters.AddWithValue("Relocation",employee.Relocation);
                 cmd.Parameters.AddWithValue("Experience",employee.Experience);
+                cmd.Parameters.AddWithValue("Photo",employee.Photo);
                 cmd.Parameters.AddWithValue("Login",employee.Login);
                 cmd.Parameters.AddWithValue("Password",employee.Password);
                 cmd.Parameters.AddWithValue("City",employee.City);
@@ -50,7 +51,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
         {
             using (var con = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("sp_GetAllEmployees",con);
+                var cmd = new SqlCommand("sp_SelectAllEmployees",con);
                 cmd.CommandType = _storedProcedure;
 
                 con.Open();
@@ -67,6 +68,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                             LastName = (string)result["LastName"],
                             Relocation = (bool)result["Relocation"],
                             Experience = (int)result["Experience"],
+                            Photo = (string)result["Photo"],
                             Login = (string)result["Login"],
                             Password = (string)result["Password"],
                             City = (string)result["City"],
@@ -88,7 +90,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
         {
             using (var con = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("sp_GetEmployeeById",con);
+                var cmd = new SqlCommand("sp_SelectEmployeeById",con);
                 cmd.CommandType = _storedProcedure;
 
                 cmd.Parameters.AddWithValue("Id",id);
@@ -107,6 +109,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                             LastName = (string)result["LastName"],
                             Relocation = (bool)result["Relocation"],
                             Experience = (int)result["Experience"],
+                            Photo = (string)result["Photo"],
                             Login = (string)result["Login"],
                             Password = (string)result["Password"],
                             City = (string)result["City"],
@@ -179,6 +182,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                 cmd.Parameters.AddWithValue("LastName",employee.LastName);
                 cmd.Parameters.AddWithValue("Relocation",employee.Relocation);
                 cmd.Parameters.AddWithValue("Experience",employee.Experience);
+                cmd.Parameters.AddWithValue("Photo",employee.Photo);
                 cmd.Parameters.AddWithValue("Password",employee.Password);
                 cmd.Parameters.AddWithValue("City",employee.City);
 
@@ -197,11 +201,11 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
             }
         }
 
-        public int AddSkill(Skill skill, Employee employee)
+        public int InsertSkill(Skill skill, Employee employee)
         {
             using (var con = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("sp_AddSkillEmployee");
+                var cmd = new SqlCommand("sp_InsertSkillEmployee");
                 cmd.CommandType = _storedProcedure;
 
                 cmd.Parameters.AddWithValue("EmployeeId",employee.Id);
@@ -222,11 +226,11 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
             }
         }
 
-        public int RemoveSkill(Skill skill, Employee employee)
+        public int DeleteSkill(Skill skill, Employee employee)
         {
             using (var con = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("sp_RemoveSkillEmployee");
+                var cmd = new SqlCommand("sp_DeleteSkillEmployee");
                 cmd.CommandType = _storedProcedure;
 
                 cmd.Parameters.AddWithValue("EmployeeId",employee.Id);
@@ -275,7 +279,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
         {
             using (var con = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("sp_GetSkillsByEmployee", con);
+                var cmd = new SqlCommand("sp_SelectSkillsByEmployee", con);
                 cmd.CommandType = _storedProcedure;
 
                 cmd.Parameters.AddWithValue("EmployeeId",employee.Id);

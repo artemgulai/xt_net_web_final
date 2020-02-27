@@ -23,6 +23,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                 cmd.CommandType = _storedProcedure;
 
                 cmd.Parameters.AddWithValue("Name",employer.Name);
+                cmd.Parameters.AddWithValue("Logo",employer.Logo);
                 cmd.Parameters.AddWithValue("Login",employer.Login);
                 cmd.Parameters.AddWithValue("Password",employer.Password);
                 cmd.Parameters.AddWithValue("City",employer.City);
@@ -47,7 +48,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
         {
             using (var con = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("sp_GetEmployerById",con);
+                var cmd = new SqlCommand("sp_SelectEmployerById",con);
                 cmd.CommandType = _storedProcedure;
 
                 cmd.Parameters.AddWithValue("Id",id);
@@ -63,6 +64,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                         {
                             Id = (int)result["Id"],
                             Name = (string)result["Name"],
+                            Logo = (string)result["Logo"],
                             Login = (string)result["Login"],
                             Password = (string)result["Password"],
                             City = (string)result["City"],
@@ -84,7 +86,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
         {
             using (var con = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("sp_GetAllEmployers",con);
+                var cmd = new SqlCommand("sp_SelectAllEmployers",con);
                 cmd.CommandType = _storedProcedure;
 
                 con.Open();
@@ -98,6 +100,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                         {
                             Id = (int)result["Id"],
                             Name = (string)result["Name"],
+                            Logo = (string)result["Logo"],
                             Login = (string)result["Login"],
                             Password = (string)result["Password"],
                             City = (string)result["City"],
@@ -167,6 +170,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
 
                 cmd.Parameters.AddWithValue("Id",employer.Id);
                 cmd.Parameters.AddWithValue("Name",employer.Name);
+                cmd.Parameters.AddWithValue("Logo",employer.Logo);
                 cmd.Parameters.AddWithValue("Password",employer.Password);
                 cmd.Parameters.AddWithValue("City",employer.City);
 

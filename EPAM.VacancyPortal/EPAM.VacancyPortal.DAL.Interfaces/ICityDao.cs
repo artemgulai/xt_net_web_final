@@ -11,7 +11,7 @@ namespace EPAM.VacancyPortal.DAL.Interfaces
     {
         City Insert(City city);
         IEnumerable<City> SelectAll();
-        int GetIdByName(string cityName);
+        int SelectIdByName(string cityName);
         int DeleteById(int id);
         void DeleteAll();
     }

@@ -23,6 +23,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                 cmd.CommandType = _storedProcedure;
 
                 cmd.Parameters.AddWithValue("Name",vacancy.Name);
+                cmd.Parameters.AddWithValue("Description",vacancy.Description);
                 cmd.Parameters.AddWithValue("Salary",vacancy.Salary);
                 cmd.Parameters.AddWithValue("Remote",vacancy.Remote);
                 cmd.Parameters.AddWithValue("EmployerId",employer.Id);
@@ -47,7 +48,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
         {
             using (var con = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("sp_GetVacancyById",con);
+                var cmd = new SqlCommand("sp_SelectVacancyById",con);
                 cmd.CommandType = _storedProcedure;
 
                 cmd.Parameters.AddWithValue("Id",id);
@@ -63,6 +64,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                         {
                             Id = (int)result["Id"],
                             Name = (string)result["Name"],
+                            Description = (string)result["Description"],
                             Remote = (bool)result["Remote"],
                             Salary = (int)result["Salary"],
                             Requirements = new List<Skill>()
@@ -82,7 +84,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
         {
             using (var con = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("sp_GetAllVacancies", con);
+                var cmd = new SqlCommand("sp_SelectAllVacancies", con);
                 cmd.CommandType = _storedProcedure;
 
                 con.Open();
@@ -96,8 +98,10 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                         {
                             Id = (int)result["Id"],
                             Name = (string)result["Name"],
+                            Description = (string)result["Description"],
                             Salary = (int)result["Salary"],
-                            Remote = (bool)result["Remote"]
+                            Remote = (bool)result["Remote"],
+                            Requirements = new List<Skill>()
                         });
                     }
                     return vacancies;
@@ -114,7 +118,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
         {
             using (var con = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("sp_GetAllVacanciesByEmployer",con);
+                var cmd = new SqlCommand("sp_SelectAllVacanciesByEmployer",con);
                 cmd.CommandType = _storedProcedure;
 
                 cmd.Parameters.AddWithValue("EmployerId",con);
@@ -130,8 +134,11 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                         {
                             Id = (int)result["Id"],
                             Name = (string)result["Name"],
+                            Description = (string)result["Description"],
                             Salary = (int)result["Salary"],
-                            Remote = (bool)result["Remote"]
+                            Remote = (bool)result["Remote"],
+                            Employer = employer,
+                            Requirements = new List<Skill>()
                         });
                     }
                     return vacancies;
@@ -196,6 +203,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
 
                 cmd.Parameters.AddWithValue("Id",vacancy.Id);
                 cmd.Parameters.AddWithValue("Name",vacancy.Name);
+                cmd.Parameters.AddWithValue("Description",vacancy.Description);
                 cmd.Parameters.AddWithValue("Salary",vacancy.Salary);
                 cmd.Parameters.AddWithValue("Remote",vacancy.Remote);
 
@@ -213,11 +221,11 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
             }
         }
 
-        public int AddRequirement(Skill skill,Vacancy vacancy)
+        public int InsertRequirement(Skill skill,Vacancy vacancy)
         {
             using (var con = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("sp_AddRequirementVacancy",con);
+                var cmd = new SqlCommand("sp_InsertRequirementVacancy",con);
                 cmd.CommandType = _storedProcedure;
 
                 cmd.Parameters.AddWithValue("VacancyId",vacancy.Id);
@@ -238,11 +246,11 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
             }
         }
 
-        public int RemoveRequirement(Skill skill,Vacancy vacancy)
+        public int DeleteRequirement(Skill skill,Vacancy vacancy)
         {
             using (var con = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("sp_RemoveRequirementVacancy",con);
+                var cmd = new SqlCommand("sp_DeleteRequirementVacancy",con);
                 cmd.CommandType = _storedProcedure;
 
                 cmd.Parameters.AddWithValue("VacancyId",vacancy.Id);
@@ -262,11 +270,11 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
             }
         }
 
-        public IEnumerable<Skill> GetRequirementsByVacancy(Vacancy vacancy)
+        public IEnumerable<Skill> SelectRequirementsByVacancy(Vacancy vacancy)
         {
             using (var con = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("sp_GetRequirementsByVacancy",con);
+                var cmd = new SqlCommand("sp_SelectRequirementsByVacancy",con);
                 cmd.CommandType = _storedProcedure;
 
                 cmd.Parameters.AddWithValue("VacancyId",vacancy.Id);

@@ -16,8 +16,8 @@ namespace EPAM.VacancyPortal.DAL.Interfaces
         int Update(Vacancy vacancy);
         int DeleteById(int id);
         void DeleteAll();
-        int AddRequirement(Skill skill, Vacancy vacancy);
-        int RemoveRequirement(Skill skill, Vacancy vacancy);
-        IEnumerable<Skill> GetRequirementsByVacancy(Vacancy vacancy);
+        int InsertRequirement(Skill skill, Vacancy vacancy);
+        int DeleteRequirement(Skill skill, Vacancy vacancy);
+        IEnumerable<Skill> SelectRequirementsByVacancy(Vacancy vacancy);
     }
 }
