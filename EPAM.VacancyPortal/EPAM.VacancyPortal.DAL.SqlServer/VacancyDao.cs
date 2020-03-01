@@ -17,9 +17,9 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
         private readonly string _connectionString = Configuration.ConnectionString;
         private readonly ILog _logger = Configuration.Logger;
 
-        public Vacancy Insert(Vacancy vacancy,Employer employer)
+        public Vacancy Insert(Vacancy vacancy)
         {
-            using (var con = new SqlConnection())
+            using (var con = new SqlConnection(_connectionString))
             {
                 var cmd = new SqlCommand("sp_InsertVacancy", con);
                 cmd.CommandType = _storedProcedure;
@@ -28,7 +28,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                 cmd.Parameters.AddWithValue("Description",vacancy.Description);
                 cmd.Parameters.AddWithValue("Salary",vacancy.Salary);
                 cmd.Parameters.AddWithValue("Remote",vacancy.Remote);
-                cmd.Parameters.AddWithValue("EmployerId",employer.Id);
+                cmd.Parameters.AddWithValue("EmployerId",vacancy.Employer.Id);
 
                 con.Open();
                 try
@@ -123,7 +123,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                 var cmd = new SqlCommand("sp_SelectAllVacanciesByEmployer",con);
                 cmd.CommandType = _storedProcedure;
 
-                cmd.Parameters.AddWithValue("EmployerId",con);
+                cmd.Parameters.AddWithValue("EmployerId",employer.Id);
 
                 con.Open();
                 try

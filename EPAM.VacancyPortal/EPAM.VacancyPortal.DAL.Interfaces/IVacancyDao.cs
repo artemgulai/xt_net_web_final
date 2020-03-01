@@ -9,7 +9,7 @@ namespace EPAM.VacancyPortal.DAL.Interfaces
 {
     public interface IVacancyDao
     {
-        Vacancy Insert(Vacancy vacancy, Employer employer);
+        Vacancy Insert(Vacancy vacancy);
         Vacancy SelectById(int id);
         IEnumerable<Vacancy> SelectAll();
         IEnumerable<Vacancy> SelectAllByEmployer(Employer employer);

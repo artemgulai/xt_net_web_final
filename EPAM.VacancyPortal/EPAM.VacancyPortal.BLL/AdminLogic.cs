@@ -31,5 +31,73 @@ namespace EPAM.VacancyPortal.BLL
                 return admin;
             }
         }
+
+        public Admin Login(string login, string password)
+        {
+            try
+            {
+                var admin = _adminDao.SelectByLogin(login);
+                if (admin == null || admin.Password != password)
+                {
+                    return null;
+                }
+                return admin;
+            }
+            catch (SqlException)
+            {
+                return null;
+            }
+        }
+
+        public Admin SelectByLogin(string login)
+        {
+            try
+            {
+                return _adminDao.SelectByLogin(login);
+            }
+            catch (SqlException)
+            {
+                return null;
+            }
+        }
+
+        public IEnumerable<Admin> GetAll()
+        {
+            try
+            {
+                return _adminDao.SelectAll();
+            }
+            catch (SqlException)
+            {
+                return new List<Admin>();
+            }
+        }
+
+        public bool Verify(int id)
+        {
+            try
+            {
+                var admin = _adminDao.SelectById(id);
+                admin.IsCandidate = false;
+                _adminDao.Update(admin);
+                return true;
+            }
+            catch (SqlException)
+            {
+                return false;
+            }
+        }
+        public bool DeleteById(int id)
+        {
+            try
+            {
+                return _adminDao.DeleteById(id) != 0;
+            }
+            catch (SqlException)
+            {
+                return false;
+            }
+        }
+
     }
 }

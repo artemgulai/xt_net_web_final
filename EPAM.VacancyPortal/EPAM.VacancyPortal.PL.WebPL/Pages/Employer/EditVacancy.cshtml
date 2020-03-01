@@ -1,0 +1,86 @@
+﻿@{
+    Page.Title = "Edit vacancy";
+    Layout = "~/Layouts/_MainLayout.cshtml";
+}
+
+@{
+    var vacancy = EPAM.VacancyPortal.PL.WebPL.Models.VacancyRequestHandler.SelectById(int.Parse(Request["vacancyId"]));
+
+    if (vacancy == null)
+    {
+        <div class="w-50 center mt-2">
+            <div class="alert alert-danger">
+                Vacancy not found.
+            </div>
+        </div>
+        return;
+    }
+}
+
+<div class="center mt-2 w-50">
+    <div class="text-center alert alert-info">
+        Edit vacancy
+    </div>
+
+    <form class="form-group mt-2" method="post">
+        <input type="text" class="form-control" name="Name" id="name" placeholder="Vacancy's name" />
+        <textarea class="form-control mt-2" name="Description" id="description" placeholder="Vacancy's description"></textarea>
+        <input type="number" class="form-control mt-2" min="1" name="Salary" placeholder="Salary" />
+        <label class="form-control mt-2" for="remote"><input type="checkbox" class="mr-2" id="remote" name="Remote" /> Remote</label>
+        <button class="btn btn-block btn-primary mt-2 ml-auto mr-auto w-50" type="submit" id="submit">Update</button>
+    </form>
+</div>
+
+@if (vacancy.Remote)
+{
+    <script>
+        document.getElementById('remote').checked = true;
+    </script>
+}
+
+@if (IsPost)
+{
+    var name = Request.Form["Name"];
+    var description = Request.Form["Description"];
+    var remote = Request.Form["Remote"] == "on";
+    int.TryParse(Request.Form["Salary"], out var salary);
+    var employer = EPAM.VacancyPortal.PL.WebPL.Models.EmployerService.SelectByLogin(User.Identity.Name);
+
+    if (!string.IsNullOrWhiteSpace(name))
+    {
+        vacancy.Name = name;
+    }
+
+    if (!string.IsNullOrWhiteSpace(description))
+    {
+        vacancy.Description = description;
+    }
+
+    if (remote ^ vacancy.Remote)
+    {
+        vacancy.Remote = remote;
+    }
+
+    if (salary != 0)
+    {
+        vacancy.Salary = salary;
+    }
+
+    var result = EPAM.VacancyPortal.PL.WebPL.Models.VacancyRequestHandler.Update(vacancy);
+
+    // TODO разобраться с тем, что не применяются стили к дивам ниже
+    if (result.Result == "Success")
+    {
+        <div class="center w-50 text-center">
+            <div сlass="alert alert-info">
+                @result.Message
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="center w-50 text-center">
+            <div сlass="alert alert-danger">@result.Message</div>
+        </div>
+    }
+}

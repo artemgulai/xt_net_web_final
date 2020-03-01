@@ -1,0 +1,50 @@
+﻿@using EPAM.VacancyPortal.PL.WebPL.Models;
+
+@{
+    Page.Title = "My vacancies";
+    Layout = "~/Layouts/_MainLayout.cshtml";
+}
+
+@{
+    var employer = EPAM.VacancyPortal.PL.WebPL.Models.EmployerService.SelectByLogin(User.Identity.Name);
+    var employerId = employer.Id;
+
+    var vacancies = VacancyRequestHandler.SelectByEmployer(employer);
+    if (vacancies.Count() == 0)
+    {
+        <div class="w-50 center alert alert-warning mt-2">
+            No vacancies found.
+        </div>
+        return;
+    }
+}
+
+@foreach (var vacancy in vacancies)
+{
+    <div class="border border-primary rounded-lg mt-2 mb-2 clearfix p-2 d-flex align-items-center">
+        <div class="w-75 mt-2 float-left">
+            <h3>@vacancy.Name</h3>
+            <p>@vacancy.Description</p>
+            <p>Salary: @vacancy.Salary</p>
+            @if(vacancy.Remote)
+            {
+                <p>Remote</p>
+            } else
+            {
+                <p>Not remote</p>
+            }
+        </div>
+        <div class="float-right justify-content-center w-25 mt-2 btn-group-vertical">
+            <button class="edit-button btn btn-primary mb-1" value="@vacancy.Id">Edit Vacancy</button>
+            <button class="reqs-button btn btn-primary mb-1" value="@vacancy.Id">Manage requirements</button>
+            <button class="delete-button btn btn-danger" value="@vacancy.Id">Delete Vacancy</button>
+        </div>
+    </div>
+}
+
+<script src="~/Scripts/jquery-3.0.0.js"></script>
+<script>
+    $('.edit-button').click(function () {
+        location.href = '/Pages/Employer/EditVacancy.cshtml?&vacancyId=' + $(this).val()
+    });
+</script>

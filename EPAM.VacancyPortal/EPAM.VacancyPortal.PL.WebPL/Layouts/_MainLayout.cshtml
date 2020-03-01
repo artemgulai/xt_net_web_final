@@ -8,40 +8,51 @@
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary backgr-nav">
+    </nav>
+
+    <div class="main-container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <span class="navbar-brand"><a href="~/Index.cshtml"><img src="~/Media/logo.png" class="logo" alt="Site logo" /></a></span>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    @if (User.IsInRole("ADMIN"))
+                    {
+                        @RenderPage("~/Pages/Partial/_AdminNav.cshtml")
+                    }
+
+                    @if (User.IsInRole("EMPLOYEE"))
+                    {
+                        @RenderPage("~/Pages/Partial/_EmployeeNav.cshtml")
+                    }
+
+                    @if (User.IsInRole("EMPLOYER"))
+                    {
+                        @RenderPage("~/Pages/Partial/_EmployerNav.cshtml")
+                    }
+
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        @RenderPage("~/Pages/Partial/_NotAuthNav.cshtml")
+                    }
+                </ul>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a class="btn btn-warning" href="~/Pages/Auth/SignOut.cshtml">Sign out</a>
+                }
+            </div>
         </nav>
 
-        <div class="main-container">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-                <span class="navbar-brand"><a href="~/Index.cshtml"><img src="~/Media/logo.png" class="logo" alt="Site logo" /></a></span>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+        @RenderBody()
+    </div>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        @if (User.IsInRole("ADMIN"))
-                        {
-                            @RenderPage("~/Pages/Partial/_AdminNav.cshtml")
-                        }
-
-                        @if (User.IsInRole("EMPLOYEE"))
-                        {
-                            @RenderPage("~/Pages/Partial/_EmployeeNav.cshtml")
-                        }
-
-                        @if (User.IsInRole("EMPLOYER"))
-                        {
-                            @RenderPage("~/Pages/Partial/_EmployerNav.cshtml")
-                        }
-                    </ul>
-                </div>
-            </nav>
-
-            @RenderBody()
-        </div>
-
-        <script src="~/Scripts/jquery-3.0.0.js"></script>
-        <script src="~/Scripts/popper.js"></script>
-        <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/jquery-3.0.0.js"></script>
+    <script src="~/Scripts/popper.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/VacancyPortal.js"></script>
 </body>
 </html>

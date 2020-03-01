@@ -11,6 +11,7 @@ namespace EPAM.VacancyPortal.DAL.Interfaces
     {
         Employer Insert(Employer employer);
         Employer SelectById(int id);
+        Employer SelectByLogin(string login);
         IEnumerable<Employer> SelectAll();
         int Update(Employer employer);
         int DeleteById(int id);

@@ -28,7 +28,7 @@ namespace EPAM.VacancyPortal.BLL.Interfaces
         /// </summary>
         /// <param name="cityName">A Name of a City for which an Id is got.</param>
         /// <returns>Id if such City exists, otherwise 0.</returns>
-        int GetIdByName(string cityName);
+        int SelectIdByName(string cityName);
 
         /// <summary>
         /// Invokes DAL's DeleteById method.

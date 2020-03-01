@@ -1,0 +1,18 @@
+﻿@if (!User.IsInRole("ADMIN"))
+{
+    Response.Redirect("~/Index.cshtml");
+    return;
+}
+
+@using EPAM.VacancyPortal.PL.WebPL.Models;
+
+@{
+    Page.Title = "Admin verification";
+    Layout = "~/Layouts/_MainLayout.cshtml";
+}
+
+<div class="content-container">
+    <div id="admins-list">
+        @RenderPage("~/Pages/Partial/Admin/Admins.cshtml")
+    </div>
+</div>

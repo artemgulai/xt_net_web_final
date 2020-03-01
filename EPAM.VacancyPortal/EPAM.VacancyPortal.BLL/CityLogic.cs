@@ -56,11 +56,11 @@ namespace EPAM.VacancyPortal.BLL
             }
         }
 
-        public int GetIdByName(string cityName)
+        public int SelectIdByName(string cityName)
         {
             try
             {
-                return _cityDao.GetIdByName(cityName);
+                return _cityDao.SelectIdByName(cityName);
             }
             catch (SqlException)
             {

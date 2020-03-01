@@ -43,10 +43,18 @@
   <ItemGroup>
     <Compile Include="IAdminLogic.cs" />
     <Compile Include="ICityLogic.cs" />
+    <Compile Include="ICommonLogic.cs" />
+    <Compile Include="IEmployeeLogic.cs" />
+    <Compile Include="IEmployerLogic.cs" />
     <Compile Include="ISkillLogic.cs" />
+    <Compile Include="IVacancyLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EPAM.VacancyPortal.DAL.Interfaces\EPAM.VacancyPortal.DAL.Interfaces.csproj">
+      <Project>{CAEE8074-7A4F-4B0C-8F7C-DC5F9ECEC79D}</Project>
+      <Name>EPAM.VacancyPortal.DAL.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EPAM.VacancyPortal.Entities\EPAM.VacancyPortal.Entities.csproj">
       <Project>{EF349B9C-EFD9-48DD-B9C2-28129B21660A}</Project>
       <Name>EPAM.VacancyPortal.Entities</Name>

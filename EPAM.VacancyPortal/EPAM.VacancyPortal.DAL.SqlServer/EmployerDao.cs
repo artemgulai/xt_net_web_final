@@ -83,6 +83,44 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
             }
         }
 
+        public Employer SelectByLogin(string login)
+        {
+            using (var con = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("sp_SelectEmployerByLogin",con);
+                cmd.CommandType = _storedProcedure;
+
+                cmd.Parameters.AddWithValue("Login",login);
+
+                con.Open();
+                try
+                {
+                    var result = cmd.ExecuteReader();
+                    Employer employer = null;
+                    if (result.Read())
+                    {
+                        employer = new Employer
+                        {
+                            Id = (int)result["Id"],
+                            Name = (string)result["Name"],
+                            Logo = (string)result["Logo"],
+                            Login = (string)result["Login"],
+                            Password = (string)result["Password"],
+                            City = (string)result["City"],
+                            Role = (string)result["Role"],
+                            Vacancies = new List<Vacancy>()
+                        };
+                    }
+                    return employer;
+                }
+                catch (SqlException e)
+                {
+                    _logger.Error(e.Message);
+                    throw e;
+                }
+            }
+        }
+
         public IEnumerable<Employer> SelectAll()
         {
             using (var con = new SqlConnection(_connectionString))

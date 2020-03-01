@@ -1,0 +1,18 @@
+﻿@if (IsAjax)
+{
+    string type = Request["type"];
+
+    switch (type)
+    {
+        case "registerAdmin":
+            {
+                EPAM.VacancyPortal.PL.WebPL.Models.AdminRequestHandler.Register(Request,Response);
+                break;
+            }
+        case "registerEmployer":
+            {
+                EPAM.VacancyPortal.PL.WebPL.Models.EmployerRequestHandler.Register(Request,Response);
+                break;
+            }
+    }
+}

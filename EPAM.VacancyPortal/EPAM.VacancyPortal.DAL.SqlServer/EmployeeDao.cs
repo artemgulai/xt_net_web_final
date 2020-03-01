@@ -128,6 +128,47 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
             }
         }
 
+        public Employee SelectByLogin(string login)
+        {
+            using (var con = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("sp_SelectEmployeeByLogin",con);
+                cmd.CommandType = _storedProcedure;
+
+                cmd.Parameters.AddWithValue("Login",login);
+
+                con.Open();
+                try
+                {
+                    var result = cmd.ExecuteReader();
+                    Employee employee = null;
+                    if (result.Read())
+                    {
+                        employee = new Employee
+                        {
+                            Id = (int)result["Id"],
+                            FirstName = (string)result["FirstName"],
+                            LastName = (string)result["LastName"],
+                            Relocation = (bool)result["Relocation"],
+                            Experience = (int)result["Experience"],
+                            Photo = (string)result["Photo"],
+                            Login = (string)result["Login"],
+                            Password = (string)result["Password"],
+                            City = (string)result["City"],
+                            Role = (string)result["Role"],
+                            Skills = new List<Skill>()
+                        };
+                    }
+                    return employee;
+                }
+                catch (SqlException e)
+                {
+                    _logger.Error(e.Message);
+                    throw e;
+                }
+            }
+        }
+
         public int DeleteById(int id)
         {
             using (var con = new SqlConnection(_connectionString))

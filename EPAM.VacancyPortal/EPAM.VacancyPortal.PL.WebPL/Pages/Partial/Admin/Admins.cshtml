@@ -1,0 +1,48 @@
+﻿@using System.Web.Helpers;
+
+@{
+    var admins = EPAM.VacancyPortal.PL.WebPL.Models.AdminService.GetAll();
+}
+
+@if (admins.Count() == 1)
+{
+    <div class="alert alert-info">
+        No admins to delete
+    </div>
+    return;
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Login</th>
+            <th>Candidate/Admin</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var admin in admins)
+        {
+            if (admin.Login == User.Identity.Name)
+            {
+                continue;
+            }
+
+            <tr>
+                <td>@admin.Login</td>
+                <td>
+                    @{if (admin.IsCandidate)
+                        {
+                            <text>Candidate</text>
+                        }
+                        else
+                        {
+                            <text> Admin </text>
+                        }
+                    }
+                </td>
+                <td><button class="btn btn-primary" onclick="deleteAdmin('@admin.Id');">Delete</button> <br /></td>
+            </tr>
+        }
+    </tbody>
+</table>

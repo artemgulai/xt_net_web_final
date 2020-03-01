@@ -1,0 +1,23 @@
+﻿@if (IsAjax)
+{
+    string type = Request["type"];
+
+    switch (type)
+    {
+        case "signinAdmin":
+            {
+                EPAM.VacancyPortal.PL.WebPL.Models.AdminRequestHandler.SignIn(Request,Response);
+                break;
+            }
+        case "signinEmployer":
+            {
+                EPAM.VacancyPortal.PL.WebPL.Models.EmployerRequestHandler.SignIn(Request,Response);
+                break;
+            }
+        case "setAuth":
+            {
+                FormsAuthentication.SetAuthCookie(Request["login"],true);
+                break;
+            }
+    }
+}

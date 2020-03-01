@@ -1,0 +1,59 @@
+﻿@{
+    Page.Title = "Add Vacancy";
+    Layout = "~/Layouts/_MainLayout.cshtml";
+}
+
+<div class="center mt-2 w-50">
+    <div class="text-center alert alert-info">
+        Add vacancy
+    </div>
+
+    <form class="form-group mt-2" method="post">
+        <input type="text" class="form-control" name="Name" id="name" placeholder="Vacancy's name" required />
+        <textarea class="form-control mt-2" name="Description" id="description" placeholder="Vacancy's description" required></textarea>
+        <input type="number" class="form-control mt-2" min="1" name="Salary" placeholder="Salary" required />
+        <label class="form-control mt-2" for="remote"><input type="checkbox" class="mr-2" id="remote" name="Remote" /> Remote</label>
+        <button class="btn btn-block btn-primary mt-2 ml-auto mr-auto w-50" type="submit" id="submit">Add</button>
+    </form>
+</div>
+
+
+
+
+@if (IsPost)
+{
+    var name = Request.Form["Name"];
+    var description = Request.Form["Description"];
+    var remote = Request.Form["Remote"] == "on";
+    var salary = int.Parse(Request.Form["Salary"]);
+    var employer = EPAM.VacancyPortal.PL.WebPL.Models.EmployerService.SelectByLogin(User.Identity.Name);
+
+    var vacancy = new EPAM.VacancyPortal.Entities.Vacancy
+    {
+        Name = name,
+        Description = description,
+        Remote = remote,
+        Salary = salary,
+        Employer = employer,
+        Requirements = new List<EPAM.VacancyPortal.Entities.Skill>()
+    };
+
+    var result = EPAM.VacancyPortal.PL.WebPL.Models.VacancyRequestHandler.InsertVacancy(vacancy);
+
+    // TODO разобраться с тем, что не применяются стили к дивам ниже
+    if (result.Result == "Success")
+    {
+        <div class="center w-50 text-center">
+            <div сlass="alert alert-info">
+                @result.Message
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <div class="center w-50 text-center">
+            <div сlass="alert alert-danger">@result.Message</div>
+        </div>
+    }
+}

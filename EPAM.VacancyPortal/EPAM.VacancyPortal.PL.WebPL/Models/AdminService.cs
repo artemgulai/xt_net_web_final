@@ -21,5 +21,36 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
         {
             return _adminLogic.Register(admin).Id;
         }
+
+        public static Admin Login(string login, string password)
+        {
+            return _adminLogic.Login(login,password);
+        }
+
+        public static bool CheckRole(string login, string roleName)
+        {
+            var admin = _adminLogic.SelectByLogin(login);
+            return admin != null && admin.Role == roleName;
+        }
+
+        public static Admin SelectByLogin(string login)
+        {
+            return _adminLogic.SelectByLogin(login);
+        }
+
+        public static IEnumerable<Admin> GetAll()
+        {
+            return _adminLogic.GetAll();
+        }
+
+        public static bool Verify(int id)
+        {
+            return _adminLogic.Verify(id);
+        }
+
+        public static bool DeleteById(int id)
+        {
+            return _adminLogic.DeleteById(id);
+        }
     }
 }

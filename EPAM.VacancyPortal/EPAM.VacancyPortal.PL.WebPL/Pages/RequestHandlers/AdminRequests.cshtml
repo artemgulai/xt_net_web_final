@@ -1,0 +1,20 @@
+﻿@if (IsAjax)
+{
+    string type = Request["type"];
+
+    switch (type)
+    {
+        case "deleteAdmin":
+            {
+                int id = int.Parse(Request["id"]);
+                EPAM.VacancyPortal.PL.WebPL.Models.AdminService.DeleteById(id);
+                break;
+            }
+        case "verifyAdmin":
+            {
+                int id = int.Parse(Request["id"]);
+                EPAM.VacancyPortal.PL.WebPL.Models.AdminService.Verify(id);
+                break;
+            }
+    }
+}

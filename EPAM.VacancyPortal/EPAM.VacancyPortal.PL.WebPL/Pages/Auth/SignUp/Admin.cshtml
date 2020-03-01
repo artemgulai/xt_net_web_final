@@ -2,67 +2,94 @@
 @using EPAM.VacancyPortal.Entities;
 
 @{
-    Page.Title = "Title goes here";
+    Page.Title = "Admin sign up";
     Layout = "~/Layouts/_MainLayout.cshtml";
 }
 
+
 <div class="content-container">
-    <div class="center">
-        <form action="#" method="post">
-            <div class="form-row">
-                <div class="form-group col">
-                    <input type="text" class="form-control" name="Login" placeholder="Login">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col">
-                    <input type="password" class="form-control" name="Password" placeholder="Password">
-                </div>
-                <div class="form-group col">
-                    <input type="password" class="form-control" name="RepeatPassword" placeholder="Repeat password">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col">
-                    <button class="btn btn-block btn-primary" type="submit">Sign up</button>
-                </div>
-            </div>
-        </form>
-
-        @if (IsPost)
-        {
-            string login = Request.Form["Login"];
-            string password = Request.Form["Password"];
-            string repeatPassword = Request.Form["RepeatPassword"];
-
-            if (password != repeatPassword)
-            {
-                <div class="alert alert-danger text-center">
-                    Passwords don't match
-                </div>
-                return;
-            }
-
-            int id = AdminService.Register(new Admin
-            {
-                Login = login,
-                Password = password,
-                IsCandidate = true,
-                Role = "ADMIN"
-            });
-
-            if (id != 0)
-            {
-                <div class="alert alert-info">
-                    You have registered. Wait for approvement from administrator.
-                </div>
-            }
-            else
-            {
-                <div class="alert alert-info">
-                    You cannot register with such login.
-                </div>
-            }
-        }
+    <div class="center w-50 form-group" id="form">
+        <div class="form-group col">
+            <input type="text" class="form-control" name="Login" id="login" placeholder="Login">
+        </div>
+        <div class="form-group col">
+            <input type="password" class="form-control" name="Password" id="password" placeholder="Password">
+        </div>
+        <div class="form-group col">
+            <input type="password" class="form-control" name="RepeatPassword" id="repeatPassword" placeholder="Repeat password">
+        </div>
+        <div class="form-group col">
+            <button class="btn btn-block btn-primary" type="submit" id="submit">Sign Up</button>
+        </div>
     </div>
+    <div class ="w-50 center" id="submit-result"></div>
 </div>
+
+<script src="~/Scripts/jquery-3.0.0.js"></script>
+<script>
+    function signup() {
+        let login = $('#login').val();
+        let password = $('#password').val();
+        let repeatPassword = $('#repeatPassword').val();
+
+        // validate login
+        if (!login.match(/^\w+$/)) {
+            $('#submit-result').html(
+                '<div class="alert alert-danger">Enter correct login.</div>'
+            );
+            return;
+        }
+
+        // validate password
+        if (!password.match(/^\w+$/)) {
+            $('#submit-result').html(
+                '<div class="alert alert-danger">Enter correct password.</div>'
+            );
+            return;
+        }
+
+        // validate password match
+        if (password != repeatPassword) {
+            $('#submit-result').html(
+                '<div class="alert alert-danger">Passwords don\'t match. Try again.</div>'
+            );
+            return;
+        }
+
+        // create request body
+        let fd = new FormData();
+        fd.append('type', 'registerAdmin');
+        fd.append('login', login);
+        fd.append('password', password);
+
+        // send request
+        $.ajax({
+            url: '/Pages/Auth/SignUp/SignUpRequests.cshtml',
+            type: 'POST',
+            data: fd,
+            processData: false,
+            contentType: false,
+            success: (data) => {
+                let result = JSON.parse(data);
+                if (result.Result == 'Error') {
+                    $('#submit-result').html(
+                        '<div class="alert alert-danger">' + result.Message + '</div>');
+                } else {
+                    $('#submit-result').html(
+                        '<div class="alert alert-info">' + result.Message + '</div>');
+                }
+            },
+            error: (data) => {
+                location.href = "~/Pages/ErrorPage.cshtml";
+            }
+        });
+    }
+
+    $('#submit').click(signup);
+
+    $("#form").keypress(function(event) {
+        if(event.keyCode == 13){
+            $("#submit").click();
+        }
+    });
+</script>

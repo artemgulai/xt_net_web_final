@@ -17,14 +17,46 @@ namespace EPAM.VacancyPortal.IoC
         private IAdminDao _adminDao;
         private IAdminLogic _adminLogic;
 
+        private IEmployerDao _employerDao;
+        private IEmployerLogic _employerLogic;
+
+        private IEmployeeDao _employeeDao;
+        private IEmployeeLogic _employeeLogic;
+
+        private ICityDao _cityDao;
+        private ICityLogic _cityLogic;
+
+        private IVacancyDao _vacancyDao;
+        private IVacancyLogic _vacancyLogic;
+
+        private ICommonLogic _commonLogic;
+
+
         private DependencyManager()
         {
             _adminDao = new AdminDao();
             _adminLogic = new AdminLogic(_adminDao);
+
+            _cityDao = new CityDao();
+            _cityLogic = new CityLogic(_cityDao);
+
+            _employerDao = new EmployerDao();
+            _employerLogic = new EmployerLogic(_employerDao, _cityLogic);
+
+            _employeeDao = new EmployeeDao();
+            _employeeLogic = new EmployeeLogic(_employeeDao);
+
+            _vacancyDao = new VacancyDao();
+            _vacancyLogic = new VacancyLogic(_vacancyDao);
+
+            _commonLogic = new CommonLogic(_adminDao,_employerDao,_employeeDao);
         }
 
         public static DependencyManager Instance => _instance ?? (_instance = new DependencyManager());
-        public IAdminDao AdminDao => _adminDao;
         public IAdminLogic AdminLogic => _adminLogic;
+        public IEmployerLogic EmployerLogic => _employerLogic;
+        public ICityLogic CityLogic => _cityLogic;
+        public ICommonLogic CommonLogic => _commonLogic;
+        public IVacancyLogic VacancyLogic => _vacancyLogic;
     }
 }

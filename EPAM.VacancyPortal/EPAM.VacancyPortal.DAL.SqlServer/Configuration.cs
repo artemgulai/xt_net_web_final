@@ -1,5 +1,4 @@
 ﻿using log4net;
-using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,7 +16,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
         static Configuration()
         {
             _connectionString = ConfigurationManager.ConnectionStrings["MSSql"].ConnectionString;
-            _logger = Logger;
+            _logger = EPAM.VacancyPortal.Logger.Logger.Log;
         }
 
         internal static string ConnectionString => _connectionString;

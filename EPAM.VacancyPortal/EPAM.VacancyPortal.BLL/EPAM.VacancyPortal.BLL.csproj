@@ -43,8 +43,12 @@
   <ItemGroup>
     <Compile Include="CityLogic.cs" />
     <Compile Include="AdminLogic.cs" />
+    <Compile Include="CommonLogic.cs" />
+    <Compile Include="EmployeeLogic.cs" />
+    <Compile Include="EmployerLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SkillLogic.cs" />
+    <Compile Include="VacancyLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EPAM.VacancyPortal.BLL.Interfaces\EPAM.VacancyPortal.BLL.Interfaces.csproj">

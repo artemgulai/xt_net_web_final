@@ -88,7 +88,7 @@ GO
 CREATE PROCEDURE [dbo].[sp_DeleteAdminById]
 	@Id INT
 AS
-	IF (@Id <> 1) DELETE FROM Admins WHERE Id = @Id
+	IF (@Id <> (SELECT Id FROM Admins WHERE Login = 'admin')) DELETE FROM Admins WHERE Id = @Id
 GO
 
 CREATE PROCEDURE [dbo].[sp_UpdateAdminById]
@@ -133,6 +133,16 @@ AS
 	JOIN Cities ON City_Id = Cities.Id
 	JOIN Roles ON Role_Id = Roles.Id
 	WHERE Employees.Id = @Id
+GO
+
+CREATE PROCEDURE [dbo].[sp_SelectEmployeeByLogin]
+	@Login NVARCHAR(100)
+AS
+	SELECT Employees.Id as Id, FirstName, LastName, Relocation, Experience, Photo, Login, Password, 
+	Cities.Name AS City, Roles.Name AS Role FROM Employees
+	JOIN Cities ON City_Id = Cities.Id
+	JOIN Roles ON Role_Id = Roles.Id
+	WHERE Employees.Login = @Login
 GO
 
 CREATE PROCEDURE [dbo].[sp_DeleteEmployeeById]
@@ -217,13 +227,13 @@ GO
 CREATE PROCEDURE [dbo].[sp_SelectVacancyById]
 	@Id INT
 AS
-	SELECT Id, Name, Salary, Remote 
+	SELECT Id, Name, Description, Salary, Remote
 	FROM Vacancies WHERE Id = @Id
 GO
 
 CREATE PROCEDURE [dbo].[sp_SelectAllVacancies]
 AS
-	SELECT Id, Name, Salary, Remote 
+	SELECT Id, Name, Description, Salary, Remote
 	FROM Vacancies ORDER BY Employer_Id
 GO
 
@@ -305,6 +315,16 @@ AS
 	JOIN Cities on Employers.City_Id = Cities.Id
 	JOIN Roles on Employers.Role_Id = Roles.Id
 	WHERE Employers.Id = @Id
+GO
+
+CREATE PROCEDURE [dbo].[sp_SelectEmployerByLogin]
+	@Login NVARCHAR(100)
+AS
+	SELECT Employers.Id as Id, Employers.Name as Name, Logo, Login, Password, Cities.Name as City, Roles.Name as Role
+	FROM Employers
+	JOIN Cities on Employers.City_Id = Cities.Id
+	JOIN Roles on Employers.Role_Id = Roles.Id
+	WHERE Employers.Login = @Login
 GO
 
 CREATE PROCEDURE [dbo].[sp_SelectAllEmployers]

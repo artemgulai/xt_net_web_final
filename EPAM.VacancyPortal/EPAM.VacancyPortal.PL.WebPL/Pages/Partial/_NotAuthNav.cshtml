@@ -1,8 +1,22 @@
-﻿<li class="nav-item active">
-    <a class="nav-link" href="~/index.cshtml">Home <span class="sr-only">(current)</span></a>
-</li>
-<li class="nav-item">
-    <a class="nav-link" href="~/Pages/ShowUsers.cshtml" role="button">
-        Users
-    </a>
-</li>
+﻿    
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Sign in
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="~/Pages/Auth/SignIn/Admin.cshtml">As administrator</a>
+            <a class="dropdown-item" href="~/Pages/Auth/SignIn/Employer.cshtml">As employer</a>
+            <a class="dropdown-item" href="#">As employee</a>
+        </div>
+    </li>
+
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Sing up
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="~/Pages/Auth/SignUp/Admin.cshtml">As administrator</a>
+            <a class="dropdown-item" href="~/Pages/Auth/SignUp/Employer.cshtml">As employer</a>
+            <a class="dropdown-item" href="#">As employee</a>
+        </div>
+    </li>
