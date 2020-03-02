@@ -63,6 +63,17 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
             }
         }
 
+        public static bool CheckRole(string login,string roleName)
+        {
+            var employer = _employerLogic.SelectByLogin(login);
+            return employer != null && employer.Role == roleName;
+        }
+
+        public static Employer SelectByLogin(string login)
+        {
+            return _employerLogic.SelectByLogin(login);
+        }
+
         public static void SignIn(HttpRequestBase req,HttpResponseBase res)
         {
             string login = req["login"];
@@ -103,7 +114,7 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
             {
                 res.Write(JsonConvert.SerializeObject
                     (
-                        new RequestResult("error", "No such employer in Database")
+                        new RequestResult("Error", "No such employer in Database")
                     ));
                 return;
             }
@@ -136,14 +147,14 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
             }
             else
             {
-                res.Write(JsonConvert.SerializeObject(new RequestResult("Success","Profile cannot be updated.")));
+                res.Write(JsonConvert.SerializeObject(new RequestResult("Error","Profile cannot be updated.")));
             }
         }
 
         public static void DeleteRequest(HttpRequestBase req,HttpResponseBase res)
         {
             int id = int.Parse(req["id"]);
-            EmployerService.Delete(id);
+            _employerLogic.Delete(id);
             res.Write(JsonConvert.SerializeObject(
                 new
                 {

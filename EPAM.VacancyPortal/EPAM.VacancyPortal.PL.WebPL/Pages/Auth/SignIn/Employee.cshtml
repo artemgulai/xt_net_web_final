@@ -2,21 +2,12 @@
 @using EPAM.VacancyPortal.Entities;
 
 @{
-    Page.Title = "Employer sign up";
+    Page.Title = "Employee sign in";
     Layout = "~/Layouts/_MainLayout.cshtml";
 }
 
 <div class="content-container">
     <div class="center w-50 form-group" id="form">
-        <div class="form-group col">
-            <input type="text" class="form-control" name="Name" id="name" placeholder="Company name" required>
-        </div>
-        <div class="form-group col">
-            <input type="text" class="form-control" name="City" id="city" placeholder="City" required>
-        </div>
-        <div class="form-group col">
-            <input type="file" class="form-control-file" name="image" id="image" accept=".jpg">
-        </div>
         <div class="form-group col">
             <input type="text" class="form-control" name="Login" id="login" placeholder="Login">
         </div>
@@ -24,40 +15,18 @@
             <input type="password" class="form-control" name="Password" id="password" placeholder="Password">
         </div>
         <div class="form-group col">
-            <input type="password" class="form-control" name="RepeatPassword" id="repeatPassword" placeholder="Repeat password">
-        </div>
-        <div class="form-group col">
-            <button class="btn btn-block btn-primary" type="submit" id="submit">Sign Up</button>
+            <button class="btn btn-block btn-primary" type="submit" id="submit">Sign In</button>
         </div>
     </div>
     <div class="w-50 center" id="submit-result"></div>
 </div>
 
+
 <script src="~/Scripts/jquery-3.0.0.js"></script>
 <script>
-    function signup() {
-        let name = $("#name").val();
-        let city = $("#city").val();
+    function signin() {
         let login = $('#login').val();
-        let image = $('#image')[0].files[0];
         let password = $('#password').val();
-        let repeatPassword = $('#repeatPassword').val();
-
-        //validate name
-        if (!name.match(/^\w[\w ]*?\w$/)) {
-            $('#submit-result').html(
-                '<div class="alert alert-danger">Enter correct company name.</div>'
-            );
-            return;
-        }
-
-        //validate city
-        if (!city.match(/^\w[\w -]+\w$/)) {
-            $('#submit-result').html(
-                '<div class="alert alert-danger">Enter correct city.</div>'
-            );
-            return;
-        }
 
         // validate login
         if (!login.match(/^\w+$/)) {
@@ -75,26 +44,15 @@
             return;
         }
 
-        // validate password match
-        if (password != repeatPassword) {
-            $('#submit-result').html(
-                '<div class="alert alert-danger">Passwords don\'t match. Try again.</div>'
-            );
-            return;
-        }
-
         // create request body
         let fd = new FormData();
-        fd.append('type', 'registerEmployer');
-        fd.append('name', name);
-        fd.append('city', city);
-        fd.append('image', image);
+        fd.append('type', 'signinEmployee');
         fd.append('login', login);
         fd.append('password', password);
 
         // send request
         $.ajax({
-            url: '/Pages/Auth/SignUp/SignUpRequests.cshtml',
+            url: '/Pages/Auth/SignIn/SignInRequests.cshtml',
             type: 'POST',
             data: fd,
             processData: false,
@@ -108,6 +66,7 @@
                     $.post('/Pages/Auth/SignIn/SignInRequests.cshtml', { type: 'setAuth', 'login': login });
                     $('#submit-result').html(
                         '<div class="alert alert-info">' + result.Message + '</div>');
+                    setTimeout(() => location.href = "/Index.cshtml", 1000);
                 }
             },
             error: (data) => {
@@ -116,7 +75,7 @@
         });
     }
 
-    $('#submit').click(signup);
+    $('#submit').click(signin);
 
     $("#form").keypress(function(event) {
         if(event.keyCode == 13){

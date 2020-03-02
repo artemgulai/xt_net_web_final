@@ -26,7 +26,7 @@
     var description = Request.Form["Description"];
     var remote = Request.Form["Remote"] == "on";
     var salary = int.Parse(Request.Form["Salary"]);
-    var employer = EPAM.VacancyPortal.PL.WebPL.Models.EmployerService.SelectByLogin(User.Identity.Name);
+    var employer = EPAM.VacancyPortal.PL.WebPL.Models.EmployerRequestHandler.SelectByLogin(User.Identity.Name);
 
     var vacancy = new EPAM.VacancyPortal.Entities.Vacancy
     {

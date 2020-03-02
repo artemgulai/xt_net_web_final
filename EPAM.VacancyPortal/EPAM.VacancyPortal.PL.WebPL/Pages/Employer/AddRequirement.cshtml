@@ -1,0 +1,61 @@
+﻿@using EPAM.VacancyPortal.PL.WebPL.Models;
+
+@{
+    Page.Title = "Add requirement";
+    Layout = "~/Layouts/_MainLayout.cshtml";
+}
+
+@{ 
+    var vacancyId = int.Parse(Request["vacancyId"]);
+}
+
+<div class="center mt-2 w-50">
+    <div class="text-center alert alert-info">
+        Add requirement
+    </div>
+
+    <form class="form-group mt-2" method="post">
+        <input type="text" class="form-control" name="Name" id="name" placeholder="Requirement's name" required />
+        <input type="number" class="form-control mt-2" min="1" max="5" name="Level" placeholder="Level" required />
+        <button class="btn btn-block btn-primary mt-2 ml-auto mr-auto w-50" type="submit" id="submit">Add</button>
+    </form>
+</div>
+
+
+
+
+@if (IsPost)
+{
+    var name = Request.Form["Name"];
+    var level = int.Parse(Request.Form["Level"]);
+    var employer = EPAM.VacancyPortal.PL.WebPL.Models.EmployerService.SelectByLogin(User.Identity.Name);
+
+    var requirement = new EPAM.VacancyPortal.Entities.Skill
+    {
+        Name = name,
+        Level = level
+    };
+
+    var result = EPAM.VacancyPortal.PL.WebPL.Models.VacancyRequestHandler.AddRequirement(requirement, vacancyId);
+
+    // TODO разобраться с тем, что не применяются стили к дивам ниже
+    if (result.Result == "Success")
+    {
+        <div class="center w-50 text-center">
+            <div сlass="alert alert-info">
+                @result.Message
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <div class="center w-50 text-center">
+            <div сlass="alert alert-danger">@result.Message</div>
+        </div>
+    }
+
+<div class="w-50 center text-center mt-2">
+    <a class="btn btn-primary" href="~/Pages/Employer/Requirements.cshtml?vacancyId=@vacancyId">Back to vacancy</a>
+</div>
+}

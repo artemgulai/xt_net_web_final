@@ -223,14 +223,14 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
             }
         }
 
-        public int InsertRequirement(Skill skill,Vacancy vacancy)
+        public int InsertRequirement(Skill skill,int vacancyId)
         {
             using (var con = new SqlConnection(_connectionString))
             {
                 var cmd = new SqlCommand("sp_InsertRequirementVacancy",con);
                 cmd.CommandType = _storedProcedure;
 
-                cmd.Parameters.AddWithValue("VacancyId",vacancy.Id);
+                cmd.Parameters.AddWithValue("VacancyId",vacancyId);
                 cmd.Parameters.AddWithValue("SkillId",skill.Id);
                 cmd.Parameters.AddWithValue("Level",skill.Level);
 
@@ -248,15 +248,14 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
             }
         }
 
-        public int DeleteRequirement(Skill skill,Vacancy vacancy)
+        public int DeleteRequirement(int id)
         {
             using (var con = new SqlConnection(_connectionString))
             {
                 var cmd = new SqlCommand("sp_DeleteRequirementVacancy",con);
                 cmd.CommandType = _storedProcedure;
 
-                cmd.Parameters.AddWithValue("VacancyId",vacancy.Id);
-                cmd.Parameters.AddWithValue("SkillId",skill.Id);
+                cmd.Parameters.AddWithValue("Id",id);
 
                 con.Open();
                 try
@@ -296,6 +295,62 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                         });
                     }
                     return requirements;
+                }
+                catch (SqlException e)
+                {
+                    _logger.Error(e.Message);
+                    throw e;
+                }
+            }
+        }
+
+        public Skill SelectRequirementById(int id)
+        {
+            using (var con = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("sp_SelectRequirementById",con);
+                cmd.CommandType = _storedProcedure;
+
+                cmd.Parameters.AddWithValue("Id",id);
+
+                con.Open();
+                try
+                {
+                    var result = cmd.ExecuteReader();
+                    if (result.Read())
+                    {
+                        return new Skill
+                        {
+                            Id = (int)result["Id"],
+                            Name = (string)result["Name"],
+                            Level = (int)result["Level"]
+                        };
+                    }
+                    return null;
+                }
+                catch (SqlException e)
+                {
+                    _logger.Error(e.Message);
+                    throw e;
+                }
+            }
+        }
+
+        public int UpdateRequirement(Skill skill)
+        {
+            using (var con = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("sp_UpdateRequirement",con);
+                cmd.CommandType = _storedProcedure;
+
+                cmd.Parameters.AddWithValue("Id",skill.Id);
+                cmd.Parameters.AddWithValue("Level",skill.Level);
+
+                con.Open();
+                try
+                {
+                    var rowsAffected = cmd.ExecuteNonQuery();
+                    return rowsAffected;
                 }
                 catch (SqlException e)
                 {

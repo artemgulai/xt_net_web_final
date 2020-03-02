@@ -66,6 +66,7 @@
                     $.post('/Pages/Auth/SignIn/SignInRequests.cshtml', { type: 'setAuth', 'login': login });
                     $('#submit-result').html(
                         '<div class="alert alert-info">' + result.Message + '</div>');
+                    setTimeout(() => location.href = "/Index.cshtml", 1000);
                 }
             },
             error: (data) => {

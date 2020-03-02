@@ -1,4 +1,4 @@
-﻿@if (!User.IsInRole("EMPLOYER"))
+﻿@if (!User.IsInRole("EMPLOYEE"))
 {
     Response.Redirect("~/Index.cshtml");
 }
@@ -11,27 +11,44 @@
 }
 
 @{
-    var employer = EmployerRequestHandler.SelectByLogin(User.Identity.Name);
+    var employee = EmployeeRequestHandler.SelectByLogin(User.Identity.Name);
 }
 
 <div class="content-container">
-    <ul class="list-group employer-info">
-        <li class="list-group-item">Company name: @employer.Name</li>
-        <li class="list-group-item">City: @employer.City</li>
+    <ul class="list-group employee-info">
+        <li class="list-group-item">Name: @employee.FirstName @employee.LastName</li>
+        <li class="list-group-item">City: @employee.City</li>
+        <li class="list-group-item">
+            Relocation:
+            @if (employee.Relocation)
+            {
+                @:Yes
+            }
+            else
+            {
+                @:No
+            }
+        </li>
         <li class="list-group-item"><button class="btn btn-primary" id="edit-profile">Edit Profile</button> <button class="btn btn-primary" id="delete-profile">Delete Profile</button></li>
     </ul>
-    @if (!string.IsNullOrWhiteSpace(employer.Logo))
+    @if (!string.IsNullOrWhiteSpace(employee.Photo))
     {
-        <img class="employer-logo" src="@String.Format("data:image/jpg;base64,{0}",employer.Logo)" />
+        <img class="employee-photo" src="@String.Format("data:image/jpg;base64,{0}",employee.Photo)" />
     }
 </div>
 
-<div class="employer-info" id="employer-edit">
+<div class="employee-info" id="employee-edit">
     <div class="form-group col">
-        <input type="text" class="form-control" name="Name" id="name" placeholder="New company name">
+        <input type="text" class="form-control" name="FirstName" id="firstName" placeholder="New first name">
+    </div>
+    <div class="form-group col">
+        <input type="text" class="form-control" name="LastName" id="lastName" placeholder="New last name">
     </div>
     <div class="form-group col">
         <input type="text" class="form-control" name="City" id="city" placeholder="New city">
+    </div>
+    <div class="form-group col">
+        <label class="form-control" for="relocation"><input type="checkbox" class="mr-2" id="relocation" name="Relocation" />Relocation</label>
     </div>
     <div class="form-group col">
         <input type="password" class="form-control" name="Password" id="password" placeholder="New password">
@@ -43,15 +60,22 @@
         <input type="file" class="form-control-file" name="image" id="image" accept=".jpg" formenctype="multipart/form-data">
     </div>
     <div class="for-group-col">
-        <input type="hidden" class="form-control" id="employer-id" value="@employer.Id" />
+        <input type="hidden" class="form-control" id="employee-id" value="@employee.Id" />
     </div>
     <div class="form-group col">
         <button class="btn btn-block btn-primary" type="submit" id="submit">Save Changes</button>
     </div>
 </div>
 
-<div class="employer-info mt-1" id="submit-result"></div>
+<div class="employee-info mt-1" id="submit-result"></div>
 
+
+@if (employee.Relocation)
+{
+    <script>
+        document.getElementById('relocation').checked = true;
+    </script>
+}
 
 <script src="~/Scripts/jquery-3.0.0.js"></script>
 <script>
@@ -66,15 +90,17 @@
         }
 
         let fd = new FormData();
-        fd.append('id', $('#employer-id').val());
+        fd.append('id', $('#employee-id').val());
         fd.append('type', 'editProfile');
-        fd.append('name', $('#name').val());
+        fd.append('firstName', $('#firstName').val());
+        fd.append('lastName', $('#lastName').val());
+        fd.append('relocation', $('#relocation').prop('checked'));
         fd.append('city', $('#city').val());
         fd.append('password', password);
         fd.append('image', $('#image')[0].files[0]);
 
         $.ajax({
-            url: '/Pages/RequestHandlers/EmployerRequests.cshtml',
+            url: '/Pages/RequestHandlers/EmployeeRequests.cshtml',
             type: 'POST',
             data: fd,
             processData: false,
@@ -89,7 +115,7 @@
                         '<div class="alert alert-info">' + result.Message + '</div>');
                     setTimeout(() => location.reload(), 1500);
                 }
-                 
+
             },
             error: (data) => {
                 location.href = "/Pages/ErrorPage.cshtml";
@@ -98,11 +124,11 @@
     });
 
     $('#edit-profile').click(function () {
-        if ($('#employer-edit').css("display") == "block") {
-            $('#employer-edit').hide();
+        if ($('#employee-edit').css("display") == "block") {
+            $('#employee-edit').hide();
         }
         else {
-            $('#employer-edit').show();
+            $('#employee-edit').show();
         }
     });
 

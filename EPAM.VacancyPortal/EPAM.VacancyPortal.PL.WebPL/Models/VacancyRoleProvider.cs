@@ -10,18 +10,23 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
     {
         public override bool IsUserInRole(string username,string roleName)
         {
-            return AdminService.CheckRole(username,roleName) || EmployerService.CheckRole(username,roleName);
+            return AdminRequestHandler.CheckRole(username,roleName) 
+                || EmployerRequestHandler.CheckRole(username,roleName) 
+                || EmployeeRequestHandler.CheckRole(username, roleName);
         }
 
         public override string[] GetRolesForUser(string username)
         {
-            if (AdminService.SelectByLogin(username) != null)
+            if (AdminRequestHandler.SelectByLogin(username) != null)
             {
                 return new string[] { "ADMIN" };
             } 
-            else if (EmployerService.SelectByLogin(username) != null)
+            else if (EmployerRequestHandler.SelectByLogin(username) != null)
             {
                 return new string[] { "EMPLOYER" };
+            } else if(EmployeeRequestHandler.SelectByLogin(username) != null)
+            {
+                return new string[] { "EMPLOYEE" };
             }
             return new string[] { };
         }

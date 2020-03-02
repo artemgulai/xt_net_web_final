@@ -1,0 +1,93 @@
+﻿@using EPAM.VacancyPortal.PL.WebPL.Models;
+
+@{
+    Page.Title = "My vacancies";
+    Layout = "~/Layouts/_MainLayout.cshtml";
+}
+
+@{
+
+    var vacancy = VacancyRequestHandler.SelectById((int.Parse(Request["vacancyId"])));
+    if (vacancy == null)
+    {
+        <div class="w-50 center alert alert-warning mt-2">
+            Vacancy not found
+        </div>
+        return;
+    }
+}
+
+<div class="border border-primary rounded-lg mt-2 mb-2 clearfix p-2 d-flex align-items-center">
+    <div class="w-75 d-inline-block mt-2">
+        <h3>@vacancy.Name</h3>
+        <p>@vacancy.Description</p>
+        <p>Salary: @vacancy.Salary</p>
+        @if (vacancy.Remote)
+        {
+            <p>Remote</p>
+        }
+        else
+        {
+            <p>Not remote</p>
+        }
+    </div>
+    <div class="w-25 d-inline-block" mt-2>
+        <button class="btn btn-primary" id="add-requirement-button">Add requirement</button>
+    </div>
+</div>
+
+@if(!vacancy.Requirements.Any())
+{
+    <div class="mt-2 center w-50">
+        <div class="alert alert-warning text-center">Requirements not found</div>
+    </div>
+    return;
+}
+
+@foreach(var requirement in vacancy.Requirements)
+{
+<div id="requirement-@requirement.Id" class="w-50 mt-2 center clearfix">
+    <div class="float-left w-50">
+        <p>@requirement.Name</p>
+        <p>Level: @requirement.Level</p>
+    </div>
+    <div class="float-right w-50">
+        <button class="btn btn-primary change-level-button" value="@requirement.Id">Change level</button>
+        <div class="form-group requirement-level-change" id="requirement-@requirement.Id-level-change">
+            <input class="mt-1" type="number" min="1" max="5" value="1" id="requirement-@requirement.Id-level" />
+            <button class="btn btn-primary mt-1 requirement-level-submit" value="@requirement.Id">Change level</button>
+        </div>
+        <button class="btn btn-danger mt-1 delete-requirement-button" value="@requirement.Id">Delete Requirement</button>
+    </div>
+</div>
+}
+
+<script src="~/Scripts/jquery-3.0.0.js"></script>
+<script>
+    $('.change-level-button').click(function () {
+        $('#requirement-' + $(this).val() + '-level-change').show();
+    });
+
+    $('.requirement-level-submit').click(function () {
+        let id = $(this).val();
+        let level = $('#requirement-' + id + '-level').val();
+
+        $.post(
+            '/Pages/RequestHandlers/VacancyRequests.cshtml',
+            { type: 'updateRequirementLevel', id: id, level: level },
+            () => location.reload()
+        );
+    });
+
+    $('#add-requirement-button').click(() => location.href = '/Pages/Employer/AddRequirement.cshtml?vacancyId=' + @vacancy.Id);
+
+    $('.delete-requirement-button').click(function () {
+        let id = $(this).val();
+
+        $.post(
+            '/Pages/RequestHandlers/VacancyRequests.cshtml',
+            { type: 'deleteRequirement', id: id },
+            () => $('#requirement-' + id).remove()
+        );
+    });
+</script>

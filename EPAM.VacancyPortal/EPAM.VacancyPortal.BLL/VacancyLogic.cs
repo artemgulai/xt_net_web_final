@@ -13,9 +13,11 @@ namespace EPAM.VacancyPortal.BLL
     public class VacancyLogic : IVacancyLogic
     {
         private IVacancyDao _vacancyDao;
-        public VacancyLogic(IVacancyDao vacancyDao)
+        private ISkillLogic _skillLogic;
+        public VacancyLogic(IVacancyDao vacancyDao, ISkillLogic skillLogic)
         {
             _vacancyDao = vacancyDao;
+            _skillLogic = skillLogic;
         }
 
         public Vacancy Insert(Vacancy vacancy)
@@ -46,7 +48,9 @@ namespace EPAM.VacancyPortal.BLL
         {
             try
             {
-                return _vacancyDao.SelectById(id);
+                var vacancy = _vacancyDao.SelectById(id);
+                vacancy.Requirements = _vacancyDao.SelectRequirementsByVacancy(vacancy).ToList();
+                return vacancy;
             }
             catch (SqlException)
             {
@@ -59,6 +63,67 @@ namespace EPAM.VacancyPortal.BLL
             try
             {
                 return _vacancyDao.Update(vacancy) != 0;
+            }
+            catch (SqlException)
+            {
+                return false;
+            }
+        }
+
+        public bool DeleteById(int id)
+        {
+            try
+            {
+                return _vacancyDao.DeleteById(id) != 0;
+            }
+            catch (SqlException)
+            {
+                return false;
+            }
+        }
+
+        public bool UpdateRequirement(int id,int level)
+        {
+            try
+            {
+                var requirement = _vacancyDao.SelectRequirementById(id);
+                requirement.Level = level;
+                var result = _vacancyDao.UpdateRequirement(requirement);
+                return result != 0;
+            }
+            catch (SqlException)
+            {
+                return false;
+            }
+        }
+
+        public bool AddRequirement(Skill requirement,int vacancyId)
+        {
+            var skillExist = _skillLogic.SelectAll().FirstOrDefault(r => r.Name == requirement.Name);
+            if (skillExist == null)
+            {
+                requirement = _skillLogic.Insert(requirement);
+            }
+            else
+            {
+                requirement.Id = skillExist.Id;
+            }
+
+            try
+            {
+                return _vacancyDao.InsertRequirement(requirement,vacancyId) != 0;
+            }
+            catch (SqlException)
+            {
+                return false;
+            }
+        }
+
+        public bool DeleteRequirement(int id)
+        {
+            try
+            {
+                return _vacancyDao.DeleteRequirement(id) != 0;
             }
             catch (SqlException)
             {

@@ -9,10 +9,16 @@
 <div class="content-container">
     <div class="center w-50 form-group" id="form">
         <div class="form-group col">
-            <input type="text" class="form-control" name="Name" id="name" placeholder="Company name" required>
+            <input type="text" class="form-control" name="FirstName" id="firstName" placeholder="First Name" required>
+        </div>
+        <div class="form-group col">
+            <input type="text" class="form-control" name="LastName" id="lastName" placeholder="Last Name" required>
         </div>
         <div class="form-group col">
             <input type="text" class="form-control" name="City" id="city" placeholder="City" required>
+        </div>
+        <div class="form-group col">
+            <label class="form-control mt-2" for="relocation"><input type="checkbox" class="mr-2" id="relocation" name="Relocation" />Relocation</label>
         </div>
         <div class="form-group col">
             <input type="file" class="form-control-file" name="image" id="image" accept=".jpg">
@@ -36,17 +42,26 @@
 <script src="~/Scripts/jquery-3.0.0.js"></script>
 <script>
     function signup() {
-        let name = $("#name").val();
+        let firstName = $("#firstName").val();
+        let lastName = $("#lastName").val();
         let city = $("#city").val();
+        let relocation = $("#relocation").prop('checked');
         let login = $('#login').val();
         let image = $('#image')[0].files[0];
         let password = $('#password').val();
         let repeatPassword = $('#repeatPassword').val();
 
         //validate name
-        if (!name.match(/^\w[\w ]*?\w$/)) {
+        if (!firstName.match(/^\w[\w ]*?\w$/)) {
             $('#submit-result').html(
-                '<div class="alert alert-danger">Enter correct company name.</div>'
+                '<div class="alert alert-danger">Enter correct first name.</div>'
+            );
+            return;
+        }
+
+        if (!lastName.match(/^\w[\w ]*?\w$/)) {
+            $('#submit-result').html(
+                '<div class="alert alert-danger">Enter correct last name.</div>'
             );
             return;
         }
@@ -85,8 +100,10 @@
 
         // create request body
         let fd = new FormData();
-        fd.append('type', 'registerEmployer');
-        fd.append('name', name);
+        fd.append('type', 'registerEmployee');
+        fd.append('firstName', firstName);
+        fd.append('lastName', lastName);
+        fd.append('relocation', relocation);
         fd.append('city', city);
         fd.append('image', image);
         fd.append('login', login);
@@ -108,6 +125,7 @@
                     $.post('/Pages/Auth/SignIn/SignInRequests.cshtml', { type: 'setAuth', 'login': login });
                     $('#submit-result').html(
                         '<div class="alert alert-info">' + result.Message + '</div>');
+                    setTimeout(() => location.href = "/Index.cshtml", 1000);
                 }
             },
             error: (data) => {

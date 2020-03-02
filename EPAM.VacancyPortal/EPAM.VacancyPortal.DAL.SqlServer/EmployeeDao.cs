@@ -243,14 +243,14 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
             }
         }
 
-        public int InsertSkill(Skill skill, Employee employee)
+        public int InsertSkill(Skill skill, int employeeId)
         {
             using (var con = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("sp_InsertSkillEmployee");
+                var cmd = new SqlCommand("sp_InsertSkillEmployee", con);
                 cmd.CommandType = _storedProcedure;
 
-                cmd.Parameters.AddWithValue("EmployeeId",employee.Id);
+                cmd.Parameters.AddWithValue("EmployeeId",employeeId);
                 cmd.Parameters.AddWithValue("SkillId",skill.Id);
                 cmd.Parameters.AddWithValue("Level",skill.Level);
 
@@ -348,6 +348,85 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                     throw e;
                 }
 
+            }
+        }
+
+        public Skill SelectSkillById(int id)
+        {
+            using (var con = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("sp_SelectSkillById",con);
+                cmd.CommandType = _storedProcedure;
+
+                cmd.Parameters.AddWithValue("Id",id);
+
+                con.Open();
+                try
+                {
+                    var result = cmd.ExecuteReader();
+                    if (result.Read())
+                    {
+                        return new Skill
+                        {
+                            Id = (int)result["Id"],
+                            Name = (string)result["Name"],
+                            Level = (int)result["Level"]
+                        };
+                    }
+                    return null;
+                }
+                catch (SqlException e)
+                {
+                    _logger.Error(e.Message);
+                    throw e;
+                }
+            }
+        }
+
+        public int UpdateSkill(Skill skill)
+        {
+            using (var con = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("sp_UpdateSkillEmployee",con);
+                cmd.CommandType = _storedProcedure;
+
+                cmd.Parameters.AddWithValue("Id",skill.Id);
+                cmd.Parameters.AddWithValue("Level",skill.Level);
+
+                con.Open();
+                try
+                {
+                    var rowsAffected = cmd.ExecuteNonQuery();
+                    return rowsAffected;
+                }
+                catch (SqlException e)
+                {
+                    _logger.Error(e.Message);
+                    throw e;
+                }
+            }
+        }
+
+        public int DeleteSkill(int id)
+        {
+            using (var con = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("sp_DeleteSkillEmployee",con);
+                cmd.CommandType = _storedProcedure;
+
+                cmd.Parameters.AddWithValue("Id",id);
+
+                con.Open();
+                try
+                {
+                    var rowsAffected = cmd.ExecuteNonQuery();
+                    return rowsAffected;
+                }
+                catch (SqlException e)
+                {
+                    _logger.Error(e.Message);
+                    throw e;
+                }
             }
         }
     }

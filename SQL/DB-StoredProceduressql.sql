@@ -53,6 +53,14 @@ AS
 	DELETE FROM Skills WHERE Id = @Id
 GO
 
+CREATE PROCEDURE [dbo].[sp_SelectSkillById]
+	@Id INT
+AS
+	SELECT Employees_Skills.Id as Id, Skills.Name as Name, Level FROM Employees_Skills
+	JOIN Skills on Skill_Id = Skills.Id
+	WHERE Employees_Skills.Id = @Id
+GO
+
 -- Stored procedures for Admins table
 CREATE PROCEDURE [dbo].[sp_InsertAdmin]
 	@Login NVARCHAR(100),
@@ -185,27 +193,25 @@ AS
 GO
 
 CREATE PROCEDURE [dbo].[sp_DeleteSkillEmployee]
-	@SkillId INT,
-	@EmployeeId INT
+	@Id INT
 AS
 	DELETE FROM Employees_Skills
-	WHERE Skill_Id = @SkillId AND Employee_Id = @EmployeeId
+	WHERE Id = @Id
 GO
 
 CREATE PROCEDURE [dbo].[sp_UpdateSkillEmployee]
-	@SkillId INT,
-	@EmployeeId INT,
+	@Id INT,
 	@Level INT
 AS
 	UPDATE Employees_Skills
 	SET Level = @Level
-	WHERE Skill_Id = @SkillId AND Employee_Id = @EmployeeId
+	WHERE Id = @Id
 GO
 
 CREATE PROCEDURE [dbo].[sp_SelectSkillsByEmployee]
 	@EmployeeId INT
 AS
-	SELECT Skills.Id as Id, Skills.Name as Name, Employees_Skills.Level as Level 
+	SELECT Employees_Skills.Id as Id, Skills.Name as Name, Employees_Skills.Level as Level 
 	FROM Employees_Skills
 	JOIN Skills on Skills.Id = Skill_Id
 	WHERE Employee_Id = @EmployeeId
@@ -277,19 +283,35 @@ AS
 GO
 
 CREATE PROCEDURE [dbo].[sp_DeleteRequirementVacancy]
-	@VacancyId INT,
-	@SkillId INT
+	@Id INT
 AS
 	DELETE FROM Vacancies_Skills
-	WHERE Vacancy_Id = @VacancyId AND Skill_Id = @SkillId
+	WHERE Id = @Id
 GO
 
 CREATE PROCEDURE [dbo].[sp_SelectRequirementsByVacancy]
 	@VacancyId INT
 AS
-	SELECT Skills.Id as Id, Skills.Name as Name, Level FROM Vacancies_Skills
+	SELECT Vacancies_Skills.Id as Id, Skills.Name as Name, Level FROM Vacancies_Skills
 	JOIN Skills on Skill_Id = Skills.Id
 	WHERE Vacancy_Id = @VacancyId
+GO
+
+CREATE PROCEDURE [dbo].[sp_UpdateRequirement]
+	@Id INT,
+	@Level INT
+AS
+	UPDATE Vacancies_Skills 
+	SET Level = @Level
+	WHERE @Id = Id
+GO
+
+CREATE PROCEDURE [dbo].[sp_SelectRequirementById]
+	@Id INT
+AS
+	SELECT Vacancies_Skills.Id as Id, Skills.Name as Name, Level FROM Vacancies_Skills
+	JOIN Skills on Skill_Id = Skills.Id
+	WHERE Vacancies_Skills.Id = @Id
 GO
 
 -- Stored procedures for Employers table

@@ -20,6 +20,12 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
             _commonLogic = DependencyManager.Instance.CommonLogic;
         }
 
+        public static bool CheckRole(string login,string roleName)
+        {
+            var admin = _adminLogic.SelectByLogin(login);
+            return admin != null && admin.Role == roleName;
+        }
+
         public static void Register(HttpRequestBase req,HttpResponseBase res)
         {
             string login = req["login"];
@@ -77,6 +83,11 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
                 res.Write(JsonConvert.SerializeObject(new RequestResult("Error","No admin with such login.")));
                 return;
             }
+        }
+
+        public static Admin SelectByLogin(string login)
+        {
+            return _adminLogic.SelectByLogin(login);
         }
     }
 }

@@ -14,6 +14,11 @@
                 EPAM.VacancyPortal.PL.WebPL.Models.EmployerRequestHandler.SignIn(Request,Response);
                 break;
             }
+        case "signinEmployee":
+            {
+                EPAM.VacancyPortal.PL.WebPL.Models.EmployeeRequestHandler.SignIn(Request,Response);
+                break;
+            }
         case "setAuth":
             {
                 FormsAuthentication.SetAuthCookie(Request["login"],true);

@@ -30,17 +30,20 @@ body {
     margin-top: 10px;
 }
 
-.employer-info {
+.employer-info,
+.employee-info {
     width: 480px;
     float: left;
 }
 
-.employer-logo {
+.employer-logo,
+.employee-photo {
     width: 320px;
     float: right;
 }
 
-#employer-edit {
+#employer-edit,
+#employee-edit {
     display: none;
     margin-top: 10px;
 }
@@ -48,4 +51,9 @@ body {
 
 #employer-edit-result {
     clear: left;
+}
+
+.requirement-level-change,
+.skill-level-change {
+    display: none;
 }

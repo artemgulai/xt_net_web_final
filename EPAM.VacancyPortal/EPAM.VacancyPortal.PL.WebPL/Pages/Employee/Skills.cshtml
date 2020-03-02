@@ -1,0 +1,81 @@
+﻿@using EPAM.VacancyPortal.PL.WebPL.Models;
+
+@{
+    Page.Title = "My skills";
+    Layout = "~/Layouts/_MainLayout.cshtml";
+}
+
+@{
+    var employee = EmployeeRequestHandler.SelectByLogin(User.Identity.Name);
+    if (employee == null)
+    {
+        <div class="w-50 center alert alert-warning mt-2">
+            Employee not found
+        </div>
+        return;
+    }
+}
+
+@if (!employee.Skills.Any())
+{
+    <div class="mt-2 center w-50">
+        <div class="alert alert-warning text-center">Skills not found</div>
+    </div>
+    return;
+}
+
+<div id="skill-list">
+    @foreach (var skill in employee.Skills)
+    {
+        <div id="skill-@skill.Id" class="w-50 mt-2 center clearfix">
+            <div class="float-left w-50">
+                <p>@skill.Name</p>
+                <p>Level: @skill.Level</p>
+            </div>
+            <div class="float-right w-50">
+                <button class="btn btn-primary change-level-button" value="@skill.Id">Change level</button>
+                <div class="form-group skill-level-change" id="skill-@skill.Id-level-change">
+                    <input class="mt-1" type="number" min="1" max="5" value="1" id="skill-@skill.Id-level" />
+                    <button class="btn btn-primary mt-1 skill-level-submit" value="@skill.Id">Change level</button>
+                </div>
+                <button class="btn btn-danger mt-1 delete-skill-button" value="@skill.Id">Delete Skill</button>
+            </div>
+        </div>
+    }
+</div>
+
+
+<script src="~/Scripts/jquery-3.0.0.js"></script>
+<script>
+    $('.change-level-button').click(function () {
+        $('#skill-' + $(this).val() + '-level-change').show();
+    });
+
+    $('.skill-level-submit').click(function () {
+        let id = $(this).val();
+        let level = $('#skill-' + id + '-level').val();
+
+        $.post(
+            '/Pages/RequestHandlers/EmployeeRequests.cshtml',
+            { type: 'updateSkillLevel', id: id, level: level },
+            () => location.reload()
+        );
+    });
+
+    $('.delete-skill-button').click(function () {
+        let id = $(this).val();
+
+        $.post(
+            '/Pages/RequestHandlers/EmployeeRequests.cshtml',
+            { type: 'deleteSkill', id: id },
+            () => {
+                $('#skill-' + id).remove();
+                if (!$('#skill-list').children().length > 0) {
+                        $('#skill-list').append('<div class="w-50 center alert alert-warning mt-2">' +
+                            'No skills found.' +
+                            '</div >');
+                    }
+            }
+        );
+    });
+</script>

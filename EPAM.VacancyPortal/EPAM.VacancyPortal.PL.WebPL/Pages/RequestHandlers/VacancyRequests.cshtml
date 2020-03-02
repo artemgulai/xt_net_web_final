@@ -1,0 +1,24 @@
+﻿@if(IsAjax)
+{
+    var type = Request["type"];
+
+    switch(type)
+    {
+        case "deleteVacancy":
+            {
+                int id = int.Parse(Request["id"]);
+                EPAM.VacancyPortal.PL.WebPL.Models.VacancyRequestHandler.DeleteById(Request, Response);
+                break;
+            }
+        case "updateRequirementLevel":
+            {
+                EPAM.VacancyPortal.PL.WebPL.Models.VacancyRequestHandler.UpdateRequirementLevel(Request,Response);
+                break;
+            }
+        case "deleteRequirement":
+            {
+                EPAM.VacancyPortal.PL.WebPL.Models.VacancyRequestHandler.DeleteRequirement(Request,Response);
+                break;
+            }
+    }
+}

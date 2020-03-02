@@ -148,6 +148,16 @@
     <Content Include="Pages\Employer\Vacancies.cshtml" />
     <Content Include="Pages\Employer\AddVacancy.cshtml" />
     <Content Include="Pages\Employer\EditVacancy.cshtml" />
+    <Content Include="Pages\RequestHandlers\VacancyRequests.cshtml" />
+    <Content Include="Pages\Employer\Requirements.cshtml" />
+    <Content Include="Pages\Employer\AddRequirement.cshtml" />
+    <Content Include="Pages\RequestHandlers\EmployeeRequests.cshtml" />
+    <Content Include="Pages\Partial\_EmployeeNav.cshtml" />
+    <Content Include="Pages\Employee\MyProfile.cshtml" />
+    <Content Include="Pages\Auth\SignUp\Employee.cshtml" />
+    <Content Include="Pages\Auth\SignIn\Employee.cshtml" />
+    <Content Include="Pages\Employee\AddSkill.cshtml" />
+    <Content Include="Pages\Employee\Skills.cshtml" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
     <Content Include="Scripts\jquery-3.0.0.js" />
     <Content Include="Scripts\jquery-3.0.0.min.js" />
@@ -239,9 +249,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\AdminRequestHandler.cs" />
-    <Compile Include="Models\AdminService.cs" />
+    <Compile Include="Models\EmployeeRequestHandler.cs" />
     <Compile Include="Models\EmployerRequestHandler.cs" />
-    <Compile Include="Models\EmployerService.cs" />
     <Compile Include="Models\RequestResult.cs" />
     <Compile Include="Models\VacancyRequestHandler.cs" />
     <Compile Include="Models\VacancyRoleProvider.cs" />
@@ -266,7 +275,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Media\" />
-    <Folder Include="Pages\Employee\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EPAM.VacancyPortal.BLL.Interfaces\EPAM.VacancyPortal.BLL.Interfaces.csproj">

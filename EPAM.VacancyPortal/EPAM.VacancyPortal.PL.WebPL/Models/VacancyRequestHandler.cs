@@ -1,6 +1,7 @@
 ﻿using EPAM.VacancyPortal.BLL.Interfaces;
 using EPAM.VacancyPortal.Entities;
 using EPAM.VacancyPortal.IoC;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -51,6 +52,62 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
             else
             {
                 return new RequestResult("Error","Cannot change vacancy.");
+            }
+        }
+
+        public static void DeleteById(HttpRequestBase req, HttpResponseBase res)
+        {
+            var result = _vacancyLogic.DeleteById(int.Parse(req["id"]));
+            if (result)
+            {
+                res.Write(JsonConvert.SerializeObject(new RequestResult("Success","Vacancy has been deleted")));
+            }
+            else
+            {
+                res.Write(JsonConvert.SerializeObject(new RequestResult("Error","Cannot delete vacancy")));
+            }
+        }
+
+        public static void UpdateRequirementLevel(HttpRequestBase req, HttpResponseBase res)
+        {
+            var id = int.Parse(req["id"]);
+            var level = int.Parse(req["level"]);
+            var result = _vacancyLogic.UpdateRequirement(id,level);
+            if (result)
+            {
+                res.Write(JsonConvert.SerializeObject(new RequestResult("Success","Level has been changed.")));
+            }
+            else
+            {
+                res.Write(JsonConvert.SerializeObject(new RequestResult("Error","Cannot change level.")));
+            }
+        }
+
+        public static RequestResult AddRequirement(Skill requirement, int vacancyId)
+        {
+            var result = _vacancyLogic.AddRequirement(requirement,vacancyId);
+            if (result)
+            {
+                return new RequestResult("Success","Requirement has been added to the vacancy.");
+            }
+            else
+            {
+                return new RequestResult("Error","Cannot add requirement to vacancy.");
+            }
+        }
+
+        public static void DeleteRequirement(HttpRequestBase req, HttpResponseBase res)
+        {
+            var result = _vacancyLogic.DeleteRequirement(int.Parse(req["id"]));
+            if (result)
+            {
+                res.Write(JsonConvert.SerializeObject(new RequestResult("Success","Requirement has been deleted.")));
+                return;
+            }
+            else
+            {
+                res.Write(JsonConvert.SerializeObject(new RequestResult("Error","Cannot delete requirement.")));
+                return;
             }
         }
     }

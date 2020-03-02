@@ -1,0 +1,23 @@
+﻿@if (IsAjax)
+{
+    var type = Request["type"];
+
+    switch (type)
+    {
+        case "editProfile":
+            {
+                EPAM.VacancyPortal.PL.WebPL.Models.EmployeeRequestHandler.Update(Request,Response);
+                break;
+            }
+        case "updateSkillLevel":
+            {
+                EPAM.VacancyPortal.PL.WebPL.Models.EmployeeRequestHandler.UpdateSkillLevel(Request,Response);
+                break;
+            }
+        case "deleteSkill":
+            {
+                EPAM.VacancyPortal.PL.WebPL.Models.EmployeeRequestHandler.DeleteSkill(Request,Response);
+                break;
+            }
+    }
+}
