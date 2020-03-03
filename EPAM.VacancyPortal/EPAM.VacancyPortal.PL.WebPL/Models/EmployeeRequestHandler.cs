@@ -5,6 +5,8 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 
 namespace EPAM.VacancyPortal.PL.WebPL.Models
@@ -13,11 +15,13 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
     {
         private static IEmployeeLogic _employeeLogic;
         private static ICommonLogic _commonLogic;
+        private static SHA256 _sha256;
 
         static EmployeeRequestHandler()
         {
             _employeeLogic = DependencyManager.Instance.EmployeeLogic;
             _commonLogic = DependencyManager.Instance.CommonLogic;
+            _sha256 = new SHA256Cng();
         }
 
         public static void Register(HttpRequestBase req, HttpResponseBase res)
@@ -43,7 +47,7 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
                 City = city,
                 Relocation = relocation,
                 Login = login,
-                Password = password,
+                Password = Convert.ToBase64String(_sha256.ComputeHash(Encoding.Unicode.GetBytes(password))),
                 Photo = string.Empty
             };
 
@@ -87,7 +91,7 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
 
             if (employee != null)
             {
-                if (employee.Password == password)
+                if (employee.Password == Convert.ToBase64String(_sha256.ComputeHash(Encoding.Unicode.GetBytes(password))))
                 {
                     res.Write(JsonConvert.SerializeObject(new RequestResult("Success","Succesfully signed in.")));
                     return;
@@ -142,7 +146,7 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
 
             if (!string.IsNullOrWhiteSpace(password))
             {
-                employee.Password = password;
+                employee.Password = Convert.ToBase64String(_sha256.ComputeHash(Encoding.Unicode.GetBytes(password)));
             }
 
             if (relocation ^ employee.Relocation)

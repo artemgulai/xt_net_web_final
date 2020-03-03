@@ -161,4 +161,4 @@ INSERT INTO Roles (Name) VALUES ('EMPLOYER');
 INSERT INTO Roles (Name) VALUES ('EMPLOYEE');
 
 INSERT INTO Admins (Login, Password, Role_ID, Candidate) 
-	VALUES ('admin', 'admin', (SELECT Id FROM Roles WHERE Name = 'ADMIN'), 0);
+	VALUES ('admin', 'dSPGKr23Yoxana2Pl9jYxcBA7eNlNeUxqKN0i2yufgA=', (SELECT Id FROM Roles WHERE Name = 'ADMIN'), 0);

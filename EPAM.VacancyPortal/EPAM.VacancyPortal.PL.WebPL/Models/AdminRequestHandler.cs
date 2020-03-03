@@ -5,6 +5,8 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 
 namespace EPAM.VacancyPortal.PL.WebPL.Models
@@ -13,11 +15,13 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
     {
         private static IAdminLogic _adminLogic;
         private static ICommonLogic _commonLogic;
+        private static SHA256 _sha256;
 
         static AdminRequestHandler()
         {
             _adminLogic = DependencyManager.Instance.AdminLogic;
             _commonLogic = DependencyManager.Instance.CommonLogic;
+            _sha256 = new SHA256Cng();
         }
 
         public static bool CheckRole(string login,string roleName)
@@ -40,7 +44,7 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
             var registeredAdmin = _adminLogic.Register(new Admin
             {
                 Login = login,
-                Password = password,
+                Password = Convert.ToBase64String(_sha256.ComputeHash(Encoding.Unicode.GetBytes(password))),
                 IsCandidate = true,
                 Role = "ADMIN"
             });
@@ -67,7 +71,7 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
 
             if (admin != null)
             {
-                if(admin.Password == password)
+                if(admin.Password == Convert.ToBase64String(_sha256.ComputeHash(Encoding.Unicode.GetBytes(password))))
                 {
                     res.Write(JsonConvert.SerializeObject(new RequestResult("Success","Succesfully signed in.")));
                     return;
