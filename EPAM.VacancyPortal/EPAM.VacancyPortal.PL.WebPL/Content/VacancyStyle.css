@@ -15,7 +15,7 @@ body {
 }
 
 .backgr-nav {
-    position:absolute;
+    position:fixed;
     width: 100%;
     height: 76px;
 }
