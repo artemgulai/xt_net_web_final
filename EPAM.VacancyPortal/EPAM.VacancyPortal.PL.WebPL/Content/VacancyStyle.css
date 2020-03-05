@@ -27,26 +27,27 @@ body {
 }
 
 .content-container {
+    margin: auto;
     margin-top: 10px;
 }
 
 .employer-info,
 .employee-info {
     width: 480px;
-    float: left;
 }
 
 .employer-logo,
 .employee-photo {
     width: 320px;
-    float: right;
 }
 
 #employer-edit,
 #employee-edit {
     display: none;
     margin-top: 10px;
+    clear: left;
 }
+
 
 
 #employer-edit-result {

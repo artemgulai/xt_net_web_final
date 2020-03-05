@@ -1,28 +1,18 @@
 ﻿@if (IsAjax)
 {
-    string type = Request["type"];
+    var result = EPAM.VacancyPortal.PL.WebPL.Models.AdminRequestHandler.SignIn(Request,Response);
 
-    switch (type)
+    if (!result)
     {
-        case "signinAdmin":
-            {
-                EPAM.VacancyPortal.PL.WebPL.Models.AdminRequestHandler.SignIn(Request,Response);
-                break;
-            }
-        case "signinEmployer":
-            {
-                EPAM.VacancyPortal.PL.WebPL.Models.EmployerRequestHandler.SignIn(Request,Response);
-                break;
-            }
-        case "signinEmployee":
-            {
-                EPAM.VacancyPortal.PL.WebPL.Models.EmployeeRequestHandler.SignIn(Request,Response);
-                break;
-            }
-        case "setAuth":
-            {
-                FormsAuthentication.SetAuthCookie(Request["login"],true);
-                break;
-            }
+        result = EPAM.VacancyPortal.PL.WebPL.Models.EmployerRequestHandler.SignIn(Request,Response);
+    }
+    if (!result)
+    {
+        result = EPAM.VacancyPortal.PL.WebPL.Models.EmployeeRequestHandler.SignIn(Request,Response);
+    }
+
+    if (result)
+    {
+        FormsAuthentication.SetAuthCookie(Request["login"],true);
     }
 }

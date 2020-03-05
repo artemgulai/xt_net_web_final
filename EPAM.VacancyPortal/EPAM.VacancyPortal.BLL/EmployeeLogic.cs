@@ -46,7 +46,10 @@ namespace EPAM.VacancyPortal.BLL
             try
             {
                 var employee = _employeeDao.SelectByLogin(login);
-                employee.Skills = _employeeDao.SelectSkillsByEmployee(employee).ToList();
+                if (employee != null)
+                {
+                    employee.Skills = _employeeDao.SelectSkillsByEmployee(employee).ToList();
+                }
                 return employee;
             }
             catch (SqlException)
@@ -130,6 +133,18 @@ namespace EPAM.VacancyPortal.BLL
             try
             {
                 return _employeeDao.DeleteSkill(id) != 0;
+            }
+            catch (SqlException)
+            {
+                return false;
+            }
+        }
+
+        public bool Delete(int id)
+        {
+            try
+            {
+                return _employeeDao.DeleteById(id) != 0;
             }
             catch (SqlException)
             {

@@ -158,6 +158,7 @@
     <Content Include="Pages\Auth\SignIn\Employee.cshtml" />
     <Content Include="Pages\Employee\AddSkill.cshtml" />
     <Content Include="Pages\Employee\Skills.cshtml" />
+    <Content Include="Pages\Auth\SignIn\SignIn.cshtml" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
     <Content Include="Scripts\jquery-3.0.0.js" />
     <Content Include="Scripts\jquery-3.0.0.min.js" />

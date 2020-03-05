@@ -2,16 +2,18 @@
 @using EPAM.VacancyPortal.Entities;
 
 @{
-    Page.Title = "Employee sign in";
+    Page.Title = "Sign in";
     Layout = "~/Layouts/_MainLayout.cshtml";
 }
 
 <div class="content-container">
     <div class="center w-50 form-group" id="form">
         <div class="form-group col">
+            <label>Login</label>
             <input type="text" class="form-control" name="Login" id="login" placeholder="Login">
         </div>
         <div class="form-group col">
+            <label>Password</label>
             <input type="password" class="form-control" name="Password" id="password" placeholder="Password">
         </div>
         <div class="form-group col">
@@ -46,7 +48,6 @@
 
         // create request body
         let fd = new FormData();
-        fd.append('type', 'signinEmployee');
         fd.append('login', login);
         fd.append('password', password);
 
@@ -63,7 +64,6 @@
                     $('#submit-result').html(
                         '<div class="alert alert-danger">' + result.Message + '</div>');
                 } else {
-                    $.post('/Pages/Auth/SignIn/SignInRequests.cshtml', { type: 'setAuth', 'login': login });
                     $('#submit-result').html(
                         '<div class="alert alert-info">' + result.Message + '</div>');
                     setTimeout(() => location.href = "/Index.cshtml", 1000);
@@ -77,8 +77,8 @@
 
     $('#submit').click(signin);
 
-    $("#form").keypress(function(event) {
-        if(event.keyCode == 13){
+    $("#form").keypress(function (event) {
+        if (event.keyCode == 13) {
             $("#submit").click();
         }
     });

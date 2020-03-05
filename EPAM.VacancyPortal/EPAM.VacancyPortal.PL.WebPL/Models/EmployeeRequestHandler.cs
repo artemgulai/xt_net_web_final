@@ -82,7 +82,7 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
             return _employeeLogic.SelectByLogin(login);
         }
 
-        public static void SignIn(HttpRequestBase req,HttpResponseBase res)
+        public static bool SignIn(HttpRequestBase req,HttpResponseBase res)
         {
             string login = req["login"];
             string password = req["password"];
@@ -94,18 +94,17 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
                 if (employee.Password == Convert.ToBase64String(_sha256.ComputeHash(Encoding.Unicode.GetBytes(password))))
                 {
                     res.Write(JsonConvert.SerializeObject(new RequestResult("Success","Succesfully signed in.")));
-                    return;
+                    return true;
                 }
                 else
                 {
                     res.Write(JsonConvert.SerializeObject(new RequestResult("Error","Wrong password.")));
-                    return;
+                    return false;
                 }
             }
             else
             {
-                res.Write(JsonConvert.SerializeObject(new RequestResult("Error","No employee with such login.")));
-                return;
+                return false;
             }
         }
 
@@ -211,6 +210,19 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
             {
                 res.Write(JsonConvert.SerializeObject(new RequestResult("Error","Cannot delete skill.")));
                 return;
+            }
+        }
+
+        public static void Delete(HttpRequestBase req,HttpResponseBase res)
+        {
+            int id = int.Parse(req["id"]);
+            if (_employeeLogic.Delete(id))
+            {
+                res.Write(JsonConvert.SerializeObject(new RequestResult("Success","Profile has been deleted.")));
+            }
+            else
+            {
+                res.Write(JsonConvert.SerializeObject(new RequestResult("Error","Cannot delete profile.")));
             }
         }
     }

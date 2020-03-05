@@ -1,7 +1,7 @@
 ﻿@using System.Web.Helpers;
 
 @{
-    var admins = EPAM.VacancyPortal.PL.WebPL.Models.AdminService.GetAll();
+    var admins = EPAM.VacancyPortal.PL.WebPL.Models.AdminRequestHandler.GetAll();
 }
 
 @if (admins.Count() == 1)

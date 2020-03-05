@@ -9,6 +9,12 @@
                 EPAM.VacancyPortal.PL.WebPL.Models.EmployeeRequestHandler.Update(Request,Response);
                 break;
             }
+        case "deleteProfile":
+            {
+                EPAM.VacancyPortal.PL.WebPL.Models.EmployeeRequestHandler.Delete(Request,Response);
+                FormsAuthentication.SignOut();
+                break;
+            }
         case "updateSkillLevel":
             {
                 EPAM.VacancyPortal.PL.WebPL.Models.EmployeeRequestHandler.UpdateSkillLevel(Request,Response);

@@ -78,7 +78,7 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
             return _employerLogic.SelectByLogin(login);
         }
 
-        public static void SignIn(HttpRequestBase req,HttpResponseBase res)
+        public static bool SignIn(HttpRequestBase req,HttpResponseBase res)
         {
             string login = req["login"];
             string password = req["password"];
@@ -90,18 +90,17 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
                 if (employer.Password == Convert.ToBase64String(_sha256.ComputeHash(Encoding.Unicode.GetBytes(password))))
                 {
                     res.Write(JsonConvert.SerializeObject(new RequestResult("Success","Succesfully signed in.")));
-                    return;
+                    return true;
                 }
                 else
                 {
                     res.Write(JsonConvert.SerializeObject(new RequestResult("Error","Wrong password.")));
-                    return;
+                    return false;
                 }
             }
             else
             {
-                res.Write(JsonConvert.SerializeObject(new RequestResult("Error","No employer with such login.")));
-                return;
+                return false;
             }
         }
 
@@ -162,7 +161,7 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
             res.Write(JsonConvert.SerializeObject(
                 new
                 {
-                    Result = "success",
+                    Result = "Success",
                     Message = "Profile has been deleted"
                 }
             ));

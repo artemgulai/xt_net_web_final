@@ -1,7 +1,7 @@
 ﻿@using System.Web.Helpers;
 
 @{
-    var admins = EPAM.VacancyPortal.PL.WebPL.Models.AdminService.GetAll().Where(a => a.IsCandidate);
+    var admins = EPAM.VacancyPortal.PL.WebPL.Models.AdminRequestHandler.GetAll().Where(a => a.IsCandidate);
 }
 
 @if(!admins.Any())

@@ -14,32 +14,41 @@
     var employer = EmployerRequestHandler.SelectByLogin(User.Identity.Name);
 }
 
-<div class="content-container">
+<div class="content-container w-50">
     <ul class="list-group employer-info">
+            @if (!string.IsNullOrWhiteSpace(employer.Logo))
+            {
+        <li class="list-group-item text-center">
+            <img class="employer-logo" src="@String.Format("data:image/jpg;base64,{0}",employer.Logo)" />
+        </li>
+            }
         <li class="list-group-item">Company name: @employer.Name</li>
         <li class="list-group-item">City: @employer.City</li>
-        <li class="list-group-item"><button class="btn btn-primary" id="edit-profile">Edit Profile</button> <button class="btn btn-primary" id="delete-profile">Delete Profile</button></li>
+        <li class="list-group-item text-center"><button class="btn btn-primary" id="edit-profile">Edit Profile</button> <button class="btn btn-primary" id="delete-profile">Delete Profile</button></li>
     </ul>
-    @if (!string.IsNullOrWhiteSpace(employer.Logo))
-    {
-        <img class="employer-logo" src="@String.Format("data:image/jpg;base64,{0}",employer.Logo)" />
-    }
 </div>
 
-<div class="employer-info" id="employer-edit">
+<div class="employer-info mt-2 mr-auto ml-auto" id="submit-result"></div>
+
+<div class="employer-info ml-auto mr-auto border border-1 border-primary pt-2 rounded-lg" id="employer-edit">
     <div class="form-group col">
+        <label>New company name</label>
         <input type="text" class="form-control" name="Name" id="name" placeholder="New company name">
     </div>
     <div class="form-group col">
+        <label>New city</label>
         <input type="text" class="form-control" name="City" id="city" placeholder="New city">
     </div>
     <div class="form-group col">
+        <label>New password</label>
         <input type="password" class="form-control" name="Password" id="password" placeholder="New password">
     </div>
     <div class="form-group col">
+        <label>Repeat new password</label>
         <input type="password" class="form-control" name="RepeatPassword" id="repeatPassword" placeholder="Repeat new password">
     </div>
     <div class="form-group col">
+        <label>New logo</label>
         <input type="file" class="form-control-file" name="image" id="image" accept=".jpg" formenctype="multipart/form-data">
     </div>
     <div class="for-group-col">
@@ -49,8 +58,6 @@
         <button class="btn btn-block btn-primary" type="submit" id="submit">Save Changes</button>
     </div>
 </div>
-
-<div class="employer-info mt-1" id="submit-result"></div>
 
 
 <script src="~/Scripts/jquery-3.0.0.js"></script>

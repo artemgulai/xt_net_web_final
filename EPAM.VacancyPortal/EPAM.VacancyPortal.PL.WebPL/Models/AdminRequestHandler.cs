@@ -30,6 +30,11 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
             return admin != null && admin.Role == roleName;
         }
 
+        public static IEnumerable<Admin> GetAll()
+        {
+            return _adminLogic.GetAll();
+        }
+
         public static void Register(HttpRequestBase req,HttpResponseBase res)
         {
             string login = req["login"];
@@ -62,7 +67,7 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
             return;
         }
 
-        public static void SignIn(HttpRequestBase req, HttpResponseBase res)
+        public static bool SignIn(HttpRequestBase req, HttpResponseBase res)
         {
             string login = req["login"];
             string password = req["password"];
@@ -74,18 +79,17 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
                 if(admin.Password == Convert.ToBase64String(_sha256.ComputeHash(Encoding.Unicode.GetBytes(password))))
                 {
                     res.Write(JsonConvert.SerializeObject(new RequestResult("Success","Succesfully signed in.")));
-                    return;
+                    return true;
                 }
                 else
                 {
                     res.Write(JsonConvert.SerializeObject(new RequestResult("Error","Wrong password.")));
-                    return;
+                    return false;
                 }
             }
             else
             {
-                res.Write(JsonConvert.SerializeObject(new RequestResult("Error","No admin with such login.")));
-                return;
+                return false;
             }
         }
 

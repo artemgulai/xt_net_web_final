@@ -14,60 +14,66 @@
     var employee = EmployeeRequestHandler.SelectByLogin(User.Identity.Name);
 }
 
-<div class="content-container">
-    <ul class="list-group employee-info">
-        <li class="list-group-item">Name: @employee.FirstName @employee.LastName</li>
-        <li class="list-group-item">City: @employee.City</li>
-        <li class="list-group-item">
-            Relocation:
-            @if (employee.Relocation)
+    <div class="content-container w-50" >
+        <ul class="list-group employee-info">
+            @if (!string.IsNullOrWhiteSpace(employee.Photo))
             {
-                @:Yes
+                <li class="list-group-item text-center"><img class="employee-photo" src="@String.Format("data:image/jpg;base64,{0}",employee.Photo)" /></li>
             }
-            else
-            {
-                @:No
-            }
-        </li>
-        <li class="list-group-item"><button class="btn btn-primary" id="edit-profile">Edit Profile</button> <button class="btn btn-primary" id="delete-profile">Delete Profile</button></li>
-    </ul>
-    @if (!string.IsNullOrWhiteSpace(employee.Photo))
-    {
-        <img class="employee-photo" src="@String.Format("data:image/jpg;base64,{0}",employee.Photo)" />
-    }
-</div>
+            <li class="list-group-item">Name: @employee.FirstName @employee.LastName</li>
+            <li class="list-group-item">City: @employee.City</li>
+            <li class="list-group-item">
+                Relocation:
+                @if (employee.Relocation)
+                {
+                    @:Yes
+                }
+                else
+                {
+                    @:No
+                }
+            </li>
+            <li class="list-group-item text-center"><button class="btn btn-primary" id="edit-profile">Edit Profile</button> <button class="btn btn-primary" id="delete-profile">Delete Profile</button></li>
+        </ul>
+    </div>
 
-<div class="employee-info" id="employee-edit">
+    <div class="employee-info mt-2 mr-auto ml-auto" id="submit-result"></div>
+
+<div class="employee-info ml-auto mr-auto border border-1 border-primary pt-2 rounded-lg" id="employee-edit">
     <div class="form-group col">
+        <label>New first name</label>
         <input type="text" class="form-control" name="FirstName" id="firstName" placeholder="New first name">
     </div>
     <div class="form-group col">
+        <label>New last name</label>
         <input type="text" class="form-control" name="LastName" id="lastName" placeholder="New last name">
     </div>
     <div class="form-group col">
+        <label>New city</label>
         <input type="text" class="form-control" name="City" id="city" placeholder="New city">
     </div>
     <div class="form-group col">
         <label class="form-control" for="relocation"><input type="checkbox" class="mr-2" id="relocation" name="Relocation" />Relocation</label>
     </div>
     <div class="form-group col">
+        <label>New password</label>
         <input type="password" class="form-control" name="Password" id="password" placeholder="New password">
     </div>
     <div class="form-group col">
+        <label>Repeat new password</label>
         <input type="password" class="form-control" name="RepeatPassword" id="repeatPassword" placeholder="Repeat new password">
     </div>
     <div class="form-group col">
+        <label>New profile photo</label>
         <input type="file" class="form-control-file" name="image" id="image" accept=".jpg" formenctype="multipart/form-data">
-    </div>
-    <div class="for-group-col">
-        <input type="hidden" class="form-control" id="employee-id" value="@employee.Id" />
     </div>
     <div class="form-group col">
         <button class="btn btn-block btn-primary" type="submit" id="submit">Save Changes</button>
     </div>
+    <div class="for-group-col">
+        <input type="hidden" class="form-control" id="employee-id" value="@employee.Id" />
+    </div>
 </div>
-
-<div class="employee-info mt-1" id="submit-result"></div>
 
 
 @if (employee.Relocation)
@@ -134,8 +140,8 @@
 
     $('#delete-profile').click(function () {
         $.post(
-            '/Pages/RequestHandlers/EmployerRequests.cshtml',
-            { type: 'deleteEmployer', id: $('#employer-id').val() },
+            '/Pages/RequestHandlers/EmployeeRequests.cshtml',
+            { type: 'deleteProfile', id: $('#employee-id').val() },
             (data) => $('#submit-result').html(
                 '<div class="alert alert-info">' + JSON.parse(data).Message + '</div>'
             )
