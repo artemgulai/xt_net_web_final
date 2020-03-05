@@ -81,6 +81,18 @@ namespace EPAM.VacancyPortal.BLL
             }
         }
 
+        public IEnumerable<Employer> SelectAll()
+        {
+            try
+            {
+                return _employerDao.SelectAll();
+            }
+            catch (SqlException)
+            {
+                return new List<Employer>();
+            }
+        }
+
         public bool Delete(int id)
         {
             try

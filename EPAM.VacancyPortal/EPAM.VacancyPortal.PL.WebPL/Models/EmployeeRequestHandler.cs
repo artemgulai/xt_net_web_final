@@ -225,5 +225,10 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
                 res.Write(JsonConvert.SerializeObject(new RequestResult("Error","Cannot delete profile.")));
             }
         }
+
+        public static IEnumerable<Employee> SelectAll()
+        {
+            return _employeeLogic.SelectAll();
+        }
     }
 }

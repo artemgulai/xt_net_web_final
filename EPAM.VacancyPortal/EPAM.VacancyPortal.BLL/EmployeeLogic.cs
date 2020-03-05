@@ -77,6 +77,18 @@ namespace EPAM.VacancyPortal.BLL
             }
         }
 
+        public IEnumerable<Employee> SelectAll()
+        {
+            try
+            {
+                return _employeeDao.SelectAll();
+            }
+            catch (SqlException)
+            {
+                return new List<Employee>();
+            }
+        }
+
         public bool Update(Employee employee)
         {
             int id = _cityLogic.SelectIdByName(employee.City);

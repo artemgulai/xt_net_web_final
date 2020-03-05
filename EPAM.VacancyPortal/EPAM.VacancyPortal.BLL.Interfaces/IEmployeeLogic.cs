@@ -12,6 +12,7 @@ namespace EPAM.VacancyPortal.BLL.Interfaces
         Employee Register(Employee employee);
         Employee SelectByLogin(string login);
         Employee SelectById(int id);
+        IEnumerable<Employee> SelectAll();
         bool Update(Employee employee);
         bool Delete(int id);
         bool AddSkill(Skill skill,int employeeId);

@@ -1,0 +1,68 @@
+﻿@using EPAM.VacancyPortal.PL.WebPL.Models;
+
+@{
+    Page.Title = "Employers";
+    Layout = "~/Layouts/_MainLayout.cshtml";
+}
+
+@{
+    var employers = EmployerRequestHandler.SelectAll();
+    if (employers.Count() == 0)
+    {
+        <div class="w-50 center alert alert-warning mt-2">
+            No employers found.
+        </div>
+        return;
+    }
+}
+
+<div class="content-container w-75">
+    <div id="employer-list">
+        @foreach (var employer in employers)
+        {
+            <div id="employer-@employer.Id" class="border border-primary rounded-lg mt-2 mb-2 clearfix p-2 d-flex align-items-center">
+                <div class="w-75 mt-2 float-left">
+                    <h3>@employer.Name</h3>
+                    <p>@employer.City</p>
+                    <p>ID in DB: @employer.Id</p>
+                </div>
+                <div class="float-right justify-content-center w-25 mt-2 btn-group-vertical">
+                    <button class="delete-button btn btn-danger mb-1" value="@employer.Id">Delete</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-3.0.0.js"></script>
+<script>
+    $('.delete-button').click(function () {
+        let id = $(this).val();
+
+        let fd = new FormData();
+        fd.append('id', id);
+        fd.append('type', 'deleteEmployer');
+
+        $.ajax({
+            url: '/Pages/RequestHandlers/AdminRequests.cshtml',
+            type: 'POST',
+            data: fd,
+            processData: false,
+            contentType: false,
+            success: (data) => {
+                let result = JSON.parse(data);
+                if (result.Result == "Success") {
+                    $('#employer-' + $(this).val()).remove();
+                    if (!$('#employer-list').children().length > 0) {
+                        $('#employer-list').append('<div class="w-50 center alert alert-warning mt-2">' +
+                            'No employers found.' +
+                            '</div >');
+                    }
+                }
+            },
+            error: (data) => {
+                location.href = "/Pages/ErrorPage.cshtml";
+            }
+        });
+    });
+</script>

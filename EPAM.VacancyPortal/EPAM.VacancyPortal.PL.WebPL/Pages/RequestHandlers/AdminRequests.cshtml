@@ -7,13 +7,23 @@
         case "deleteAdmin":
             {
                 int id = int.Parse(Request["id"]);
-                EPAM.VacancyPortal.PL.WebPL.Models.AdminService.DeleteById(id);
+                EPAM.VacancyPortal.PL.WebPL.Models.AdminRequestHandler.Delete(id);
                 break;
             }
         case "verifyAdmin":
             {
                 int id = int.Parse(Request["id"]);
-                EPAM.VacancyPortal.PL.WebPL.Models.AdminService.Verify(id);
+                EPAM.VacancyPortal.PL.WebPL.Models.AdminRequestHandler.Verify(id);
+                break;
+            }
+        case "deleteEmployee":
+            {
+                EPAM.VacancyPortal.PL.WebPL.Models.EmployeeRequestHandler.Delete(Request,Response);
+                break;
+            }
+            case "deleteEmployer":
+            {
+                EPAM.VacancyPortal.PL.WebPL.Models.EmployerRequestHandler.DeleteRequest(Request,Response);
                 break;
             }
     }

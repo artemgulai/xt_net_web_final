@@ -78,6 +78,11 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
             return _employerLogic.SelectByLogin(login);
         }
 
+        public static IEnumerable<Employer> SelectAll()
+        {
+            return _employerLogic.SelectAll();
+        }
+
         public static bool SignIn(HttpRequestBase req,HttpResponseBase res)
         {
             string login = req["login"];
