@@ -42,37 +42,35 @@
 <div class="employee-info ml-auto mr-auto border border-1 border-primary pt-2 rounded-lg" id="employee-edit">
     <div class="form-group col">
         <label>New first name</label>
-        <input type="text" class="form-control" name="FirstName" id="firstName" placeholder="New first name">
+        <input type="text" class="form-control form-control-sm" name="FirstName" id="firstName" placeholder="New first name">
     </div>
     <div class="form-group col">
         <label>New last name</label>
-        <input type="text" class="form-control" name="LastName" id="lastName" placeholder="New last name">
+        <input type="text" class="form-control form-control-sm" name="LastName" id="lastName" placeholder="New last name">
     </div>
     <div class="form-group col">
         <label>New city</label>
-        <input type="text" class="form-control" name="City" id="city" placeholder="New city">
+        <input type="text" class="form-control form-control-sm" name="City" id="city" placeholder="New city">
     </div>
     <div class="form-group col">
-        <label class="form-control" for="relocation"><input type="checkbox" class="mr-2" id="relocation" name="Relocation" />Relocation</label>
+        <label class="form-control form-control-sm" for="relocation"><input type="checkbox" class="mr-2" id="relocation" name="Relocation" />Relocation</label>
     </div>
     <div class="form-group col">
         <label>New password</label>
-        <input type="password" class="form-control" name="Password" id="password" placeholder="New password">
+        <input type="password" class="form-control form-control-sm" name="Password" id="password" placeholder="New password">
     </div>
     <div class="form-group col">
         <label>Repeat new password</label>
-        <input type="password" class="form-control" name="RepeatPassword" id="repeatPassword" placeholder="Repeat new password">
+        <input type="password" class="form-control form-control-sm" name="RepeatPassword" id="repeatPassword" placeholder="Repeat new password">
     </div>
     <div class="form-group col">
         <label>New profile photo</label>
-        <input type="file" class="form-control-file" name="image" id="image" accept=".jpg" formenctype="multipart/form-data">
+        <input type="file" class="form-control-file form-control-sm" name="image" id="image" accept=".jpg" formenctype="multipart/form-data">
     </div>
     <div class="form-group col">
         <button class="btn btn-block btn-primary" type="submit" id="submit">Save Changes</button>
     </div>
-    <div class="for-group-col">
         <input type="hidden" class="form-control" id="employee-id" value="@employee.Id" />
-    </div>
 </div>
 
 
@@ -142,9 +140,11 @@
         $.post(
             '/Pages/RequestHandlers/EmployeeRequests.cshtml',
             { type: 'deleteProfile', id: $('#employee-id').val() },
-            (data) => $('#submit-result').html(
-                '<div class="alert alert-info">' + JSON.parse(data).Message + '</div>'
-            )
+            (data) => {
+                $('#submit-result').html(
+                    '<div class="alert alert-info">' + JSON.parse(data).Message + '</div>');
+                setTimeout(() => location.href = "/Index.cshtml", 1000);
+            }
         );
     }
     );

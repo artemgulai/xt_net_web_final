@@ -15,4 +15,12 @@
     {
         FormsAuthentication.SetAuthCookie(Request["login"],true);
     }
+    else
+    {
+        Response.Write(Newtonsoft.Json.JsonConvert.SerializeObject
+            (
+                new EPAM.VacancyPortal.PL.WebPL.Models.RequestResult("Error", "Login not found")
+            )
+        );
+    }
 }

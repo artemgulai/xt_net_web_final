@@ -97,5 +97,15 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
         {
             return _adminLogic.SelectByLogin(login);
         }
+
+        public static bool Delete(int id)
+        {
+            return _adminLogic.DeleteById(id);
+        }
+
+        public static bool Verify(int id)
+        {
+            return _adminLogic.Verify(id);
+        }
     }
 }
