@@ -13,12 +13,17 @@ namespace EPAM.VacancyPortal.BLL
     public class EmployeeLogic : IEmployeeLogic
     {
         private IEmployeeDao _employeeDao;
+        private IResponseDao _responseDao;
         private ICityLogic _cityLogic;
         private ISkillLogic _skillLogic;
 
-        public EmployeeLogic(IEmployeeDao employeeDao, ICityLogic cityLogic, ISkillLogic skillLogic)
+        public EmployeeLogic(IEmployeeDao employeeDao, 
+                             IResponseDao responseDao,
+                             ICityLogic cityLogic, 
+                             ISkillLogic skillLogic)
         {
             _employeeDao = employeeDao;
+            _responseDao = responseDao;
             _cityLogic = cityLogic;
             _skillLogic = skillLogic;
         }
@@ -145,6 +150,30 @@ namespace EPAM.VacancyPortal.BLL
             try
             {
                 return _employeeDao.DeleteById(id) != 0;
+            }
+            catch (SqlException)
+            {
+                return false;
+            }
+        }
+
+        public bool InsertVacancyResponse(int employeeId,int vacancyId)
+        {
+            try
+            {
+                return _responseDao.InsertEmployeeResponse(employeeId,vacancyId) != 0;
+            }
+            catch (SqlException)
+            {
+                return false;
+            }
+        }
+
+        public bool DeleteVacancyResponse(int id)
+        {
+            try
+            {
+                return _responseDao.DeleteEmployeeResponse(id) != 0;
             }
             catch (SqlException)
             {

@@ -115,6 +115,28 @@ CREATE TABLE Employees_Skills (
 );
 GO
 
+-- Responses for Employee
+CREATE TABLE Employees_Response (
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	Employee_Id INT NOT NULL,
+	Vacancy_Id INT NOT NULL,
+	CONSTRAINT FK_Employees_Response_Employee_Id FOREIGN KEY (Employee_Id) REFERENCES Employees(Id) ON DELETE CASCADE,
+	CONSTRAINT FK_Employees_Response_Vacanct_Id FOREIGN KEY (Vacancy_Id) REFERENCES Vacancies(Id) ON DELETE CASCADE,
+	CONSTRAINT Employees_Response_Employee_Id_Vacancy_Id_Unique UNIQUE (Employee_Id, Vacancy_Id)
+);
+GO
+
+-- Responses for Vacancy
+CREATE TABLE Vacancies_Response (
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	Vacancy_Id INT NOT NULL,
+	Employee_Id INT NOT NULL,
+	CONSTRAINT FK_Vacancies_Response_Employee_Id FOREIGN KEY (Employee_Id) REFERENCES Employees(Id) ON DELETE CASCADE,
+	CONSTRAINT FK_Vacancies_Response_Vacanct_Id FOREIGN KEY (Vacancy_Id) REFERENCES Vacancies(Id) ON DELETE CASCADE,
+	CONSTRAINT Vacancies_Response_Employee_Id_Vacancy_Id_Unique UNIQUE (Employee_Id, Vacancy_Id)
+);
+GO
+
 --Unique login constraints across all tables
 CREATE FUNCTION get_Num_Employee_Logins(@Login NVARCHAR(100))
     RETURNS INT

@@ -17,5 +17,7 @@ namespace EPAM.VacancyPortal.BLL.Interfaces
         bool AddSkill(Skill skill,int employeeId);
         bool UpdateSkill(int skillId,int level);
         bool DeleteSkill(int skillId);
+        bool InsertVacancyResponse(int employeeId,int vacancyId);
+        bool DeleteVacancyResponse(int id);
     }
 }

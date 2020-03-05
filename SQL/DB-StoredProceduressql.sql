@@ -379,3 +379,35 @@ AS
 		City_Id = (SELECT Id FROM Cities WHERE Name = @City)
 	WHERE Id = @Id
 GO
+
+-- Stored procedures for Vacancies_Response (responses to Vacancy by Employee) 
+-- and Employee_Response (responses to Employee by Employer) tables
+CREATE PROCEDURE [dbo].[sp_InsertEmployeeResponse]
+	@EmployeeId INT,
+	@VacancyId INT
+AS
+	INSERT INTO Employees_Response (Employee_Id, Vacancy_Id)
+	OUTPUT inserted.Id
+	VALUES (@EmployeeId, @VacancyId)
+GO
+
+CREATE PROCEDURE [dbo].[sp_DeleteEmployeeResponse]
+	@Id INT
+AS
+	DELETE FROM Employees_Response WHERE Id = @Id
+GO
+
+CREATE PROCEDURE [dbo].[sp_InsertVacancyResponse]
+	@EmployeeId INT,
+	@VacancyId INT
+AS
+	INSERT INTO Vacancies_Response (Employee_Id, Vacancy_Id)
+	OUTPUT inserted.Id
+	VALUES (@EmployeeId, @VacancyId)
+GO
+
+CREATE PROCEDURE [dbo].[sp_DeleteVacancyResponse]
+	@Id INT
+AS
+	DELETE FROM Vacancies_Response WHERE Id = @Id
+GO

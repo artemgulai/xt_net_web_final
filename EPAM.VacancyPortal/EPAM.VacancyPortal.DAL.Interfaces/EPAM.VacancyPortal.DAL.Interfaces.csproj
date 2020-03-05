@@ -45,6 +45,7 @@
     <Compile Include="ICityDao.cs" />
     <Compile Include="IEmployeeDao.cs" />
     <Compile Include="IEmployerDao.cs" />
+    <Compile Include="IResponseDao.cs" />
     <Compile Include="ISkillDao.cs" />
     <Compile Include="IVacancyDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
