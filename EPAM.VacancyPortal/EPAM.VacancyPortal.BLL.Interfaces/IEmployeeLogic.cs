@@ -20,5 +20,6 @@ namespace EPAM.VacancyPortal.BLL.Interfaces
         bool DeleteSkill(int skillId);
         bool InsertVacancyResponse(int employeeId,int vacancyId);
         bool DeleteVacancyResponse(int id);
+        IEnumerable<Response> SelectAllVacancyResponses();
     }
 }

@@ -13,11 +13,14 @@ namespace EPAM.VacancyPortal.BLL.Interfaces
         IEnumerable<Vacancy> SelectByEmployer(Employer employer);
         Vacancy SelectById(int id);
         bool Update(Vacancy vacancy);
+        bool Activate(int id);
+        bool Deactivate(int id);
         bool DeleteById(int id);
         bool UpdateRequirement(int id,int level);
         bool AddRequirement(Skill requirement,int vacancyId);
         bool DeleteRequirement(int id);
         bool InsertEmployeeResponse(int employeeId,int vacancyId);
         bool DeleteEmployeeResponse(int id);
+        IEnumerable<Response> SelectAllEmployeeResponses();
     }
 }

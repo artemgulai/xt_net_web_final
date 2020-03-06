@@ -230,5 +230,10 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
         {
             return _employeeLogic.SelectAll();
         }
+
+        public static IEnumerable<Response> SelectAllVacancyResponses()
+        {
+            return _employeeLogic.SelectAllVacancyResponses();
+        }
     }
 }

@@ -14,11 +14,13 @@ namespace EPAM.VacancyPortal.BLL
     {
         private IEmployerDao _employerDao;
         private ICityLogic _cityLogic;
+        private IVacancyLogic _vacancyLogic;
 
-        public EmployerLogic(IEmployerDao employerDao, ICityLogic cityLogic)
+        public EmployerLogic(IEmployerDao employerDao, ICityLogic cityLogic, IVacancyLogic vacancyLogic)
         {
             _employerDao = employerDao;
             _cityLogic = cityLogic;
+            _vacancyLogic = vacancyLogic;
         }
 
         public Employer Register(Employer employer)
@@ -33,7 +35,7 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return _employerDao.Insert(employer);
             }
-            catch (SqlException e)
+            catch (SqlException)
             {
                 return employer;
             }
@@ -73,7 +75,12 @@ namespace EPAM.VacancyPortal.BLL
         {
             try
             {
-                return _employerDao.SelectById(id);
+                var employer = _employerDao.SelectById(id);
+                if (employer != null)
+                {
+                    employer.Vacancies = _vacancyLogic.SelectByEmployer(employer).ToList();
+                }
+                return employer;
             }
             catch (SqlException)
             {
@@ -85,7 +92,12 @@ namespace EPAM.VacancyPortal.BLL
         {
             try
             {
-                return _employerDao.SelectAll();
+                var employers = _employerDao.SelectAll();
+                foreach(var employer in employers)
+                {
+                    employer.Vacancies = _vacancyLogic.SelectByEmployer(employer).ToList();
+                }
+                return employers;
             }
             catch (SqlException)
             {

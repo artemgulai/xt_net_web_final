@@ -87,6 +87,34 @@ namespace EPAM.VacancyPortal.BLL
             }
         }
 
+        public bool Activate(int id)
+        {
+            try
+            {
+                var vacancy = _vacancyDao.SelectById(id);
+                vacancy.Active = true;
+                return _vacancyDao.Update(vacancy) != 0;
+            }
+            catch (SqlException)
+            {
+                return false;
+            }
+        }
+
+        public bool Deactivate(int id)
+        {
+            try
+            {
+                var vacancy = _vacancyDao.SelectById(id);
+                vacancy.Active = false;
+                return _vacancyDao.Update(vacancy) != 0;
+            }
+            catch (SqlException)
+            {
+                return false;
+            }
+        }
+
         public bool UpdateRequirement(int id,int level)
         {
             try
@@ -157,6 +185,18 @@ namespace EPAM.VacancyPortal.BLL
             catch (SqlException)
             {
                 return false;
+            }
+        }
+
+        public IEnumerable<Response> SelectAllEmployeeResponses()
+        {
+            try
+            {
+                return _responseDao.SelectAllEmployeeResponses();
+            }
+            catch (SqlException)
+            {
+                return new List<Response>();
             }
         }
     }

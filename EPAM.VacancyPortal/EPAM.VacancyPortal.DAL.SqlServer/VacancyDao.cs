@@ -133,7 +133,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                     var vacancies = new List<Vacancy>();
                     while (result.Read())
                     {
-                        vacancies.Add(new Vacancy
+                        var vacancy = new Vacancy
                         {
                             Id = (int)result["Id"],
                             Name = (string)result["Name"],
@@ -143,7 +143,9 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                             Active = (bool)result["Active"],
                             Employer = employer,
                             Requirements = new List<Skill>()
-                        });
+                        };
+                        vacancy.Requirements = SelectRequirementsByVacancy(vacancy).ToList();
+                        vacancies.Add(vacancy);
                     }
                     return vacancies;
                 }

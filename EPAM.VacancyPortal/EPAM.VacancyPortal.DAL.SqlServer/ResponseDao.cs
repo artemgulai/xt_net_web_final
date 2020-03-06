@@ -1,4 +1,5 @@
 ﻿using EPAM.VacancyPortal.DAL.Interfaces;
+using EPAM.VacancyPortal.Entities;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
         private readonly string _connectionString = Configuration.ConnectionString;
         private readonly ILog _logger = Configuration.Logger;
 
+        // response to vacancy by employee
         public int InsertVacancyResponse(int vacancyId,int employeeId)
         {
             using (var con = new SqlConnection(_connectionString))
@@ -39,6 +41,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
             }
         }
 
+        // response to vacancy by employee
         public int DeleteVacancyResponse(int id)
         {
             using (var con = new SqlConnection(_connectionString))
@@ -62,6 +65,39 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
             }
         }
 
+        // response to vacancy by employee
+        public IEnumerable<Response> SelectAllVacancyResponses()
+        {
+            using (var con = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("sp_SelectAllVacancyResponses",con);
+                cmd.CommandType = _storedProcedure;
+
+                con.Open();
+                try
+                {
+                    var result = cmd.ExecuteReader();
+                    List<Response> responses = new List<Response>();
+                    while (result.Read())
+                    {
+                        responses.Add(new Response
+                        {
+                            Id = (int)result["Id"],
+                            EmployeeId = (int)result["EmployeeId"],
+                            VacancyId = (int)result["VacancyId"]
+                        });
+                    }
+                    return responses;
+                }
+                catch (SqlException e)
+                {
+                    _logger.Error(e.Message);
+                    throw e;
+                }
+            }
+        }
+
+        // response to employee by employer's vacancy
         public int InsertEmployeeResponse(int vacancyId,int employeeId)
         {
             using (var con = new SqlConnection(_connectionString))
@@ -86,6 +122,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
             }
         }
 
+        // response to employee by employer's vacancy
         public int DeleteEmployeeResponse(int id)
         {
             using (var con = new SqlConnection(_connectionString))
@@ -106,6 +143,38 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                     _logger.Error(e.Message);
                     throw e;
                 }
+            }
+        }
+
+        // response to employee by employer's vacancy
+        public IEnumerable<Response> SelectAllEmployeeResponses()
+        {
+            using (var con = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("sp_SelectAllEmployeeResponses",con);
+                cmd.CommandType = _storedProcedure;
+
+                con.Open();
+                try
+                {
+                    var result = cmd.ExecuteReader();
+                    List<Response> responses = new List<Response>();
+                    while(result.Read())
+                    {
+                        responses.Add(new Response
+                        {
+                            Id = (int)result["Id"],
+                            EmployeeId = (int)result["EmployeeId"],
+                            VacancyId = (int)result["VacancyId"]
+                        });
+                    }
+                    return responses;
+                }
+                catch (SqlException e)
+                {
+                    _logger.Error(e.Message);
+                    throw e;
+                } 
             }
         }
     }

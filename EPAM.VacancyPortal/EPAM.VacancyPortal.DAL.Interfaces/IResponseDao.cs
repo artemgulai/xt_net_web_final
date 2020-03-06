@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EPAM.VacancyPortal.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,7 @@ namespace EPAM.VacancyPortal.DAL.Interfaces
         int DeleteVacancyResponse(int id);
         int InsertEmployeeResponse(int vacancyId,int employeeId);
         int DeleteEmployeeResponse(int id);
+        IEnumerable<Response> SelectAllEmployeeResponses();
+        IEnumerable<Response> SelectAllVacancyResponses();
     }
 }

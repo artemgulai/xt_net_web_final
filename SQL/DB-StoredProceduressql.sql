@@ -394,6 +394,12 @@ AS
 	VALUES (@EmployeeId, @VacancyId)
 GO
 
+CREATE PROCEDURE [dbo].[sp_SelectAllEmployeeResponses]
+AS
+	SELECT Id, Employee_Id as EmployeeId, Vacancy_Id as VacancyId
+	FROM Employees_Response
+GO
+
 CREATE PROCEDURE [dbo].[sp_DeleteEmployeeResponse]
 	@Id INT
 AS
@@ -407,6 +413,12 @@ AS
 	INSERT INTO Vacancies_Response (Employee_Id, Vacancy_Id)
 	OUTPUT inserted.Id
 	VALUES (@EmployeeId, @VacancyId)
+GO
+
+CREATE PROCEDURE [dbo].[sp_SelectAllVacancyResponses]
+AS
+	SELECT Id, Employee_Id as EmployeeId, Vacancy_Id as VacancyId
+	FROM Vacancies_Response
 GO
 
 CREATE PROCEDURE [dbo].[sp_DeleteVacancyResponse]

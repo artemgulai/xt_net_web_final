@@ -1,0 +1,93 @@
+﻿@{
+    Page.Title = "All vacancies";
+    Layout = "~/Layouts/_MainLayout.cshtml";
+}
+
+@{
+    var employee = EPAM.VacancyPortal.PL.WebPL.Models.EmployeeRequestHandler.SelectByLogin(User.Identity.Name);
+    var employers = EPAM.VacancyPortal.PL.WebPL.Models.EmployerRequestHandler.SelectAll();
+    var responses = EPAM.VacancyPortal.PL.WebPL.Models.EmployeeRequestHandler.SelectAllVacancyResponses();
+
+}
+
+<div class="content-container">
+    @if (!employers.Any())
+    {
+        <div class="alert alert-danger w-50 mr-auto ml-auto">No vacancies</div>
+        return;
+    }
+
+    @{
+        var vacancyExists = false;
+    }
+
+    @foreach (var employer in employers)
+    {
+        foreach (var vacancy in employer.Vacancies.Where(a => a.Active))
+        {
+            vacancyExists = true;
+            <div id="vacancy-@vacancy.Id" class="border border-primary rounded-lg mt-2 mb-2 clearfix p-2 d-flex align-items-center">
+                <div class="w-75 mt-2 float-left">
+                    <h3>@vacancy.Name</h3>
+                    <h5>Employer: @employer.Name</h5>
+                    <p>@vacancy.Description</p>
+                    <p>Salary: @vacancy.Salary</p>
+                    @if (vacancy.Remote)
+                    {
+                        <p>Remote</p>
+                    }
+                    else
+                    {
+                        <p>Not remote</p>
+                    }
+                    @if (vacancy.Requirements.Any())
+                    {
+                        <h5>Requirements</h5>
+                        <ul class="list-group w-50">
+                            @foreach (var requirement in vacancy.Requirements)
+                            {
+                                <li class="list-group-item">
+                                    @if (employee.Skills.Any(a => a.Name == requirement.Name && a.Level >= requirement.Level))
+                                    {
+                                        <span class="glyphicon glyphicon-ok" style="color:green"></span>
+                                    }
+                                    else
+                                    {
+                                        <span class="glyphicon glyphicon-remove" style="color:red"></span>
+                                    }
+                                    @requirement.Name: @requirement.Level
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+                @if (!responses.Any(a => a.EmployeeId == employee.Id && a.VacancyId == vacancy.Id))
+                {
+                    <div class="float-right justify-content-center w-25 mt-2 btn-group-vertical">
+                        <button class="response-button active btn btn-primary mb-1" value="@vacancy.Id">Send response</button>
+                    </div>
+                }
+                else
+                {
+                    <div class="float-right justify-content-center w-25 mt-2 btn-group-vertical">
+                        <button class="response-button btn btn-primary mb-1 disabled" value="@vacancy.Id">Response sent</button>
+                    </div>
+                }
+            </div>
+        }
+    }
+
+    @if (!vacancyExists)
+    {
+        <div class="alert alert-danger w-50 mr-auto ml-auto">No vacancies</div>
+        return;
+    }
+</div>
+
+<script src="~/Scripts/jquery-3.0.0.js"></script>
+<script>
+    $('.response-button.active').click(function () {
+        let vacancyId = $(this).val();
+        let employeeId = @employee.Id;
+    });
+</script>

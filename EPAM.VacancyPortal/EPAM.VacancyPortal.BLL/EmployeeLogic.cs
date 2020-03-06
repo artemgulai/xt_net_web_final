@@ -40,7 +40,7 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return _employeeDao.Insert(employee);
             }
-            catch (SqlException e)
+            catch (SqlException)
             {
                 return employee;
             }
@@ -173,7 +173,7 @@ namespace EPAM.VacancyPortal.BLL
         {
             try
             {
-                return _responseDao.InsertEmployeeResponse(employeeId,vacancyId) != 0;
+                return _responseDao.InsertVacancyResponse(employeeId,vacancyId) != 0;
             }
             catch (SqlException)
             {
@@ -185,11 +185,23 @@ namespace EPAM.VacancyPortal.BLL
         {
             try
             {
-                return _responseDao.DeleteEmployeeResponse(id) != 0;
+                return _responseDao.DeleteVacancyResponse(id) != 0;
             }
             catch (SqlException)
             {
                 return false;
+            }
+        }
+
+        public IEnumerable<Response> SelectAllVacancyResponses()
+        {
+            try
+            {
+                return _responseDao.SelectAllVacancyResponses();
+            }
+            catch (SqlException)
+            {
+                return new List<Response>();
             }
         }
     }
