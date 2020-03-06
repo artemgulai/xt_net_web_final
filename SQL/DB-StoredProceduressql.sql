@@ -117,17 +117,17 @@ CREATE PROCEDURE [dbo].[sp_InsertEmployee]
 	@Password NVARCHAR(100),
 	@City NVARCHAR(100)
 AS
-	INSERT INTO Employees (FirstName, LastName, Relocation, Experience, Photo, 
-							Login, Password, City_Id, Role_Id)
+	INSERT INTO Employees (FirstName, LastName, Relocation, Experience, Active,
+						   Photo, Login, Password, City_Id, Role_Id)
 	OUTPUT inserted.Id
-	VALUES (@FirstName, @LastName, @Relocation, @Experience, @Photo,
-			@Login, @Password, (SELECT Id FROM Cities WHERE Name = @City),
+	VALUES (@FirstName, @LastName, @Relocation, @Experience, 0,
+			@Photo, @Login, @Password, (SELECT Id FROM Cities WHERE Name = @City),
 			(SELECT Id FROM Roles WHERE Name = 'EMPLOYEE'))
 GO
 
 CREATE PROCEDURE [dbo].[sp_SelectAllEmployees]
 AS
-	SELECT Employees.Id as Id, FirstName, LastName, Relocation, Experience, Photo, Login, Password, 
+	SELECT Employees.Id as Id, FirstName, LastName, Relocation, Experience, Active, Photo, Login, Password, 
 	Cities.Name AS City, Roles.Name AS Role FROM Employees
 	JOIN Cities ON City_Id = Cities.Id
 	JOIN Roles ON Role_Id = Roles.Id
@@ -136,7 +136,7 @@ GO
 CREATE PROCEDURE [dbo].[sp_SelectEmployeeById]
 	@Id INT
 AS
-	SELECT Employees.Id as Id, FirstName, LastName, Relocation, Experience, Photo, Login, Password, 
+	SELECT Employees.Id as Id, FirstName, LastName, Relocation, Experience, Active, Photo, Login, Password, 
 	Cities.Name AS City, Roles.Name AS Role FROM Employees
 	JOIN Cities ON City_Id = Cities.Id
 	JOIN Roles ON Role_Id = Roles.Id
@@ -146,7 +146,7 @@ GO
 CREATE PROCEDURE [dbo].[sp_SelectEmployeeByLogin]
 	@Login NVARCHAR(100)
 AS
-	SELECT Employees.Id as Id, FirstName, LastName, Relocation, Experience, Photo, Login, Password, 
+	SELECT Employees.Id as Id, FirstName, LastName, Relocation, Experience, Active, Photo, Login, Password, 
 	Cities.Name AS City, Roles.Name AS Role FROM Employees
 	JOIN Cities ON City_Id = Cities.Id
 	JOIN Roles ON Role_Id = Roles.Id
@@ -171,12 +171,14 @@ CREATE PROCEDURE [dbo].[sp_UpdateEmployee]
 	@Relocation BIT,
 	@Experience INT,
 	@Photo NVARCHAR(MAX),
+	@Active BIT,
 	@Password NVARCHAR(100),
 	@City NVARCHAR(100)
 AS
 	UPDATE Employees SET
 		FirstName = @FirstName, LastName = @LastName,
 		Relocation = @Relocation, Experience = @Experience,
+		Active = @Active,
 		Photo = @Photo, Password = @Password, 
 		City_Id = (SELECT Id FROM Cities WHERE Name = @City)
 	WHERE Id = @Id
@@ -225,28 +227,28 @@ CREATE PROCEDURE [dbo].[sp_InsertVacancy]
 	@Remote BIT,
 	@EmployerId INT
 AS
-	INSERT INTO Vacancies (Name, Description, Salary, Remote, Employer_Id)
+	INSERT INTO Vacancies (Name, Description, Salary, Remote, Active, Employer_Id)
 	OUTPUT inserted.Id
-	VALUES (@Name, @Description, @Salary, @Remote, @EmployerId)
+	VALUES (@Name, @Description, @Salary, @Remote, 0, @EmployerId)
 GO
 
 CREATE PROCEDURE [dbo].[sp_SelectVacancyById]
 	@Id INT
 AS
-	SELECT Id, Name, Description, Salary, Remote
+	SELECT Id, Name, Description, Salary, Remote, Active
 	FROM Vacancies WHERE Id = @Id
 GO
 
 CREATE PROCEDURE [dbo].[sp_SelectAllVacancies]
 AS
-	SELECT Id, Name, Description, Salary, Remote
+	SELECT Id, Name, Description, Salary, Remote, Active
 	FROM Vacancies ORDER BY Employer_Id
 GO
 
 CREATE PROCEDURE [dbo].[sp_SelectAllVacanciesByEmployer]
 	@EmployerId INT
 AS
-	SELECT Id, Name, Description, Salary, Remote 
+	SELECT Id, Name, Description, Salary, Remote, Active
 	FROM Vacancies WHERE Employer_Id = @EmployerId
 GO
 
@@ -266,10 +268,11 @@ CREATE PROCEDURE [dbo].[sp_UpdateVacancy]
 	@Name NVARCHAR(200),
 	@Description NVARCHAR(MAX),
 	@Salary INT,
-	@Remote BIT
+	@Remote BIT,
+	@Active BIT
 AS
 	UPDATE Vacancies SET
-		Name = @Name, Description = @Description, Salary = @Salary, Remote = @Remote
+		Name = @Name, Description = @Description, Salary = @Salary, Remote = @Remote, Active = @Active
 	WHERE Id = @Id
 GO
 

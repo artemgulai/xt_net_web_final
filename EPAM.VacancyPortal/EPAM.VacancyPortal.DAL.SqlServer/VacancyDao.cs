@@ -1,6 +1,5 @@
 ﻿using EPAM.VacancyPortal.DAL.Interfaces;
 using EPAM.VacancyPortal.Entities;
-using static EPAM.VacancyPortal.Logger.Logger;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -69,6 +68,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                             Description = (string)result["Description"],
                             Remote = (bool)result["Remote"],
                             Salary = (int)result["Salary"],
+                            Active = (bool)result["Active"],
                             Requirements = new List<Skill>()
                         };
                     }
@@ -103,6 +103,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                             Description = (string)result["Description"],
                             Salary = (int)result["Salary"],
                             Remote = (bool)result["Remote"],
+                            Active = (bool)result["Active"],
                             Requirements = new List<Skill>()
                         });
                     }
@@ -139,6 +140,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                             Description = (string)result["Description"],
                             Salary = (int)result["Salary"],
                             Remote = (bool)result["Remote"],
+                            Active = (bool)result["Active"],
                             Employer = employer,
                             Requirements = new List<Skill>()
                         });
@@ -208,6 +210,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                 cmd.Parameters.AddWithValue("Description",vacancy.Description);
                 cmd.Parameters.AddWithValue("Salary",vacancy.Salary);
                 cmd.Parameters.AddWithValue("Remote",vacancy.Remote);
+                cmd.Parameters.AddWithValue("Active",vacancy.Active);
 
                 con.Open();
                 try

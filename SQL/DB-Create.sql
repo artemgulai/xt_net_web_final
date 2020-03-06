@@ -68,6 +68,7 @@ CREATE TABLE Vacancies (
 	Description NVARCHAR(MAX) NOT NULL,
 	Salary INT NOT NULL,
     Remote BIT NOT NULL,
+	Active BIT NOT NULL,
 	Employer_Id INT NOT NULL,
 	CONSTRAINT FK_Employer_ID FOREIGN KEY (Employer_Id) REFERENCES Employers(Id) ON DELETE CASCADE
 );
@@ -93,6 +94,7 @@ CREATE TABLE Employees (
 	Relocation BIT NOT NULL,
 	Experience INT NOT NULL,
 	Photo NVARCHAR(MAX),
+	Active BIT NOT NULL,
 	Login NVARCHAR(100) NOT NULL,
 	Password NVARCHAR(100) NOT NULL,
 	City_Id INT NOT NULL,

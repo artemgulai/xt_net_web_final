@@ -18,6 +18,7 @@ namespace EPAM.VacancyPortal.Entities
         public string Role { get; set; }
         public int Experience { get; set; }
         public string Photo { get; set; }
+        public bool Active { get; set; }
         public List<Skill> Skills { get; set; }
 
         public override string ToString()

@@ -70,6 +70,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                             Relocation = (bool)result["Relocation"],
                             Experience = (int)result["Experience"],
                             Photo = (string)result["Photo"],
+                            Active = (bool)result["Active"],
                             Login = (string)result["Login"],
                             Password = (string)result["Password"],
                             City = (string)result["City"],
@@ -111,6 +112,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                             Relocation = (bool)result["Relocation"],
                             Experience = (int)result["Experience"],
                             Photo = (string)result["Photo"],
+                            Active = (bool)result["Active"],
                             Login = (string)result["Login"],
                             Password = (string)result["Password"],
                             City = (string)result["City"],
@@ -152,6 +154,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                             Relocation = (bool)result["Relocation"],
                             Experience = (int)result["Experience"],
                             Photo = (string)result["Photo"],
+                            Active = (bool)result["Active"],
                             Login = (string)result["Login"],
                             Password = (string)result["Password"],
                             City = (string)result["City"],
@@ -225,6 +228,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                 cmd.Parameters.AddWithValue("Relocation",employee.Relocation);
                 cmd.Parameters.AddWithValue("Experience",employee.Experience);
                 cmd.Parameters.AddWithValue("Photo",employee.Photo);
+                cmd.Parameters.AddWithValue("Active",employee.Active);
                 cmd.Parameters.AddWithValue("Password",employee.Password);
                 cmd.Parameters.AddWithValue("City",employee.City);
 
