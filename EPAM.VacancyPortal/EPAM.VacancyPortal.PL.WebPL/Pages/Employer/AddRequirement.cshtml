@@ -28,7 +28,7 @@
 {
     var name = Request.Form["Name"];
     var level = int.Parse(Request.Form["Level"]);
-    var employer = EPAM.VacancyPortal.PL.WebPL.Models.EmployerService.SelectByLogin(User.Identity.Name);
+    var employer = EPAM.VacancyPortal.PL.WebPL.Models.EmployerRequestHandler.SelectByLogin(User.Identity.Name);
 
     var requirement = new EPAM.VacancyPortal.Entities.Skill
     {

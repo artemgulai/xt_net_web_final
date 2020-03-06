@@ -36,7 +36,15 @@
                     <p>Not remote</p>
                 }
             </div>
-            <div class="float-right justify-content-center w-25 mt-2 btn-group-vertical">
+            <div class="float-right justify-content-center w-25 mt-2 btn-group-vertical" id="buttons-@vacancy.Id">
+                @if (!vacancy.Active)
+                {
+                    <button class="activate-button btn btn-primary mb-1" value="@vacancy.Id">Activate Vacancy</button>
+                }
+                else
+                {
+                    <button class="deactivate-button btn btn-primary mb-1" value="@vacancy.Id">Deactivate Vacancy</button>
+                }
                 <button class="edit-button btn btn-primary mb-1" value="@vacancy.Id">Edit Vacancy</button>
                 <button class="reqs-button btn btn-primary mb-1" value="@vacancy.Id">Manage requirements</button>
                 <button class="delete-button btn btn-danger" value="@vacancy.Id">Delete Vacancy</button>
@@ -59,7 +67,7 @@
         let id = $(this).val();
         $.post(
             '/Pages/RequestHandlers/VacancyRequests.cshtml',
-            { type: 'deleteVacancy', id: $(this).val()},
+            { type: 'deleteVacancy', id: $(this).val() },
             function (data) {
                 let result = JSON.parse(data);
                 if (result.Result == 'Success') {
@@ -76,4 +84,70 @@
             }
         );
     });
+
+    function activate() {
+        let button = $(this);
+        let id = button.val();
+
+        $.post(
+            '/Pages/RequestHandlers/VacancyRequests.cshtml',
+            { type: 'activateVacancy', id: id },
+            function (data) {
+                if (JSON.parse(data).Result == "Success") {
+                    var newButton = $('<button/>',
+                        {
+                            text: 'Deactivate vacancy'
+                        }
+                    );
+                    newButton.addClass('deactivate-button btn btn-primary mb-1');
+                    newButton.val(id);
+                    newButton.click(deactivate);
+                    newButton.insertBefore(button);
+                    button.remove();
+                } else {
+                    alert('Cannot activate vacancy');
+                }
+            }
+        );
+    }
+
+    function deactivate() {
+        let button = $(this);
+        let id = button.val();
+
+        $.post(
+            '/Pages/RequestHandlers/VacancyRequests.cshtml',
+            { type: 'deactivateVacancy', id: id },
+            function (data) {
+                if (JSON.parse(data).Result == "Success") {
+                    var newButton = $('<button/>',
+                        {
+                            text: 'Activate vacancy'
+                        }
+                    );
+                    newButton.addClass('activate-button btn btn-primary mb-1');
+                    newButton.val(id);
+                    newButton.click(activate);
+                    newButton.insertBefore(button);
+                    button.remove();
+                } else {
+                    alert('Cannot deactivate vacancy');
+                }
+            }
+        );
+
+
+    }
+
+    $('.activate-button').click(activate);
+    $('.deactivate-button').click(deactivate);
+        //    $.post(
+        //        '/Pages/RequestHandlers/VacancyRequests.cshtml',
+        //        { type: 'activateVacancy', id: id },
+        //        function (data) {
+        //            $('#actiovation-' + id).html(
+        //'<button class="deactivate-button btn btn-primary mb-1" value="' + id + '">Deactivate Vacancy</button>'
+        //            );
+        //        }
+        //    );
 </script>

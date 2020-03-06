@@ -6,8 +6,17 @@
     {
         case "deleteVacancy":
             {
-                int id = int.Parse(Request["id"]);
                 EPAM.VacancyPortal.PL.WebPL.Models.VacancyRequestHandler.DeleteById(Request, Response);
+                break;
+            }
+        case "activateVacancy":
+            {
+                EPAM.VacancyPortal.PL.WebPL.Models.VacancyRequestHandler.Activate(Request, Response);
+                break;
+            }
+            case "deactivateVacancy":
+            {
+                EPAM.VacancyPortal.PL.WebPL.Models.VacancyRequestHandler.Deactivate(Request, Response);
                 break;
             }
         case "updateRequirementLevel":

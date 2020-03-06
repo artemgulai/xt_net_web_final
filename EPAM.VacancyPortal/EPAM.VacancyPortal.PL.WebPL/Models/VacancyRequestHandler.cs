@@ -55,6 +55,34 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
             }
         }
 
+        public static void Activate(HttpRequestBase req, HttpResponseBase res)
+        {
+            var id = int.Parse(req["id"]);
+            var result = _vacancyLogic.Activate(id);
+            if (result)
+            {
+                res.Write(JsonConvert.SerializeObject(new RequestResult("Success","Vacancy has been activated.")));
+            }
+            else
+            {
+                res.Write(JsonConvert.SerializeObject(new RequestResult("Error","Cannot activate vacancy.")));
+            }
+        }
+
+        public static void Deactivate(HttpRequestBase req,HttpResponseBase res)
+        {
+            var id = int.Parse(req["id"]);
+            var result = _vacancyLogic.Deactivate(id);
+            if (result)
+            {
+                res.Write(JsonConvert.SerializeObject(new RequestResult("Success","Vacancy has been deactivated.")));
+            }
+            else
+            {
+                res.Write(JsonConvert.SerializeObject(new RequestResult("Error","Cannot deactivate vacancy.")));
+            }
+        }
+
         public static void DeleteById(HttpRequestBase req, HttpResponseBase res)
         {
             var result = _vacancyLogic.DeleteById(int.Parse(req["id"]));
