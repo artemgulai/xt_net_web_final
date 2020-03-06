@@ -43,10 +43,9 @@
                     @if (vacancy.Requirements.Any())
                     {
                         <h5>Requirements</h5>
-                        <ul class="list-group w-50">
-                            @foreach (var requirement in vacancy.Requirements)
+                            foreach (var requirement in vacancy.Requirements)
                             {
-                                <li class="list-group-item">
+                                <p>
                                     @if (employee.Skills.Any(a => a.Name == requirement.Name && a.Level >= requirement.Level))
                                     {
                                         <span class="glyphicon glyphicon-ok" style="color:green"></span>
@@ -56,9 +55,8 @@
                                         <span class="glyphicon glyphicon-remove" style="color:red"></span>
                                     }
                                     @requirement.Name: @requirement.Level
-                                </li>
+                                </p>
                             }
-                        </ul>
                     }
                 </div>
                 @if (!responses.Any(a => a.EmployeeId == employee.Id && a.VacancyId == vacancy.Id))
@@ -87,7 +85,25 @@
 <script src="~/Scripts/jquery-3.0.0.js"></script>
 <script>
     $('.response-button.active').click(function () {
-        let vacancyId = $(this).val();
+        let button = $(this);
+        let vacancyId = button.val();
         let employeeId = @employee.Id;
+        $.post(
+            '/Pages/RequestHandlers/EmployeeRequests.cshtml',
+            { type: 'response', employeeId: employeeId, vacancyId: vacancyId },
+            function (data) {
+                let result = JSON.parse(data);
+                if (result.Result == "Success") {
+                    var newButton = $('<button/>',
+                        {
+                            text: 'Response sent'
+                        }
+                    );
+                    newButton.addClass('response-button btn btn-primary mb-1 disabled');
+                    newButton.insertBefore(button);
+                    button.remove();
+                }
+            }
+        );
     });
 </script>

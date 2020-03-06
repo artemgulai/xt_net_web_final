@@ -11,5 +11,6 @@ namespace EPAM.VacancyPortal.Entities
         public int Id { get; set; }
         public int EmployeeId { get; set; }
         public int VacancyId { get; set; }
+        public int EmployerId { get; set; }
     }
 }

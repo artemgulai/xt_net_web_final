@@ -164,11 +164,11 @@ namespace EPAM.VacancyPortal.BLL
             }
         }
 
-        public bool InsertEmployeeResponse(int employeeId,int vacancyId)
+        public bool InsertEmployeeResponse(int employeeId,int vacancyId,int employerId)
         {
             try
             {
-                return _responseDao.InsertEmployeeResponse(employeeId,vacancyId) != 0;
+                return _responseDao.InsertEmployeeResponse(employeeId,vacancyId, employerId) != 0;
             }
             catch (SqlException)
             {

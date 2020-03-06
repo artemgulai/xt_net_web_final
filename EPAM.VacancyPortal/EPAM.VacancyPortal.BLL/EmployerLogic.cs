@@ -45,7 +45,12 @@ namespace EPAM.VacancyPortal.BLL
         {
             try
             {
-                return _employerDao.SelectByLogin(login);
+                var employer = _employerDao.SelectByLogin(login);
+                if (employer != null)
+                {
+                    employer.Vacancies = _vacancyLogic.SelectByEmployer(employer).ToList();
+                }
+                return employer;
             }
             catch (SqlException)
             {

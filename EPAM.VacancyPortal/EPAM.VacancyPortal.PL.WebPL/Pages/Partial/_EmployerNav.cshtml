@@ -1,4 +1,9 @@
-﻿
+﻿@using EPAM.VacancyPortal.PL.WebPL.Models;
+
+@{ 
+    var employer = EmployerRequestHandler.SelectByLogin(User.Identity.Name);
+    var responses = EmployeeRequestHandler.SelectAllVacancyResponses().Where(a => a.EmployerId == employer.Id).Count();
+}
 
 <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -11,8 +16,12 @@
 </li>
 
 <li class="nav-item dropdown">
-    <a class="nav-link " href="#" role="button" aria-haspopup="true" aria-expanded="false">
+    <a class="nav-link " href="~/Pages/Employer/Responses.cshtml" role="button" aria-haspopup="true" aria-expanded="false">
         Responses
+        @if (responses != 0)
+        {
+            <span class="badge badge-warning">@responses</span>
+        }
     </a>
 </li>
 
@@ -27,4 +36,3 @@
         My profile
     </a>
 </li>
-

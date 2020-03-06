@@ -19,7 +19,7 @@ namespace EPAM.VacancyPortal.BLL.Interfaces
         bool UpdateRequirement(int id,int level);
         bool AddRequirement(Skill requirement,int vacancyId);
         bool DeleteRequirement(int id);
-        bool InsertEmployeeResponse(int employeeId,int vacancyId);
+        bool InsertEmployeeResponse(int employeeId,int vacancyId,int employerId);
         bool DeleteEmployeeResponse(int id);
         IEnumerable<Response> SelectAllEmployeeResponses();
     }

@@ -387,16 +387,17 @@ GO
 -- and Employee_Response (responses to Employee by Employer) tables
 CREATE PROCEDURE [dbo].[sp_InsertEmployeeResponse]
 	@EmployeeId INT,
-	@VacancyId INT
+	@VacancyId INT,
+	@EmployerId INT
 AS
-	INSERT INTO Employees_Response (Employee_Id, Vacancy_Id)
+	INSERT INTO Employees_Response (Employee_Id, Vacancy_Id, Employer_Id)
 	OUTPUT inserted.Id
-	VALUES (@EmployeeId, @VacancyId)
+	VALUES (@EmployeeId, @VacancyId, @EmployerId)
 GO
 
 CREATE PROCEDURE [dbo].[sp_SelectAllEmployeeResponses]
 AS
-	SELECT Id, Employee_Id as EmployeeId, Vacancy_Id as VacancyId
+	SELECT Id, Employee_Id as EmployeeId, Vacancy_Id as VacancyId, Employer_Id as EmployerId
 	FROM Employees_Response
 GO
 
@@ -410,14 +411,14 @@ CREATE PROCEDURE [dbo].[sp_InsertVacancyResponse]
 	@EmployeeId INT,
 	@VacancyId INT
 AS
-	INSERT INTO Vacancies_Response (Employee_Id, Vacancy_Id)
+	INSERT INTO Vacancies_Response (Employee_Id, Vacancy_Id, Employer_Id)
 	OUTPUT inserted.Id
-	VALUES (@EmployeeId, @VacancyId)
+	VALUES (@EmployeeId, @VacancyId, (SELECT Employer_Id FROM Vacancies WHERE Id = @VacancyId))
 GO
 
 CREATE PROCEDURE [dbo].[sp_SelectAllVacancyResponses]
 AS
-	SELECT Id, Employee_Id as EmployeeId, Vacancy_Id as VacancyId
+	SELECT Id, Employee_Id as EmployeeId, Vacancy_Id as VacancyId, Employer_Id as EmployerId
 	FROM Vacancies_Response
 GO
 

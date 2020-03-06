@@ -17,7 +17,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
         private readonly ILog _logger = Configuration.Logger;
 
         // response to vacancy by employee
-        public int InsertVacancyResponse(int vacancyId,int employeeId)
+        public int InsertVacancyResponse(int employeeId,int vacancyId)
         {
             using (var con = new SqlConnection(_connectionString))
             {
@@ -84,7 +84,8 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                         {
                             Id = (int)result["Id"],
                             EmployeeId = (int)result["EmployeeId"],
-                            VacancyId = (int)result["VacancyId"]
+                            VacancyId = (int)result["VacancyId"],
+                            EmployerId = (int)result["EmployerId"]
                         });
                     }
                     return responses;
@@ -98,7 +99,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
         }
 
         // response to employee by employer's vacancy
-        public int InsertEmployeeResponse(int vacancyId,int employeeId)
+        public int InsertEmployeeResponse(int employeeId,int vacancyId, int employerId)
         {
             using (var con = new SqlConnection(_connectionString))
             {
@@ -107,6 +108,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
 
                 cmd.Parameters.AddWithValue("VacancyId",vacancyId);
                 cmd.Parameters.AddWithValue("EmployeeId",employeeId);
+                cmd.Parameters.AddWithValue("EmployerId",employerId);
 
                 con.Open();
                 try
@@ -165,7 +167,8 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                         {
                             Id = (int)result["Id"],
                             EmployeeId = (int)result["EmployeeId"],
-                            VacancyId = (int)result["VacancyId"]
+                            VacancyId = (int)result["VacancyId"],
+                            EmployerId = (int)result["EmployerId"]
                         });
                     }
                     return responses;

@@ -159,6 +159,7 @@
     <Content Include="Pages\Admin\ManageEmployees.cshtml" />
     <Content Include="Pages\Admin\ManageEmployers.cshtml" />
     <Content Include="Pages\Employee\AllVacancies.cshtml" />
+    <Content Include="Pages\Employer\Responses.cshtml" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
     <Content Include="Scripts\jquery-3.0.0.js" />
     <Content Include="Scripts\jquery-3.0.0.min.js" />

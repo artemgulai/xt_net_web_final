@@ -9,9 +9,9 @@ namespace EPAM.VacancyPortal.DAL.Interfaces
 {
     public interface IResponseDao
     {
-        int InsertVacancyResponse(int vacancyId,int employeeId);
+        int InsertVacancyResponse(int employeeId,int vacancyId);
         int DeleteVacancyResponse(int id);
-        int InsertEmployeeResponse(int vacancyId,int employeeId);
+        int InsertEmployeeResponse(int employeeId,int vacancyId,int employerId);
         int DeleteEmployeeResponse(int id);
         IEnumerable<Response> SelectAllEmployeeResponses();
         IEnumerable<Response> SelectAllVacancyResponses();

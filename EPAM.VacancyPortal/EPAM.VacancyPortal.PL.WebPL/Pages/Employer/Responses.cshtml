@@ -1,0 +1,24 @@
+﻿@using EPAM.VacancyPortal.PL.WebPL.Models;
+
+@{
+    Page.Title = "Responses";
+    Layout = "~/Layouts/_MainLayout.cshtml";
+}
+
+@{ 
+    var employer = EmployerRequestHandler.SelectByLogin(User.Identity.Name);
+    var employees = EmployeeRequestHandler.SelectAll();
+    var responses = EmployeeRequestHandler.SelectAllVacancyResponses().Where(a => a.EmployerId == employer.Id);
+}
+
+// TODO сделать нормальный список откликов и функционал ответа на них
+<div class="mt-2 w-50 mr-auto ml-auto">
+    @foreach(var response in responses)
+    {
+        var vacancy = employer.Vacancies.First(a => a.Id == response.VacancyId);
+        var employee = employees.First(a => a.Id == response.EmployeeId);
+        <p>@vacancy.Name</p>
+        <p>@employee.FirstName @employee.LastName, @employee.City</p>
+        <hr />
+    }
+</div>
