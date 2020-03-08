@@ -99,7 +99,7 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
         }
 
         // response to employee by employer's vacancy
-        public int InsertEmployeeResponse(int employeeId,int vacancyId, int employerId)
+        public int InsertEmployeeResponse(int employeeId,int vacancyId)
         {
             using (var con = new SqlConnection(_connectionString))
             {
@@ -108,7 +108,6 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
 
                 cmd.Parameters.AddWithValue("VacancyId",vacancyId);
                 cmd.Parameters.AddWithValue("EmployeeId",employeeId);
-                cmd.Parameters.AddWithValue("EmployerId",employerId);
 
                 con.Open();
                 try
@@ -187,12 +186,46 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
             {
                 var cmd = new SqlCommand("sp_DeleteHiredVacancyResponses",con);
                 cmd.CommandType = _storedProcedure;
+
+                cmd.Parameters.AddWithValue("EmployeeId",employeeId);
+                cmd.Parameters.AddWithValue("VacancyId",vacancyId);
+
+                con.Open();
+                try
+                {
+                    var result = cmd.ExecuteNonQuery();
+                    return result;
+                }
+                catch (SqlException e)
+                {
+                    _logger.Error(e.Message);
+                    throw;
+                }
             }
         }
 
         public int DeleteHiredEmployeeResponses(int employeeId,int vacancyId)
         {
-            throw new NotImplementedException();
+            using (var con = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("sp_DeleteHiredEmployeeResponses",con);
+                cmd.CommandType = _storedProcedure;
+
+                cmd.Parameters.AddWithValue("EmployeeId",employeeId);
+                cmd.Parameters.AddWithValue("VacancyId",vacancyId);
+
+                con.Open();
+                try
+                {
+                    var result = cmd.ExecuteNonQuery();
+                    return result;
+                }
+                catch (SqlException e)
+                {
+                    _logger.Error(e.Message);
+                    throw;
+                }
+            }
         }
     }
 }

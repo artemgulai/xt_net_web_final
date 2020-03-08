@@ -67,29 +67,24 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
             return;
         }
 
-        public static bool SignIn(HttpRequestBase req, HttpResponseBase res)
+        public static AuthResult SignIn(string login, string password)
         {
-            string login = req["login"];
-            string password = req["password"];
-
             var admin = _adminLogic.SelectByLogin(login);
 
             if (admin != null)
             {
                 if(admin.Password == Convert.ToBase64String(_sha256.ComputeHash(Encoding.Unicode.GetBytes(password))))
                 {
-                    res.Write(JsonConvert.SerializeObject(new RequestResult("Success","Succesfully signed in.")));
-                    return true;
+                    return AuthResult.Success;
                 }
                 else
                 {
-                    res.Write(JsonConvert.SerializeObject(new RequestResult("Error","Wrong password.")));
-                    return false;
+                    return AuthResult.WrongPassword;
                 }
             }
             else
             {
-                return false;
+                return AuthResult.LoginNotFound;
             }
         }
 

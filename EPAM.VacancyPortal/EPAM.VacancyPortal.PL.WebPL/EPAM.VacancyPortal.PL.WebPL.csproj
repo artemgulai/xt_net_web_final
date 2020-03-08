@@ -161,6 +161,9 @@
     <Content Include="Pages\Employee\AllVacancies.cshtml" />
     <Content Include="Pages\Employer\Responses.cshtml" />
     <Content Include="Pages\RequestHandlers\HiringRequests.cshtml" />
+    <Content Include="Pages\Employer\AllEmployees.cshtml" />
+    <Content Include="Pages\Partial\Employer\EmployeesForVacancy.cshtml" />
+    <Content Include="Pages\Employee\Responses.cshtml" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
     <Content Include="Scripts\jquery-3.0.0.js" />
     <Content Include="Scripts\jquery-3.0.0.min.js" />
@@ -252,6 +255,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\AdminRequestHandler.cs" />
+    <Compile Include="Models\AuthResult.cs" />
     <Compile Include="Models\EmployeeRequestHandler.cs" />
     <Compile Include="Models\EmployerRequestHandler.cs" />
     <Compile Include="Models\HiringRequestHandler.cs" />

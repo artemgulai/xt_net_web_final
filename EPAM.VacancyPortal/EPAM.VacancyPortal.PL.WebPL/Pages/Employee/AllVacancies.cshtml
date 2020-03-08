@@ -1,12 +1,14 @@
-﻿@{
+﻿@using EPAM.VacancyPortal.PL.WebPL.Models;
+
+@{
     Page.Title = "All vacancies";
     Layout = "~/Layouts/_MainLayout.cshtml";
 }
 
 @{
-    var employee = EPAM.VacancyPortal.PL.WebPL.Models.EmployeeRequestHandler.SelectByLogin(User.Identity.Name);
-    var employers = EPAM.VacancyPortal.PL.WebPL.Models.EmployerRequestHandler.SelectAll();
-    var responses = EPAM.VacancyPortal.PL.WebPL.Models.EmployeeRequestHandler.SelectAllVacancyResponses();
+    var employee = EmployeeRequestHandler.SelectByLogin(User.Identity.Name);
+    var employers = EmployerRequestHandler.SelectAll();
+    var responses = EmployeeRequestHandler.SelectAllVacancyResponses();
 
 }
 
@@ -31,7 +33,7 @@
             foreach (var vacancy in employer.Vacancies.Where(a => a.Active))
             {
                 vacancyExists = true;
-                <div id="vacancy-@vacancy.Id" class="border border-primary rounded-lg mt-2 mb-2 clearfix p-2 d-flex align-items-center">
+                <div id="vacancy-@vacancy.Id" class="bg-white border border-primary rounded-lg mt-2 mb-2 clearfix p-2 d-flex align-items-center">
                     <div class="w-75 mt-2 float-left">
                         <h3>@vacancy.Name</h3>
                         <h5>Employer: @employer.Name</h5>

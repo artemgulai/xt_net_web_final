@@ -1,6 +1,6 @@
 ﻿@using EPAM.VacancyPortal.PL.WebPL.Models;
 
-@if(IsAjax)
+@if (IsAjax)
 {
     var type = Request["type"];
 
@@ -9,6 +9,21 @@
         case "acceptEmployee":
             {
                 HiringRequestHandler.AcceptEmployee(Request,Response);
+                break;
+            }
+        case "declineEmployee":
+            {
+                HiringRequestHandler.DeclineEmployee(Request,Response);
+                break;
+            }
+        case "acceptVacancy":
+            {
+                HiringRequestHandler.AcceptVacancy(Request,Response);
+                break;
+            }
+        case "declineVacancy":
+            {
+                HiringRequestHandler.DeclineVacancy(Request,Response);
                 break;
             }
     }

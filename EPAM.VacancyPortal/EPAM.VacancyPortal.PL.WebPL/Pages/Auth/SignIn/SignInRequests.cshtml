@@ -1,26 +1,46 @@
-﻿@if (IsAjax)
+﻿@using EPAM.VacancyPortal.PL.WebPL.Models;
+@using Newtonsoft.Json;
+
+@if (IsAjax)
 {
-    var result = EPAM.VacancyPortal.PL.WebPL.Models.AdminRequestHandler.SignIn(Request,Response);
+    string login = Request["login"];
+    string password = Request["password"];
 
-    if (!result)
+    var resultAdmin = AdminRequestHandler.SignIn(login, password);
+    if (resultAdmin == AuthResult.Success)
     {
-        result = EPAM.VacancyPortal.PL.WebPL.Models.EmployerRequestHandler.SignIn(Request,Response);
-    }
-    if (!result)
+        Response.Write(JsonConvert.SerializeObject(new RequestResult("Success", "Successfully signed in")));
+        FormsAuthentication.SetAuthCookie(login,true);
+        return;
+    } else if (resultAdmin == AuthResult.WrongPassword)
     {
-        result = EPAM.VacancyPortal.PL.WebPL.Models.EmployeeRequestHandler.SignIn(Request,Response);
+        Response.Write(JsonConvert.SerializeObject(new RequestResult("Error", "Wrong password")));
+        return;
     }
 
-    if (result)
+    var resultEmployer = EmployerRequestHandler.SignIn(login,password);
+    if(resultEmployer == AuthResult.Success)
     {
+        Response.Write(JsonConvert.SerializeObject(new RequestResult("Success", "Successfully signed in")));
+        FormsAuthentication.SetAuthCookie(login,true);
+        return;
+    } else if (resultEmployer == AuthResult.WrongPassword)
+    {
+        Response.Write(JsonConvert.SerializeObject(new RequestResult("Error", "Wrong password")));
+        return;
+    }
+
+    var resultEmployee = EmployeeRequestHandler.SignIn(login,password);
+    if(resultEmployee == AuthResult.Success)
+    {
+        Response.Write(JsonConvert.SerializeObject(new RequestResult("Success", "Successfully signed in")));
         FormsAuthentication.SetAuthCookie(Request["login"],true);
-    }
-    else
+        return;
+    } else if (resultEmployee == AuthResult.WrongPassword)
     {
-        Response.Write(Newtonsoft.Json.JsonConvert.SerializeObject
-            (
-                new EPAM.VacancyPortal.PL.WebPL.Models.RequestResult("Error", "Login not found")
-            )
-        );
+        Response.Write(JsonConvert.SerializeObject(new RequestResult("Error", "Wrong password")));
+        return;
     }
+
+    Response.Write(JsonConvert.SerializeObject(new RequestResult("Error", "Login not found")));
 }

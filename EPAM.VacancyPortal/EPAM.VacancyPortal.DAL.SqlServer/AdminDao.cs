@@ -124,10 +124,6 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                             IsCandidate = (bool)result["Candidate"]
                         };
                     }
-                    else
-                    {
-                        _logger.Warn($"Admin with Id = {id} not found in DB.");
-                    }
                     return admin;
                 }
                 catch (SqlException e)
@@ -162,10 +158,6 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                             Role = (string)result["Role"],
                             IsCandidate = (bool)result["Candidate"]
                         };
-                    }
-                    else
-                    {
-                        _logger.Warn($"Admin with Login '{login}' not found in DB.");
                     }
                     return admin;
                 }

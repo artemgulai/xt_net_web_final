@@ -6,72 +6,50 @@
 }
 
 @{
-    var employer = EmployerRequestHandler.SelectByLogin(User.Identity.Name);
-    var employees = EmployeeRequestHandler.SelectAll();
-    var responses = EmployeeRequestHandler.SelectAllVacancyResponses().Where(a => a.EmployerId == employer.Id);
+    var employee = EmployeeRequestHandler.SelectByLogin(User.Identity.Name);
+    var employers = EmployerRequestHandler.SelectAll();
+    var vacancies = new List<EPAM.VacancyPortal.Entities.Vacancy>();
+    foreach (var employer in employers)
+    {
+        vacancies.AddRange(employer.Vacancies);
+    }
+
+    var responses = VacancyRequestHandler.SelectAllEmployeeResponses().Where(a => a.EmployeeId == employee.Id);
 }
 
-@if(responses.Count() == 0)
+@foreach (var response in responses)
 {
-    <div class="w-50 text-center alert alert-warning mr-auto ml-auto mt-2">
-        No responses
+    <div class="mt-2 w-50 mr-auto ml-auto">
+        <ul class="list-group">
+            <li class="list-group-item">
+                @{
+                    var vacancy = vacancies.First(a => a.Id == response.VacancyId);
+                }
+
+                <p>@vacancy.Name</p>
+                <p>@vacancy.Description</p>
+                <p>Employer: @vacancy.Employer.Name, @vacancy.Employer.City</p>
+                <p>Salary: @vacancy.Salary</p>
+                <p>
+                    @if(vacancy.Remote)
+                    {
+                        @:Remote work is possible
+                    }
+                    else
+                    {
+                        @:Remote work is not possible
+                    }
+                </p>
+
+                
+                <input type="hidden" class="employeeId" value="@employee.Id" />
+                <input type="hidden" class="vacancyId" value="@vacancy.Id" />
+                <input type="hidden" class="responseId" value="@response.Id" />
+                <button class="btn btn-primary accept-button">Accept</button> <button class="btn btn-danger decline-button">Decline</button>
+            </li>
+        </ul>
     </div>
 }
-
-<!--TODO сделать нормальный список откликов и функционал ответа на них-->
-<div class="mt-2 w-50 mr-auto ml-auto">
-    <ul class="list-group">
-        @foreach (var response in responses)
-        {
-        <li class="list-group-item">
-            @{var vacancy = employer.Vacancies.First(a => a.Id == response.VacancyId);
-                var employee = employees.First(a => a.Id == response.EmployeeId);
-            }
-
-            @if (HiringRequestHandler.CheckSkillsRequirementsLevelsVacancyResponse(employee.Skills,vacancy.Requirements))
-            {
-                <div class="alert alert-info">Has all required skills on required level</div>
-            }
-            else if (HiringRequestHandler.CheckSkillsRequirementsVacancyResponse(employee.Skills,vacancy.Requirements))
-            {
-                <div class="alert alert-warning">Has all required skills not on required level</div>
-            }
-            else
-            {
-                <div class="alert alert-danger">Does not have required skills</div>
-            }
-            <h4>@vacancy.Name</h4>
-            <h5>@employee.FirstName @employee.LastName, @employee.City</h5>
-            @if (employee.Relocation)
-            {
-                <p>Relocation is possible</p>
-            }
-            else
-            {
-                {
-                    <p>Relocation is impossible</p>
-                }
-            }
-            <h5>Skills</h5>
-            @if (employee.Skills.Any())
-            {
-                foreach (var skill in employee.Skills)
-                {
-                    <p class="mb-1">@skill.Name: @skill.Level</p>
-                }
-            }
-            else
-            {
-                <p>No skills</p>
-            }
-            <input type="hidden" class="employeeId" value="@employee.Id" />
-            <input type="hidden" class="vacancyId" value="@vacancy.Id" />
-            <input type="hidden" class="responseId" value="@response.Id" />
-            <button class="btn btn-primary accept-button">Accept</button> <button class="btn btn-danger decline-button">Decline</button>
-        </li>
-        }
-    </ul>
-</div>
 
 <script src="~/Scripts/jquery-3.0.0.js"></script>
 <script>
@@ -85,7 +63,7 @@
         let responseId = parent.children('.responseId').val();
 
         let fd = new FormData();
-        fd.append('type', 'acceptEmployee');
+        fd.append('type', 'acceptVacancy');
         fd.append('employeeId', employeeId);
         fd.append('vacancyId', vacancyId);
         fd.append('responseId', responseId);
@@ -132,7 +110,7 @@
         let responseId = parent.children('.responseId').val();
 
         let fd = new FormData();
-        fd.append('type', 'declineEmployee');
+        fd.append('type', 'declineVacancy');
         fd.append('responseId', responseId);
 
         $.ajax({

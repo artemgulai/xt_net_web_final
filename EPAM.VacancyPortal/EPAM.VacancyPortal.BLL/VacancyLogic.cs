@@ -152,11 +152,11 @@ namespace EPAM.VacancyPortal.BLL
             }
         }
 
-        public bool InsertEmployeeResponse(int employeeId,int vacancyId,int employerId)
+        public bool InsertEmployeeResponse(int employeeId,int vacancyId)
         {
             try
             {
-                return _responseDao.InsertEmployeeResponse(employeeId,vacancyId, employerId) != 0;
+                return _responseDao.InsertEmployeeResponse(employeeId,vacancyId) != 0;
             }
             catch (SqlException)
             {
@@ -185,6 +185,19 @@ namespace EPAM.VacancyPortal.BLL
             catch (SqlException)
             {
                 return new List<Response>();
+            }
+        }
+
+        public bool DeleteHiredEmployeeResponses(int employeeId,int vacancyId)
+        {
+            try
+            {
+                _responseDao.DeleteHiredEmployeeResponses(employeeId,vacancyId);
+                return true;
+            }
+            catch (SqlException)
+            {
+                return false;
             }
         }
     }

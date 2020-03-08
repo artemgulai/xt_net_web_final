@@ -1,7 +1,7 @@
 ﻿@using EPAM.VacancyPortal.PL.WebPL.Models;
 
 @{
-    var employer = EmployerService.SelectByLogin(User.Identity.Name);
+    var employer = EmployerRequestHandler.SelectByLogin(User.Identity.Name);
 }
 
     

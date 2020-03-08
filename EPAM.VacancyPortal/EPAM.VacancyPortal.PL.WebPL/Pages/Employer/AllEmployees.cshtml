@@ -1,0 +1,31 @@
+﻿@{
+    Page.Title = "All vacancies";
+    Layout = "~/Layouts/_MainLayout.cshtml";
+}
+
+@{
+    var employer = EPAM.VacancyPortal.PL.WebPL.Models.EmployerRequestHandler.SelectByLogin(User.Identity.Name);
+}
+
+<div class="w-50 mr-auto ml-auto">
+    <h5 class="text-center mt-2">Select the vacancy to search employee for</h5>
+    @foreach (var vacancy in employer.Vacancies)
+    {
+        <div class="mt-1 border border-1 rounded border-secondary bg-white p-1">
+            <button class="btn btn-primary select-vacancy" value="@vacancy.Id">Select</button> @vacancy.Name
+        </div>
+    }
+</div>
+
+<div class="employees w-75 mr-auto ml-auto">
+</div>
+
+<script src="~/Scripts/jquery-3.0.0.js"></script>
+<script>
+    $('.select-vacancy').click(function () {
+        let vacancyId = $(this).val();
+        $('.employees').load('/Pages/Partial/Employer/EmployeesForVacancy.cshtml?vacancyId=' + vacancyId +
+            '&employerId=' + @employer.Id);
+    });
+
+</script>

@@ -3,6 +3,7 @@
 
 body {
     font-family: 'Exo 2';
+    background-color: #e9ecef;
 }
 
 .main-container {
@@ -58,4 +59,8 @@ body {
 .requirement-level-change,
 .skill-level-change {
     display: none;
+}
+
+footer {
+    height:40px;
 }

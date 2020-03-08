@@ -387,12 +387,11 @@ GO
 -- and Employee_Response (responses to Employee by Employer) tables
 CREATE PROCEDURE [dbo].[sp_InsertEmployeeResponse]
 	@EmployeeId INT,
-	@VacancyId INT,
-	@EmployerId INT
+	@VacancyId INT
 AS
 	INSERT INTO Employees_Response (Employee_Id, Vacancy_Id, Employer_Id)
 	OUTPUT inserted.Id
-	VALUES (@EmployeeId, @VacancyId, @EmployerId)
+	VALUES (@EmployeeId, @VacancyId, (SELECT Employer_Id FROM Vacancies WHERE Id = @VacancyId))
 GO
 
 CREATE PROCEDURE [dbo].[sp_SelectAllEmployeeResponses]
@@ -426,4 +425,18 @@ CREATE PROCEDURE [dbo].[sp_DeleteVacancyResponse]
 	@Id INT
 AS
 	DELETE FROM Vacancies_Response WHERE Id = @Id
+GO
+
+CREATE PROCEDURE [dbo].[sp_DeleteHiredVacancyResponses]
+	@EmployeeId INT,
+	@VacancyId INT
+AS
+	DELETE FROM Vacancies_Response WHERE Employee_Id = @EmployeeId OR Vacancy_Id = @VacancyId
+GO
+
+CREATE PROCEDURE [dbo].[sp_DeleteHiredEmployeeResponses]
+	@EmployeeId INT,
+	@VacancyId INT
+AS
+	DELETE FROM Employees_Response WHERE Employee_Id = @EmployeeId OR Vacancy_Id = @VacancyId
 GO

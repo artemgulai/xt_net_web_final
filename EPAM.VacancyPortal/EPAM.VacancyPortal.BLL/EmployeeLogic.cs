@@ -235,5 +235,18 @@ namespace EPAM.VacancyPortal.BLL
                 return new List<Response>();
             }
         }
+
+        public bool DeleteHiredVacancyResponses(int employeeId,int vacancyId)
+        {
+            try
+            {
+                _responseDao.DeleteHiredVacancyResponses(employeeId,vacancyId);
+                return true;
+            }
+            catch (SqlException)
+            {
+                return false;
+            }
+        }
     }
 }

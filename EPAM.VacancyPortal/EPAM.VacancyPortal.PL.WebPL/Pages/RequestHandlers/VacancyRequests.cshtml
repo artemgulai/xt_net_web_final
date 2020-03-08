@@ -1,4 +1,6 @@
-﻿@if(IsAjax)
+﻿@using EPAM.VacancyPortal.PL.WebPL.Models;
+
+@if(IsAjax)
 {
     var type = Request["type"];
 
@@ -6,27 +8,32 @@
     {
         case "deleteVacancy":
             {
-                EPAM.VacancyPortal.PL.WebPL.Models.VacancyRequestHandler.DeleteById(Request, Response);
+                VacancyRequestHandler.DeleteById(Request, Response);
                 break;
             }
         case "activateVacancy":
             {
-                EPAM.VacancyPortal.PL.WebPL.Models.VacancyRequestHandler.Activate(Request, Response);
+                VacancyRequestHandler.Activate(Request, Response);
                 break;
             }
-            case "deactivateVacancy":
+        case "deactivateVacancy":
             {
-                EPAM.VacancyPortal.PL.WebPL.Models.VacancyRequestHandler.Deactivate(Request, Response);
+                VacancyRequestHandler.Deactivate(Request, Response);
                 break;
             }
         case "updateRequirementLevel":
             {
-                EPAM.VacancyPortal.PL.WebPL.Models.VacancyRequestHandler.UpdateRequirementLevel(Request,Response);
+                VacancyRequestHandler.UpdateRequirementLevel(Request,Response);
                 break;
             }
         case "deleteRequirement":
             {
-                EPAM.VacancyPortal.PL.WebPL.Models.VacancyRequestHandler.DeleteRequirement(Request,Response);
+                VacancyRequestHandler.DeleteRequirement(Request,Response);
+                break;
+            }
+        case "response":
+            {
+                VacancyRequestHandler.Response(Request,Response);
                 break;
             }
     }

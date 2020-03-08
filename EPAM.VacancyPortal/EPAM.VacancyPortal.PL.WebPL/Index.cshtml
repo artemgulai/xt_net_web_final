@@ -3,3 +3,49 @@
     Layout = "~/Layouts/_MainLayout.cshtml";
 }
 
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="jumbotron" id="jumbo">
+        <h1 class="display-4">ITJob</h1>
+        <p class="lead">
+            This web application allow you to get hired if you are an employee
+            and find employee for your vacancy if you are an employer.
+        </p>
+        <hr class="my-2">
+        <p>Please register to use the application.</p>
+    </div>
+}
+else if (User.IsInRole("EMPLOYER"))
+{
+    <div class="jumbotron" id="jumbo">
+        <h1 class="display-4">ITJob</h1>
+        <p class="lead">
+            This web application allow you to find an employee for your vacancies.
+            Post vacancies, search for and get responses from employees.
+        </p>
+        <hr class="my-2">
+        <p>To get started go to "My vacancies" section. (Don't forget to activate vacancies)</p>
+    </div>
+}
+else if (User.IsInRole("EMPLOYEE"))
+{
+    <div class="jumbotron" id="jumbo">
+        <h1 class="display-4">ITJob</h1>
+        <p class="lead">
+            This web application allow you to get hired.
+            Post your skills, search for vacancies and get responses from employers.
+        </p>
+        <hr class="my-2">
+        <p>To get started go to "My skills" section. (Don't forget to activate your profile)</p>
+    </div>
+}
+else
+{
+    <div class="jumbotron" id="jumbo">
+        <h1 class="display-4">ITJob</h1>
+        <p class="lead">
+            Admin mode.
+        </p>
+        <hr class="my-2">
+    </div>
+}

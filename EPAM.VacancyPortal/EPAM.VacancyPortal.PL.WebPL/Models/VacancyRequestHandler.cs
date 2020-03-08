@@ -138,5 +138,25 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
                 return;
             }
         }
+
+        public static void Response(HttpRequestBase req,HttpResponseBase res)
+        {
+            var employeeId = int.Parse(req["employeeId"]);
+            var vacancyId = int.Parse(req["vacancyId"]);
+            var result = _vacancyLogic.InsertEmployeeResponse(employeeId,vacancyId);
+            if (result)
+            {
+                res.Write(JsonConvert.SerializeObject(new RequestResult("Success","Response has been sent")));
+            }
+            else
+            {
+                res.Write(JsonConvert.SerializeObject(new RequestResult("Error","Cannot send response")));
+            }
+        }
+
+        public static IEnumerable<Response> SelectAllEmployeeResponses()
+        {
+            return _vacancyLogic.SelectAllEmployeeResponses();
+        }
     }
 }

@@ -11,7 +11,7 @@ namespace EPAM.VacancyPortal.DAL.Interfaces
     {
         int InsertVacancyResponse(int employeeId,int vacancyId);
         int DeleteVacancyResponse(int id);
-        int InsertEmployeeResponse(int employeeId,int vacancyId,int employerId);
+        int InsertEmployeeResponse(int employeeId,int vacancyId);
         int DeleteEmployeeResponse(int id);
         IEnumerable<Response> SelectAllEmployeeResponses();
         IEnumerable<Response> SelectAllVacancyResponses();

@@ -1,0 +1,88 @@
+﻿@using EPAM.VacancyPortal.PL.WebPL.Models;
+
+@{
+    var vacancyId = int.Parse(Request["vacancyId"]);
+    var employerId = int.Parse(Request["employerId"]);
+    var employer = EmployerRequestHandler.SelectById(employerId);
+    var vacancy = VacancyRequestHandler.SelectById(vacancyId);
+    var employees = EmployeeRequestHandler.SelectAll().Where(e => e.Active);
+    var responses = VacancyRequestHandler.SelectAllEmployeeResponses();
+}
+
+<hr />
+<div>
+    <ul class="list-group">
+        @foreach (var employee in employees)
+        {
+            if (employee.City != employer.City && !employee.Relocation && !vacancy.Remote)
+            {
+                continue;
+            }
+
+            <li class="list-group-item">
+                <p>@employee.FirstName @employee.LastName, @employee.City</p>
+                @if (employee.City == employer.City)
+                {
+                    <p>In your city</p>
+                }
+                else if (employee.Relocation)
+                {
+                    <p>Relocation is possible</p>
+                }
+                else
+                {
+                    <p>Remote work is possible</p>
+                }
+                @foreach (var requirement in vacancy.Requirements)
+                {
+                    <p>
+                        @if (employee.Skills.Any(a => a.Name == requirement.Name && a.Level >= requirement.Level))
+                        {
+                            <span class="glyphicon glyphicon-ok" style="color:green"></span>
+                        }
+                        else
+                        {
+                            <span class="glyphicon glyphicon-remove" style="color:red"></span>
+                        }
+                        @requirement.Name: @requirement.Level
+                    </p>
+                }
+                @if (!responses.Any(a => a.EmployeeId == employee.Id && a.VacancyId == vacancy.Id))
+                {
+                    <button class="response-button active btn btn-primary" value="@employee.Id">Send response</button>
+                }
+                else
+                {
+                    <button class="response-button btn btn-primary disabled" value="@employee.Id">Response sent</button>
+                }
+            </li>
+        }
+    </ul>
+</div>
+
+<script src="~/Scripts/jquery-3.0.0.js"></script>
+<script>
+    $('.response-button.active').click(function () {
+        let button = $(this);
+        let employeeId = button.val();
+        let vacancyId = @vacancyId;
+
+        $.post(
+            '/Pages/RequestHandlers/VacancyRequests.cshtml',
+            { type: 'response', employeeId: employeeId, vacancyId: vacancyId },
+            function (data) {
+                let result = JSON.parse(data);
+                if (result.Result == "Success") {
+                    var newButton = $('<button/>',
+                        {
+                            text: 'Response sent'
+                        }
+                    );
+                    newButton.addClass('response-button btn btn-primary disabled');
+                    newButton.insertBefore(button);
+                    button.remove();
+                }
+            }
+        );
+    });
+</script>
