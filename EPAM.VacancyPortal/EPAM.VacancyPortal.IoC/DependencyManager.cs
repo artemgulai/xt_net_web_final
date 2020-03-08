@@ -32,6 +32,8 @@ namespace EPAM.VacancyPortal.IoC
         private IVacancyDao _vacancyDao;
         private IVacancyLogic _vacancyLogic;
 
+        private IHiringLogic _hiringLogic;
+
         private IResponseDao _responseDao;
 
         private ICommonLogic _commonLogic;
@@ -59,6 +61,8 @@ namespace EPAM.VacancyPortal.IoC
             _employerDao = new EmployerDao();
             _employerLogic = new EmployerLogic(_employerDao,_cityLogic, _vacancyLogic);
 
+            _hiringLogic = new HiringLogic(_vacancyLogic,_employeeLogic);
+
             _commonLogic = new CommonLogic(_adminDao,_employerDao,_employeeDao);
         }
 
@@ -69,5 +73,6 @@ namespace EPAM.VacancyPortal.IoC
         public ICityLogic CityLogic => _cityLogic;
         public ICommonLogic CommonLogic => _commonLogic;
         public IVacancyLogic VacancyLogic => _vacancyLogic;
+        public IHiringLogic HiringLogic => _hiringLogic;
     }
 }

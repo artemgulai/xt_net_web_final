@@ -82,6 +82,11 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
             return _employeeLogic.SelectByLogin(login);
         }
 
+        public static Employee SelectById(int id)
+        {
+            return _employeeLogic.SelectById(id);
+        }
+
         public static bool SignIn(HttpRequestBase req,HttpResponseBase res)
         {
             string login = req["login"];
@@ -167,6 +172,34 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
             else
             {
                 res.Write(JsonConvert.SerializeObject(new RequestResult("Error","Profile cannot be updated.")));
+            }
+        }
+
+        public static void Activate(HttpRequestBase req,HttpResponseBase res)
+        {
+            var id = int.Parse(req["id"]);
+            var result = _employeeLogic.Activate(id);
+            if (result)
+            {
+                res.Write(JsonConvert.SerializeObject(new RequestResult("Success","Profile has been activated")));
+            }
+            else
+            {
+                res.Write(JsonConvert.SerializeObject(new RequestResult("Error","Cannot activate profile")));
+            }
+        }
+
+        public static void Deactivate(HttpRequestBase req,HttpResponseBase res)
+        {
+            var id = int.Parse(req["id"]);
+            var result = _employeeLogic.Deactivate(id);
+            if (result)
+            {
+                res.Write(JsonConvert.SerializeObject(new RequestResult("Success","Profile has been deactivated")));
+            }
+            else
+            {
+                res.Write(JsonConvert.SerializeObject(new RequestResult("Error","Cannot deactivate profile")));
             }
         }
 

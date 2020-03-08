@@ -89,30 +89,18 @@ namespace EPAM.VacancyPortal.BLL
 
         public bool Activate(int id)
         {
-            try
-            {
-                var vacancy = _vacancyDao.SelectById(id);
-                vacancy.Active = true;
-                return _vacancyDao.Update(vacancy) != 0;
-            }
-            catch (SqlException)
-            {
-                return false;
-            }
+            var vacancy = SelectById(id);
+            vacancy.Active = true;
+            var result = Update(vacancy);
+            return result;
         }
 
         public bool Deactivate(int id)
         {
-            try
-            {
-                var vacancy = _vacancyDao.SelectById(id);
-                vacancy.Active = false;
-                return _vacancyDao.Update(vacancy) != 0;
-            }
-            catch (SqlException)
-            {
-                return false;
-            }
+            var vacancy = SelectById(id);
+            vacancy.Active = false;
+            var result = Update(vacancy);
+            return result;
         }
 
         public bool UpdateRequirement(int id,int level)

@@ -81,7 +81,12 @@ namespace EPAM.VacancyPortal.BLL
         {
             try
             {
-                return _employeeDao.SelectAll();
+                var employees = _employeeDao.SelectAll();
+                foreach(var employee in employees)
+                {
+                    employee.Skills = _employeeDao.SelectSkillsByEmployee(employee).ToList();
+                }
+                return employees;
             }
             catch (SqlException)
             {
@@ -167,6 +172,32 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return false;
             }
+        }
+
+        public bool Activate(int id)
+        {
+            var employee = SelectById(id);
+            if (employee == null)
+            {
+                return false;
+            }
+
+            employee.Active = true;
+            var result = Update(employee);
+            return result;
+        }
+
+        public bool Deactivate(int id)
+        {
+            var employee = SelectById(id);
+            if (employee == null)
+            {
+                return false;
+            }
+
+            employee.Active = false;
+            var result = Update(employee);
+            return result;
         }
 
         public bool InsertVacancyResponse(int employeeId,int vacancyId)

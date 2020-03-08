@@ -180,5 +180,19 @@ namespace EPAM.VacancyPortal.DAL.SqlServer
                 } 
             }
         }
+
+        public int DeleteHiredVacancyResponses(int employeeId,int vacancyId)
+        {
+            using (var con = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("sp_DeleteHiredVacancyResponses",con);
+                cmd.CommandType = _storedProcedure;
+            }
+        }
+
+        public int DeleteHiredEmployeeResponses(int employeeId,int vacancyId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

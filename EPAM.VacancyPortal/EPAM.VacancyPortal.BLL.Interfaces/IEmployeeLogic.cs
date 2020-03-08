@@ -15,6 +15,8 @@ namespace EPAM.VacancyPortal.BLL.Interfaces
         IEnumerable<Employee> SelectAll();
         bool Update(Employee employee);
         bool Delete(int id);
+        bool Activate(int id);
+        bool Deactivate(int id);
         bool AddSkill(Skill skill,int employeeId);
         bool UpdateSkill(int skillId,int level);
         bool DeleteSkill(int skillId);

@@ -46,6 +46,7 @@
     <Compile Include="ICommonLogic.cs" />
     <Compile Include="IEmployeeLogic.cs" />
     <Compile Include="IEmployerLogic.cs" />
+    <Compile Include="IHiringLogic.cs" />
     <Compile Include="ISkillLogic.cs" />
     <Compile Include="IVacancyLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

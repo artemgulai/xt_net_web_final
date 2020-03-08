@@ -5,20 +5,139 @@
     Layout = "~/Layouts/_MainLayout.cshtml";
 }
 
-@{ 
+@{
     var employer = EmployerRequestHandler.SelectByLogin(User.Identity.Name);
     var employees = EmployeeRequestHandler.SelectAll();
     var responses = EmployeeRequestHandler.SelectAllVacancyResponses().Where(a => a.EmployerId == employer.Id);
 }
 
-// TODO сделать нормальный список откликов и функционал ответа на них
+<!--TODO сделать нормальный список откликов и функционал ответа на них-->
 <div class="mt-2 w-50 mr-auto ml-auto">
-    @foreach(var response in responses)
-    {
-        var vacancy = employer.Vacancies.First(a => a.Id == response.VacancyId);
-        var employee = employees.First(a => a.Id == response.EmployeeId);
-        <p>@vacancy.Name</p>
-        <p>@employee.FirstName @employee.LastName, @employee.City</p>
-        <hr />
-    }
+    <ul class="list-group">
+        @foreach (var response in responses)
+        {
+            <li class="list-group-item">
+                @{var vacancy = employer.Vacancies.First(a => a.Id == response.VacancyId);
+                    var employee = employees.First(a => a.Id == response.EmployeeId);
+                }
+                <h4>@vacancy.Name</h4>
+                <h5>@employee.FirstName @employee.LastName, @employee.City</h5>
+                @if (employee.Relocation)
+                {
+                    <p>Relocation is possible</p>
+                }
+                else
+                {
+                    {
+                        <p>Relocation is impossible</p>
+                    }
+                }
+                <h5>Skills</h5>
+                @if (employee.Skills.Any())
+                {
+                    foreach (var skill in employee.Skills)
+                    {
+                        <p class="mb-1">@skill.Name: @skill.Level</p>
+                    }
+                }
+                else
+                {
+                    <p>No skills</p>
+                }
+                <input type="hidden" class="employeeId" value="@employee.Id" />
+                <input type="hidden" class="vacancyId" value="@vacancy.Id" />
+                <input type="hidden" class="responseId" value="@response.Id" />
+                <button class="btn btn-primary accept-button">Accept</button> <button class="btn btn-danger decline-button">Decline</button>
+            </li>
+        }
+    </ul>
 </div>
+
+<script src="~/Scripts/jquery-3.0.0.js"></script>
+<script>
+    $('.accept-button').click(activate);
+
+    function activate () {
+        let button = $(this);
+        let parent = $(this).parent();
+        let vacancyId = parent.children('.vacancyId').val();
+        let employeeId = parent.children('.employeeId').val();
+        let responseId = parent.children('.responseId').val();
+
+        let fd = new FormData();
+        fd.append('type', 'acceptEmployee');
+        fd.append('employeeId', employeeId);
+        fd.append('vacancyId', vacancyId);
+        fd.append('responseId', responseId);
+
+        $.ajax({
+            url: '/Pages/RequestHandlers/HiringRequests.cshtml',
+            type: 'POST',
+            data: fd,
+            processData: false,
+            contentType: false,
+            success: (data) => {
+                let result = JSON.parse(data);
+                let message = $('<div></div>');
+                message.text(result.Message);
+                if (result.Result == "Error") {
+                    message.addClass('alert alert-danger');
+                } else {
+                    message.addClass('alert alert-info');
+                }
+                button.remove();
+                parent.children('.decline-button').remove();
+                parent.append(message);
+                removeResponses(employeeId, vacancyId);
+            },
+            error: () => {
+                location.href = "/Pages/ErrorPage.cshtml";
+            }
+        });
+    }
+
+    function removeResponses(employeeId, vacancyId) {
+        $('.list-group-item').each(function (i) {
+            if ($(this).children('.employeeId').val() == employeeId ?
+                !($(this).children('.vacancyId').val() == vacancyId)
+                : $(this).children('.vacancyId').val() == vacancyId) {
+                $(this).remove();
+            }
+        });
+    }
+
+    //$('.accept-button').click(function () {
+    //    let parent = $(this).parent();
+    //    let vacancyId = parent.children('.vacancyId').val();
+    //    let employeeId = parent.children('.employeeId').val();
+    //    let responseId = parent.children('.responseId').val();
+
+    //    let fd = new FormData();
+    //    fd.append('type', 'acceptEmployee');
+    //    fd.append('employeeId', employeeId);
+    //    fd.append('vacancyId', vacancyId);
+    //    fd.append('responseId', responseId);
+
+    //    $.ajax({
+    //        url: '/Pages/RequestHandlers/HiringRequests.cshtml',
+    //        type: 'POST',
+    //        data: fd,
+    //        processData: false,
+    //        contentType: false,
+    //        success: (data) => {
+    //            let result = JSON.parse(data);
+    //            let message = $('<div></div>');
+    //            message.text(result.Message);
+    //            if (result.Result == "Error") {
+    //                message.addClass('alert alert-danger');
+    //            } else {
+    //                message.addClass('alert alert-info');
+    //            }
+    //            parent.prepend(message);
+    //        },
+    //        error: () => {
+    //            location.href = "/Pages/ErrorPage.cshtml";
+    //        }
+    //    });
+    //});
+</script>

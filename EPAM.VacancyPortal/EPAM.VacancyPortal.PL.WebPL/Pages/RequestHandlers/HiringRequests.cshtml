@@ -1,0 +1,15 @@
+﻿@using EPAM.VacancyPortal.PL.WebPL.Models;
+
+@if(IsAjax)
+{
+    var type = Request["type"];
+
+    switch (type)
+    {
+        case "acceptEmployee":
+            {
+                HiringRequestHandler.AcceptEmployee(Request,Response);
+                break;
+            }
+    }
+}

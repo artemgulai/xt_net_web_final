@@ -1,4 +1,6 @@
-﻿@if (IsAjax)
+﻿@using EPAM.VacancyPortal.PL.WebPL.Models;
+
+@if (IsAjax)
 {
     var type = Request["type"];
 
@@ -6,28 +8,38 @@
     {
         case "editProfile":
             {
-                EPAM.VacancyPortal.PL.WebPL.Models.EmployeeRequestHandler.Update(Request,Response);
+                EmployeeRequestHandler.Update(Request,Response);
                 break;
             }
         case "deleteProfile":
             {
-                EPAM.VacancyPortal.PL.WebPL.Models.EmployeeRequestHandler.Delete(Request,Response);
+                EmployeeRequestHandler.Delete(Request,Response);
                 FormsAuthentication.SignOut();
                 break;
             }
         case "updateSkillLevel":
             {
-                EPAM.VacancyPortal.PL.WebPL.Models.EmployeeRequestHandler.UpdateSkillLevel(Request,Response);
+                EmployeeRequestHandler.UpdateSkillLevel(Request,Response);
+                break;
+            }
+        case "activateProfile":
+            {
+                EmployeeRequestHandler.Activate(Request,Response);
+                break;
+            }
+            case "deactivateProfile":
+            {
+                EmployeeRequestHandler.Deactivate(Request,Response);
                 break;
             }
         case "deleteSkill":
             {
-                EPAM.VacancyPortal.PL.WebPL.Models.EmployeeRequestHandler.DeleteSkill(Request,Response);
+                EmployeeRequestHandler.DeleteSkill(Request,Response);
                 break;
             }
         case "response":
             {
-                EPAM.VacancyPortal.PL.WebPL.Models.EmployeeRequestHandler.Response(Request,Response);
+                EmployeeRequestHandler.Response(Request,Response);
                 break;
             }
     }

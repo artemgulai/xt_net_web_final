@@ -33,7 +33,18 @@
                     @:No
                 }
             </li>
-            <li class="list-group-item text-center"><button class="btn btn-primary" id="edit-profile">Edit Profile</button> <button class="btn btn-primary" id="delete-profile">Delete Profile</button></li>
+            <li class="list-group-item text-center">
+                @if (employee.Active)
+                {
+                    <button class="btn btn-primary" id="deactivate-profile">Deactivate Profile</button>
+                }
+                else
+                {
+                    <button class="btn btn-primary" id="activate-profile">Activate Profile</button>
+                }
+                <button class="btn btn-primary" id="edit-profile">Edit Profile</button>
+                <button class="btn btn-primary" id="delete-profile">Delete Profile</button>
+            </li>
         </ul>
     </div>
 
@@ -148,4 +159,43 @@
         );
     }
     );
+
+    function activate() {
+        $.post(
+            '/Pages/RequestHandlers/EmployeeRequests.cshtml',
+            { type: 'activateProfile', id: @employee.Id},
+            function (data) {
+                let result = JSON.parse(data);
+                if (result.Result == "Success") {
+                    let deactivateButton = $('<button></button>');
+                    deactivateButton.text('Deactivate profile');
+                    deactivateButton.click(deactivate);
+                    deactivateButton.addClass('btn btn-primary');
+                    deactivateButton.attr('id', 'deactivate-profile');
+                    $('#activate-profile').replaceWith(deactivateButton);
+                }
+            }
+        );
+    }
+
+    function deactivate() {
+        $.post(
+            '/Pages/RequestHandlers/EmployeeRequests.cshtml',
+            { type: 'deactivateProfile', id: @employee.Id},
+            function (data) {
+                let result = JSON.parse(data);
+                if (result.Result == "Success") {
+                    let activateButton = $('<button></button>');
+                    activateButton.text('Activate profile');
+                    activateButton.click(activate);
+                    activateButton.addClass('btn btn-primary');
+                    activateButton.attr('id', 'activate-profile');
+                    $('#deactivate-profile').replaceWith(activateButton);
+                }
+            }
+        );
+    }
+
+    $('#activate-profile').click(activate);
+    $('#deactivate-profile').click(deactivate);
 </script>
