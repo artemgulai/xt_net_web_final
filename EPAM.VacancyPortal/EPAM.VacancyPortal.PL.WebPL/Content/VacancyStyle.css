@@ -9,6 +9,7 @@ body {
 .main-container {
     width: 960px;
     margin: auto;
+    margin-bottom: 50px;
 }
 
 .logo {
