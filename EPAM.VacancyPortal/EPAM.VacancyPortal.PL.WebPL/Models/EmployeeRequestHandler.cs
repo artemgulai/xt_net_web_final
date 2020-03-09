@@ -281,5 +281,12 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
                 res.Write(JsonConvert.SerializeObject(new RequestResult("Error","Cannot send response")));
             }
         }
+
+        public static void CountVacancyResponses(HttpRequestBase req,HttpResponseBase res)
+        {
+            var employerId = int.Parse(req["employerId"]);
+            var responseCount = SelectAllVacancyResponses().Where(a => a.EmployerId == employerId).Count();
+            res.Write(responseCount);
+        }
     }
 }

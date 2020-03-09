@@ -22,6 +22,10 @@
         {
             <span class="badge badge-warning">@responses</span>
         }
+        else
+        {
+            <span class="badge badge-warning"></span>
+        }
     </a>
 </li>
 
@@ -36,3 +40,23 @@
         My profile
     </a>
 </li>
+
+<script>
+    let responses = parseInt(@responses);
+    let newResponses = responses;
+
+    setInterval(function () {
+        $.post(
+            '/Pages/RequestHandlers/EmployeeRequests.cshtml',
+            { type: 'getVacancyResponsesCount', employerId: @employer.Id},
+            (data) => { newResponses = parseInt(data);}
+        );
+        if (newResponses != responses) {
+            $('.badge').html(newResponses);
+            if (newResponses == 0) {
+                $('.badge').html('');
+            }
+            responses = newResponses;
+        }
+    }, 1000);
+</script>

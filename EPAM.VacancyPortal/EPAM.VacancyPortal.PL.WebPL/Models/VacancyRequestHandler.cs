@@ -161,5 +161,12 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
         {
             return _vacancyLogic.SelectAllEmployeeResponses();
         }
+
+        public static void CountEmployeeResponses(HttpRequestBase req,HttpResponseBase res)
+        {
+            var employeeId = int.Parse(req["employeeId"]);
+            var responseCount = SelectAllEmployeeResponses().Where(a => a.EmployeeId == employeeId).Count();
+            res.Write(responseCount);
+        }
     }
 }

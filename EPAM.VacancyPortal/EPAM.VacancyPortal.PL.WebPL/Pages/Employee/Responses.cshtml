@@ -23,6 +23,14 @@
     var responses = VacancyRequestHandler.SelectAllEmployeeResponses().Where(a => a.EmployeeId == employee.Id);
 }
 
+@if (responses.Count() == 0)
+{
+    <div class="w-50 text-center alert alert-warning mr-auto ml-auto mt-2">
+        No responses
+    </div>
+    return;
+}
+
 @foreach (var response in responses)
 {
     <div class="mt-2 w-50 mr-auto ml-auto">
