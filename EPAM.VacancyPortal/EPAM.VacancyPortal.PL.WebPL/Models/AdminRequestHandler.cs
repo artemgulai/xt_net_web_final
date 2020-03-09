@@ -77,7 +77,11 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
             {
                 if(admin.Password == Convert.ToBase64String(_sha256.ComputeHash(Encoding.Unicode.GetBytes(password))))
                 {
-                    return AuthResult.Success;
+                    if(!admin.IsCandidate)
+                    {
+                        return AuthResult.Success;
+                    }
+                    return AuthResult.Candidate;
                 }
                 else
                 {

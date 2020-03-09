@@ -14,3 +14,13 @@
         @RenderPage("~/Pages/Partial/Admin/Admins.cshtml")
     </div>
 </div>
+
+<script>
+    function deleteAdmin(id) {
+    $.post("/Pages/RequestHandlers/AdminRequests.cshtml", { type: 'deleteAdmin', id: id },
+        function () {
+            $("#admins-list").empty();
+            $("#admins-list").load("/Pages/Partial/Admin/Admins.cshtml");
+        });
+}
+</script>

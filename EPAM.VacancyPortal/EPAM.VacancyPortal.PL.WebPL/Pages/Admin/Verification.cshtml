@@ -16,3 +16,13 @@
         @RenderPage("~/Pages/Partial/Admin/Candidates.cshtml")
     </div>
 </div>
+
+<script>
+    function verifyAdmin(id) {
+    $.post("/Pages/RequestHandlers/AdminRequests.cshtml", { type: 'verifyAdmin', id: id },
+        function () {
+            $("#cand-list").empty();
+            $("#cand-list").load("/Pages/Partial/Admin/Candidates.cshtml");
+        });
+}
+</script>

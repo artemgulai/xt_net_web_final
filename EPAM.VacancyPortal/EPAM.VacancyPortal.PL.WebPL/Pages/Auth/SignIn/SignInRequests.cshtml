@@ -12,9 +12,15 @@
         Response.Write(JsonConvert.SerializeObject(new RequestResult("Success", "Successfully signed in")));
         FormsAuthentication.SetAuthCookie(login,true);
         return;
-    } else if (resultAdmin == AuthResult.WrongPassword)
+    }
+    else if (resultAdmin == AuthResult.WrongPassword)
     {
         Response.Write(JsonConvert.SerializeObject(new RequestResult("Error", "Wrong password")));
+        return;
+    }
+    else if (resultAdmin == AuthResult.Candidate)
+    {
+        Response.Write(JsonConvert.SerializeObject(new RequestResult("Error", "Your profile is not verified")));
         return;
     }
 

@@ -10,6 +10,7 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
     /// </summary>
     public enum AuthResult
     {
+        Candidate,
         Success,
         WrongPassword,
         LoginNotFound

@@ -137,7 +137,6 @@
     <Content Include="Pages\Auth\SignUp\Employer.cshtml" />
     <Content Include="Pages\Partial\_EmployerNav.cshtml" />
     <Content Include="Pages\Employer\MyProfile.cshtml" />
-    <Content Include="Pages\Partial\Employer\EditProfile.cshtml" />
     <Content Include="Pages\RequestHandlers\EmployerRequests.cshtml" />
     <Content Include="Pages\ErrorPage.cshtml" />
     <Content Include="Pages\Auth\SignUp\SignUpRequests.cshtml" />

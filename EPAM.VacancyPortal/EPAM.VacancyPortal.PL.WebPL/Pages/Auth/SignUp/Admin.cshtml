@@ -81,6 +81,7 @@
                     $('#submit-result').html(
                         '<div class="alert alert-info">' + result.Message + '</div>');
                 }
+                setTimeout(() => location.reload(), 1000);
             },
             error: (data) => {
                 location.href = "~/Pages/ErrorPage.cshtml";
