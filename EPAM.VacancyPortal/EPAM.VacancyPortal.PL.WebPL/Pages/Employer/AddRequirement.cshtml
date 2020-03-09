@@ -1,11 +1,17 @@
-﻿@using EPAM.VacancyPortal.PL.WebPL.Models;
+﻿@if (!User.IsInRole("EMPLOYER"))
+{
+    Response.Redirect("~/Pages/Forbidden.cshtml");
+    return;
+}
+
+@using EPAM.VacancyPortal.PL.WebPL.Models;
 
 @{
     Page.Title = "Add requirement";
     Layout = "~/Layouts/_MainLayout.cshtml";
 }
 
-@{ 
+@{
     var vacancyId = int.Parse(Request["vacancyId"]);
 }
 
@@ -36,7 +42,7 @@
         Level = level
     };
 
-    var result = EPAM.VacancyPortal.PL.WebPL.Models.VacancyRequestHandler.AddRequirement(requirement, vacancyId);
+    var result = EPAM.VacancyPortal.PL.WebPL.Models.VacancyRequestHandler.AddRequirement(requirement,vacancyId);
 
     // TODO разобраться с тем, что не применяются стили к дивам ниже
     if (result.Result == "Success")
@@ -55,7 +61,7 @@
         </div>
     }
 
-<div class="w-50 center text-center mt-2">
-    <a class="btn btn-primary" href="~/Pages/Employer/Requirements.cshtml?vacancyId=@vacancyId">Back to vacancy</a>
-</div>
+    <div class="w-50 center text-center mt-2">
+        <a class="btn btn-primary" href="~/Pages/Employer/Requirements.cshtml?vacancyId=@vacancyId">Back to vacancy</a>
+    </div>
 }

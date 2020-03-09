@@ -1,4 +1,10 @@
-﻿@using EPAM.VacancyPortal.PL.WebPL.Models;
+﻿@if (!User.IsInRole("EMPLOYER"))
+{
+    Response.Redirect("~/Pages/Forbidden.cshtml");
+    return;
+}
+
+@using EPAM.VacancyPortal.PL.WebPL.Models;
 
 @{
     Page.Title = "My vacancies";
@@ -45,20 +51,20 @@
 
 @foreach (var requirement in vacancy.Requirements)
 {
-<div id="requirement-@requirement.Id" class="w-50 mt-2 center clearfix">
-    <div class="float-left w-50">
-        <p>@requirement.Name</p>
-        <p>Level: @requirement.Level</p>
-    </div>
-    <div class="float-right w-50">
-        <button class="btn btn-primary change-level-button" value="@requirement.Id">Change level</button>
-        <div class="form-group requirement-level-change" id="requirement-@requirement.Id-level-change">
-            <input class="mt-1" type="number" min="1" max="5" value="1" id="requirement-@requirement.Id-level" />
-            <button class="btn btn-primary mt-1 requirement-level-submit" value="@requirement.Id">Change level</button>
+    <div id="requirement-@requirement.Id" class="w-50 mt-2 center clearfix">
+        <div class="float-left w-50">
+            <p>@requirement.Name</p>
+            <p>Level: @requirement.Level</p>
         </div>
-        <button class="btn btn-danger mt-1 delete-requirement-button" value="@requirement.Id">Delete Requirement</button>
+        <div class="float-right w-50">
+            <button class="btn btn-primary change-level-button" value="@requirement.Id">Change level</button>
+            <div class="form-group requirement-level-change" id="requirement-@requirement.Id-level-change">
+                <input class="mt-1" type="number" min="1" max="5" value="1" id="requirement-@requirement.Id-level" />
+                <button class="btn btn-primary mt-1 requirement-level-submit" value="@requirement.Id">Change level</button>
+            </div>
+            <button class="btn btn-danger mt-1 delete-requirement-button" value="@requirement.Id">Delete Requirement</button>
+        </div>
     </div>
-</div>
 }
 
 <script src="~/Scripts/jquery-3.0.0.js"></script>

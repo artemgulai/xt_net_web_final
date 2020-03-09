@@ -1,10 +1,14 @@
-﻿@using System.Web.Helpers;
+﻿@if (!User.IsInRole("ADMIN"))
+{
+    Response.Redirect("~/Pages/Forbidden.cshtml");
+    return;
+}
 
 @{
     var admins = EPAM.VacancyPortal.PL.WebPL.Models.AdminRequestHandler.GetAll().Where(a => a.IsCandidate);
 }
 
-@if(!admins.Any())
+@if (!admins.Any())
 {
     <div class="alert alert-info">
         All candidates are verified

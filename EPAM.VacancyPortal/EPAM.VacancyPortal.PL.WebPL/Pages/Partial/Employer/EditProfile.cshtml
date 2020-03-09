@@ -1,72 +1,78 @@
-﻿@using EPAM.VacancyPortal.PL.WebPL.Models;
+﻿@if (!User.IsInRole("EMPLOYER"))
+{
+    Response.Redirect("~/Pages/Forbidden.cshtml");
+    return;
+}
+
+@using EPAM.VacancyPortal.PL.WebPL.Models;
 
 @{
     var employer = EmployerRequestHandler.SelectByLogin(User.Identity.Name);
 }
 
-    
+
 
 <div id="employer-edit-result"></div>
 
 <script>
     $('#employer-edit').click = function () {
-    let name = $('#name').val();
-    let city = $('#city').val();
-    let password = $('#password').val();
-    let repeatPassword = $('#repeatPassword').val();
-    if (password != repeatPassword) {
-        $('#employer-edit-result').append(
-            '<div class="alert alert-danger">Passwords don\'t match</div>'
-        );
-        return;
+        let name = $('#name').val();
+        let city = $('#city').val();
+        let password = $('#password').val();
+        let repeatPassword = $('#repeatPassword').val();
+        if (password != repeatPassword) {
+            $('#employer-edit-result').append(
+                '<div class="alert alert-danger">Passwords don\'t match</div>'
+            );
+            return;
+        }
     }
-}
 </script>
 
 @*@if (IsPost)
-{
-    string name = Request.Form["Name"];
-    string city = Request.Form["City"];
-    string password = Request.Form["Password"];
-    string repeatPassword = Request.Form["RepeatPassword"];
-    HttpPostedFileBase file = Request.Files.Count != 0 ? Request.Files[0] : null;
+    {
+        string name = Request.Form["Name"];
+        string city = Request.Form["City"];
+        string password = Request.Form["Password"];
+        string repeatPassword = Request.Form["RepeatPassword"];
+        HttpPostedFileBase file = Request.Files.Count != 0 ? Request.Files[0] : null;
 
-    if (password != repeatPassword)
-    {
-        <div class="alert alert-danger text-center">
-            Cannot edit profile: passwords don't match
-        </div>
-        return;
-    }
+        if (password != repeatPassword)
+        {
+            <div class="alert alert-danger text-center">
+                Cannot edit profile: passwords don't match
+            </div>
+            return;
+        }
 
-    if (file != null && file.ContentLength != 0)
-    {
-        byte[] bytes = new byte[file.ContentLength];
-        file.InputStream.Read(bytes,0,bytes.Length);
-        employer.Logo = Convert.ToBase64String(bytes);
-    }
+        if (file != null && file.ContentLength != 0)
+        {
+            byte[] bytes = new byte[file.ContentLength];
+            file.InputStream.Read(bytes,0,bytes.Length);
+            employer.Logo = Convert.ToBase64String(bytes);
+        }
 
-    if (!string.IsNullOrWhiteSpace(name))
-    {
-        employer.Name = name;
-    }
+        if (!string.IsNullOrWhiteSpace(name))
+        {
+            employer.Name = name;
+        }
 
-    if (!string.IsNullOrWhiteSpace(city))
-    {
-        employer.City = city;
-    }
+        if (!string.IsNullOrWhiteSpace(city))
+        {
+            employer.City = city;
+        }
 
-    if (!string.IsNullOrWhiteSpace(password))
-    {
-        employer.Password = password;
-    }
+        if (!string.IsNullOrWhiteSpace(password))
+        {
+            employer.Password = password;
+        }
 
-    if (EmployerService.Update(employer))
-    {
-        <div class="alert alert-info">Profile has been successfully changed</div>
-    }
-    else
-    {
-        <div class="alert alert-danger">Profile cannot be changed</div>
-    }
-}*@
+        if (EmployerService.Update(employer))
+        {
+            <div class="alert alert-info">Profile has been successfully changed</div>
+        }
+        else
+        {
+            <div class="alert alert-danger">Profile cannot be changed</div>
+        }
+    }*@

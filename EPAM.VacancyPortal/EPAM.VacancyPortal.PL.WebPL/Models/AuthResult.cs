@@ -5,6 +5,9 @@ using System.Web;
 
 namespace EPAM.VacancyPortal.PL.WebPL.Models
 {
+    /// <summary>
+    /// This enum is used to indicate result of authentication attempt.
+    /// </summary>
     public enum AuthResult
     {
         Success,

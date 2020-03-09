@@ -1,4 +1,6 @@
-﻿@if (IsAjax)
+﻿@using EPAM.VacancyPortal.PL.WebPL.Models;
+
+@if (IsAjax)
 {
     var type = Request["type"];
 
@@ -6,12 +8,12 @@
     {
         case "editProfile":
             {
-                EPAM.VacancyPortal.PL.WebPL.Models.EmployerRequestHandler.Update(Request, Response);
+                EmployerRequestHandler.Update(Request,Response);
                 break;
             }
         case "deleteEmployer":
             {
-                EPAM.VacancyPortal.PL.WebPL.Models.EmployerRequestHandler.DeleteRequest(Request, Response);
+                EmployerRequestHandler.DeleteRequest(Request,Response);
                 FormsAuthentication.SignOut();
                 break;
             }

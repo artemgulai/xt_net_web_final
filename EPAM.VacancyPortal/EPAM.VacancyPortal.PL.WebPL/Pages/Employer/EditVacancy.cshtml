@@ -1,4 +1,10 @@
-﻿@{
+﻿@if (!User.IsInRole("EMPLOYER"))
+{
+    Response.Redirect("~/Pages/Forbidden.cshtml");
+    return;
+}
+
+@{
     Page.Title = "Edit vacancy";
     Layout = "~/Layouts/_MainLayout.cshtml";
 }
@@ -43,7 +49,7 @@
     var name = Request.Form["Name"];
     var description = Request.Form["Description"];
     var remote = Request.Form["Remote"] == "on";
-    int.TryParse(Request.Form["Salary"], out var salary);
+    int.TryParse(Request.Form["Salary"],out var salary);
     var employer = EPAM.VacancyPortal.PL.WebPL.Models.EmployerRequestHandler.SelectByLogin(User.Identity.Name);
 
     if (!string.IsNullOrWhiteSpace(name))

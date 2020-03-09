@@ -26,7 +26,7 @@ namespace EPAM.VacancyPortal.BLL
                 _cityDao.DeleteAll();
                 return true;
             }
-            catch (SqlException)
+            catch
             {
                 return false;
             }
@@ -38,7 +38,7 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return _cityDao.DeleteById(id);
             }
-            catch (SqlException)
+            catch
             {
                 return 0;
             }
@@ -50,7 +50,7 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return _cityDao.SelectAll();
             }
-            catch (SqlException)
+            catch
             {
                 return new List<City>();
             }
@@ -62,7 +62,7 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return _cityDao.SelectIdByName(cityName);
             }
-            catch (SqlException)
+            catch
             {
                 return 0;
             }
@@ -74,7 +74,7 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return _cityDao.Insert(city);
             }
-            catch (SqlException)
+            catch
             {
                 return city;
             }

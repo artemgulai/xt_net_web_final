@@ -11,6 +11,9 @@ using System.Web;
 
 namespace EPAM.VacancyPortal.PL.WebPL.Models
 {
+    /// <summary>
+    /// This class handles requests from *.cshtml pages
+    /// </summary>
     public static class AdminRequestHandler
     {
         private static IAdminLogic _adminLogic;
@@ -32,7 +35,7 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
 
         public static IEnumerable<Admin> GetAll()
         {
-            return _adminLogic.GetAll();
+            return _adminLogic.SelectAll();
         }
 
         public static void Register(HttpRequestBase req,HttpResponseBase res)

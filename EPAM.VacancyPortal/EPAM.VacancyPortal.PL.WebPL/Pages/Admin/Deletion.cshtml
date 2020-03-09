@@ -1,10 +1,8 @@
 ﻿@if (!User.IsInRole("ADMIN"))
 {
-    Response.Redirect("~/Index.cshtml");
+    Response.Redirect("~/Pages/Forbidden.cshtml");
     return;
 }
-
-@using EPAM.VacancyPortal.PL.WebPL.Models;
 
 @{
     Page.Title = "Admin verification";

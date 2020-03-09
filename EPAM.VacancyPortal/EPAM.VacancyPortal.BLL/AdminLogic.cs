@@ -26,26 +26,9 @@ namespace EPAM.VacancyPortal.BLL
                 admin = _adminDao.Insert(admin);
                 return admin;
             }
-            catch (SqlException)
+            catch
             {
                 return admin;
-            }
-        }
-
-        public Admin Login(string login, string password)
-        {
-            try
-            {
-                var admin = _adminDao.SelectByLogin(login);
-                if (admin == null || admin.Password != password)
-                {
-                    return null;
-                }
-                return admin;
-            }
-            catch (SqlException)
-            {
-                return null;
             }
         }
 
@@ -55,19 +38,19 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return _adminDao.SelectByLogin(login);
             }
-            catch (SqlException)
+            catch
             {
                 return null;
             }
         }
 
-        public IEnumerable<Admin> GetAll()
+        public IEnumerable<Admin> SelectAll()
         {
             try
             {
                 return _adminDao.SelectAll();
             }
-            catch (SqlException)
+            catch
             {
                 return new List<Admin>();
             }
@@ -82,7 +65,7 @@ namespace EPAM.VacancyPortal.BLL
                 _adminDao.Update(admin);
                 return true;
             }
-            catch (SqlException)
+            catch
             {
                 return false;
             }
@@ -93,7 +76,7 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return _adminDao.DeleteById(id) != 0;
             }
-            catch (SqlException)
+            catch
             {
                 return false;
             }

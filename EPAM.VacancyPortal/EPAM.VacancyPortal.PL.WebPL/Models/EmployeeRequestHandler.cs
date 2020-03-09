@@ -11,6 +11,9 @@ using System.Web;
 
 namespace EPAM.VacancyPortal.PL.WebPL.Models
 {
+    /// <summary>
+    /// This class handles requests from *.cshtml pages
+    /// </summary>
     public static class EmployeeRequestHandler
     {
         private static IEmployeeLogic _employeeLogic;
@@ -244,7 +247,7 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
         public static void Delete(HttpRequestBase req,HttpResponseBase res)
         {
             int id = int.Parse(req["id"]);
-            if (_employeeLogic.Delete(id))
+            if (_employeeLogic.DeleteById(id))
             {
                 res.Write(JsonConvert.SerializeObject(new RequestResult("Success","Profile has been deleted.")));
             }

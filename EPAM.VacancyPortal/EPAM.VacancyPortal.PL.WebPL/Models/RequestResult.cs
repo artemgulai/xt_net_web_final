@@ -5,10 +5,13 @@ using System.Web;
 
 namespace EPAM.VacancyPortal.PL.WebPL.Models
 {
+    /// <summary>
+    /// This class is used when response is sent to *.cshtml pages.
+    /// </summary>
     public class RequestResult
     {
-        public string Result { get; set; }
-        public string Message { get; set; }
+        public string Result { get; private set; }
+        public string Message { get; private set; }
 
         public RequestResult(string result, string message)
         {

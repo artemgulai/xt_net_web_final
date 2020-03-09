@@ -9,6 +9,9 @@ using System.Web;
 
 namespace EPAM.VacancyPortal.PL.WebPL.Models
 {
+    /// <summary>
+    /// This class handles requests from *.cshtml pages
+    /// </summary>
     public static class HiringRequestHandler
     {
         private static IHiringLogic _hiringLogic;

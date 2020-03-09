@@ -1,4 +1,10 @@
-﻿@using EPAM.VacancyPortal.PL.WebPL.Models;
+﻿@if (!User.IsInRole("EMPLOYEE"))
+{
+    Response.Redirect("~/Pages/Forbidden.cshtml");
+    return;
+}
+
+@using EPAM.VacancyPortal.PL.WebPL.Models;
 
 @{
     Page.Title = "Responses";
@@ -31,7 +37,7 @@
                 <p>Employer: @vacancy.Employer.Name, @vacancy.Employer.City</p>
                 <p>Salary: @vacancy.Salary</p>
                 <p>
-                    @if(vacancy.Remote)
+                    @if (vacancy.Remote)
                     {
                         @:Remote work is possible
                     }
@@ -41,7 +47,7 @@
                     }
                 </p>
 
-                
+
                 <input type="hidden" class="employeeId" value="@employee.Id" />
                 <input type="hidden" class="vacancyId" value="@vacancy.Id" />
                 <input type="hidden" class="responseId" value="@response.Id" />
@@ -55,7 +61,7 @@
 <script>
     $('.accept-button').click(accept);
 
-    function accept () {
+    function accept() {
         let button = $(this);
         let parent = $(this).parent();
         let vacancyId = parent.children('.vacancyId').val();

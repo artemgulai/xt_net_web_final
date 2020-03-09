@@ -10,6 +10,9 @@ using System.Web;
 
 namespace EPAM.VacancyPortal.PL.WebPL.Models
 {
+    /// <summary>
+    /// This class handles requests from *.cshtml pages
+    /// </summary>
     public static class VacancyRequestHandler
     {
         private static IVacancyLogic _vacancyLogic;

@@ -24,7 +24,7 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return _skillDao.DeleteById(id);
             }
-            catch (SqlException)
+            catch
             {
                 return 0;
             }
@@ -37,7 +37,7 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return _skillDao.SelectAll();
             }
-            catch (SqlException)
+            catch
             {
                 return new List<Skill>();
             }
@@ -49,7 +49,7 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return _skillDao.Insert(skill);
             }
-            catch (SqlException)
+            catch
             {
                 return skill;
             }

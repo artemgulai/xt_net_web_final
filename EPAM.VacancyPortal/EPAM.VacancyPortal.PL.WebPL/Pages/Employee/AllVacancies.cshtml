@@ -1,7 +1,13 @@
-﻿@using EPAM.VacancyPortal.PL.WebPL.Models;
+﻿@if (!User.IsInRole("EMPLOYEE"))
+{
+    Response.Redirect("~/Pages/Forbidden.cshtml");
+    return;
+}
+
+@using EPAM.VacancyPortal.PL.WebPL.Models;
 
 @{
-    Page.Title = "All vacancies";
+    Page.Title = "Vacancies";
     Layout = "~/Layouts/_MainLayout.cshtml";
 }
 
@@ -12,82 +18,82 @@
 
 }
 
-    <div class="content-container">
-        @if (!employee.Active)
-        {
-            <div class="alert alert-danger w-50 mr-auto ml-auto">Your profile is inactive</div>
-            return;
-        }
-        @if (!employers.Any())
-        {
-            <div class="alert alert-danger w-50 mr-auto ml-auto">No vacancies</div>
-            return;
-        }
+<div class="content-container">
+    @if (!employee.Active)
+    {
+        <div class="alert alert-danger w-50 mr-auto ml-auto">Your profile is inactive</div>
+        return;
+    }
+    @if (!employers.Any())
+    {
+        <div class="alert alert-danger w-50 mr-auto ml-auto">No vacancies</div>
+        return;
+    }
 
-        @{
-            var vacancyExists = false;
-        }
+    @{
+        var vacancyExists = false;
+    }
 
-        @foreach (var employer in employers)
+    @foreach (var employer in employers)
+    {
+        foreach (var vacancy in employer.Vacancies.Where(a => a.Active))
         {
-            foreach (var vacancy in employer.Vacancies.Where(a => a.Active))
-            {
-                vacancyExists = true;
-                <div id="vacancy-@vacancy.Id" class="bg-white border border-primary rounded-lg mt-2 mb-2 clearfix p-2 d-flex align-items-center">
-                    <div class="w-75 mt-2 float-left">
-                        <h3>@vacancy.Name</h3>
-                        <h5>Employer: @employer.Name</h5>
-                        <p>@vacancy.Description</p>
-                        <p>Salary: @vacancy.Salary</p>
-                        @if (vacancy.Remote)
-                        {
-                            <p>Remote</p>
-                        }
-                        else
-                        {
-                            <p>Not remote</p>
-                        }
-                        @if (vacancy.Requirements.Any())
-                        {
-                            <h5>Requirements</h5>
-                            foreach (var requirement in vacancy.Requirements)
-                            {
-                                <p>
-                                    @if (employee.Skills.Any(a => a.Name == requirement.Name && a.Level >= requirement.Level))
-                                    {
-                                        <span class="glyphicon glyphicon-ok" style="color:green"></span>
-                                    }
-                                    else
-                                    {
-                                        <span class="glyphicon glyphicon-remove" style="color:red"></span>
-                                    }
-                                    @requirement.Name: @requirement.Level
-                                </p>
-                            }
-                        }
-                    </div>
-                    @if (!responses.Any(a => a.EmployeeId == employee.Id && a.VacancyId == vacancy.Id))
+            vacancyExists = true;
+            <div id="vacancy-@vacancy.Id" class="bg-white border border-primary rounded-lg mt-2 mb-2 clearfix p-2 d-flex align-items-center">
+                <div class="w-75 mt-2 float-left">
+                    <h3>@vacancy.Name</h3>
+                    <h5>Employer: @employer.Name</h5>
+                    <p>@vacancy.Description</p>
+                    <p>Salary: @vacancy.Salary</p>
+                    @if (vacancy.Remote)
                     {
-                        <div class="float-right justify-content-center w-25 mt-2 btn-group-vertical">
-                            <button class="response-button active btn btn-primary mb-1" value="@vacancy.Id">Send response</button>
-                        </div>
+                        <p>Remote</p>
                     }
                     else
                     {
-                        <div class="float-right justify-content-center w-25 mt-2 btn-group-vertical">
-                            <button class="response-button btn btn-primary mb-1 disabled" value="@vacancy.Id">Response sent</button>
-                        </div>
+                        <p>Not remote</p>
+                    }
+                    @if (vacancy.Requirements.Any())
+                    {
+                        <h5>Requirements</h5>
+                        foreach (var requirement in vacancy.Requirements)
+                        {
+                            <p>
+                                @if (employee.Skills.Any(a => a.Name == requirement.Name && a.Level >= requirement.Level))
+                                {
+                                    <span class="glyphicon glyphicon-ok" style="color:green"></span>
+                                }
+                                else
+                                {
+                                    <span class="glyphicon glyphicon-remove" style="color:red"></span>
+                                }
+                                @requirement.Name: @requirement.Level
+                            </p>
+                        }
                     }
                 </div>
-            }
+                @if (!responses.Any(a => a.EmployeeId == employee.Id && a.VacancyId == vacancy.Id))
+                {
+                    <div class="float-right justify-content-center w-25 mt-2 btn-group-vertical">
+                        <button class="response-button active btn btn-primary mb-1" value="@vacancy.Id">Send response</button>
+                    </div>
+                }
+                else
+                {
+                    <div class="float-right justify-content-center w-25 mt-2 btn-group-vertical">
+                        <button class="response-button btn btn-primary mb-1 disabled" value="@vacancy.Id">Response sent</button>
+                    </div>
+                }
+            </div>
         }
+    }
 
-        @if (!vacancyExists)
-        {
-            <div class="alert alert-danger w-50 mr-auto ml-auto">No vacancies</div>
-            return;
-        }
-    </div>
+    @if (!vacancyExists)
+    {
+        <div class="alert alert-danger w-50 mr-auto ml-auto">No vacancies</div>
+        return;
+    }
+</div>
 
 <script src="~/Scripts/jquery-3.0.0.js"></script>
 <script>

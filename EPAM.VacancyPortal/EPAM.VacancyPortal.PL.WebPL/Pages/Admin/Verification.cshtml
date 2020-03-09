@@ -1,6 +1,6 @@
-﻿@if(!User.IsInRole("ADMIN"))
+﻿@if (!User.IsInRole("ADMIN"))
 {
-    Response.Redirect("~/Index.cshtml");
+    Response.Redirect("~/Pages/Forbidden.cshtml");
     return;
 }
 

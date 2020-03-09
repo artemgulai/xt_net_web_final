@@ -1,6 +1,7 @@
 ﻿@if (!User.IsInRole("EMPLOYEE"))
 {
-    Response.Redirect("~/Index.cshtml");
+    Response.Redirect("~/Pages/Forbidden.cshtml");
+    return;
 }
 
 @using EPAM.VacancyPortal.PL.WebPL.Models;
@@ -14,41 +15,41 @@
     var employee = EmployeeRequestHandler.SelectByLogin(User.Identity.Name);
 }
 
-    <div class="content-container w-50" >
-        <ul class="list-group employee-info">
-            @if (!string.IsNullOrWhiteSpace(employee.Photo))
+<div class="content-container w-50">
+    <ul class="list-group employee-info">
+        @if (!string.IsNullOrWhiteSpace(employee.Photo))
+        {
+            <li class="list-group-item text-center"><img class="employee-photo" src="@String.Format("data:image/jpg;base64,{0}",employee.Photo)" /></li>
+        }
+        <li class="list-group-item">Name: @employee.FirstName @employee.LastName</li>
+        <li class="list-group-item">City: @employee.City</li>
+        <li class="list-group-item">
+            Relocation:
+            @if (employee.Relocation)
             {
-                <li class="list-group-item text-center"><img class="employee-photo" src="@String.Format("data:image/jpg;base64,{0}",employee.Photo)" /></li>
+                @:Yes
             }
-            <li class="list-group-item">Name: @employee.FirstName @employee.LastName</li>
-            <li class="list-group-item">City: @employee.City</li>
-            <li class="list-group-item">
-                Relocation:
-                @if (employee.Relocation)
-                {
-                    @:Yes
-                }
-                else
-                {
-                    @:No
-                }
-            </li>
-            <li class="list-group-item text-center">
-                @if (employee.Active)
-                {
-                    <button class="btn btn-primary" id="deactivate-profile">Deactivate Profile</button>
-                }
-                else
-                {
-                    <button class="btn btn-primary" id="activate-profile">Activate Profile</button>
-                }
-                <button class="btn btn-primary" id="edit-profile">Edit Profile</button>
-                <button class="btn btn-primary" id="delete-profile">Delete Profile</button>
-            </li>
-        </ul>
-    </div>
+            else
+            {
+                @:No
+            }
+        </li>
+        <li class="list-group-item text-center">
+            @if (employee.Active)
+            {
+                <button class="btn btn-primary" id="deactivate-profile">Deactivate Profile</button>
+            }
+            else
+            {
+                <button class="btn btn-primary" id="activate-profile">Activate Profile</button>
+            }
+            <button class="btn btn-primary" id="edit-profile">Edit Profile</button>
+            <button class="btn btn-primary" id="delete-profile">Delete Profile</button>
+        </li>
+    </ul>
+</div>
 
-    <div class="employee-info mt-2 mr-auto ml-auto" id="submit-result"></div>
+<div class="employee-info mt-2 mr-auto ml-auto" id="submit-result"></div>
 
 <div class="employee-info ml-auto mr-auto border border-1 border-primary pt-2 rounded-lg" id="employee-edit">
     <div class="form-group col">
@@ -81,7 +82,7 @@
     <div class="form-group col">
         <button class="btn btn-block btn-primary" type="submit" id="submit">Save Changes</button>
     </div>
-        <input type="hidden" class="form-control" id="employee-id" value="@employee.Id" />
+    <input type="hidden" class="form-control" id="employee-id" value="@employee.Id" />
 </div>
 
 

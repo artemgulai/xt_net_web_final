@@ -35,7 +35,7 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return _employerDao.Insert(employer);
             }
-            catch (SqlException)
+            catch
             {
                 return employer;
             }
@@ -52,7 +52,7 @@ namespace EPAM.VacancyPortal.BLL
                 }
                 return employer;
             }
-            catch (SqlException)
+            catch
             {
                 return null;
             }
@@ -70,7 +70,7 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return _employerDao.Update(employer) != 0;
             }
-            catch (SqlException)
+            catch
             {
                 return false;
             }
@@ -87,7 +87,7 @@ namespace EPAM.VacancyPortal.BLL
                 }
                 return employer;
             }
-            catch (SqlException)
+            catch
             {
                 return null;
             }
@@ -104,7 +104,7 @@ namespace EPAM.VacancyPortal.BLL
                 }
                 return employers;
             }
-            catch (SqlException)
+            catch
             {
                 return new List<Employer>();
             }
@@ -116,23 +116,10 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return _employerDao.DeleteById(id) != 0;
             }
-            catch (SqlException)
+            catch
             {
                 return false;
             }
         }
-
-        public bool SignIn(string login,string password)
-        {
-            try
-            {
-                return true;
-            }
-            catch (SqlException)
-            {
-                return false;
-            }
-        }
-
     }
 }

@@ -1,6 +1,7 @@
 ﻿@if (!User.IsInRole("EMPLOYER"))
 {
-    Response.Redirect("~/Index.cshtml");
+    Response.Redirect("~/Pages/Forbidden.cshtml");
+    return;
 }
 
 @using EPAM.VacancyPortal.PL.WebPL.Models;
@@ -16,12 +17,12 @@
 
 <div class="content-container w-50">
     <ul class="list-group employer-info">
-            @if (!string.IsNullOrWhiteSpace(employer.Logo))
-            {
-        <li class="list-group-item text-center">
-            <img class="employer-logo" src="@String.Format("data:image/jpg;base64,{0}",employer.Logo)" />
-        </li>
-            }
+        @if (!string.IsNullOrWhiteSpace(employer.Logo))
+        {
+            <li class="list-group-item text-center">
+                <img class="employer-logo" src="@String.Format("data:image/jpg;base64,{0}",employer.Logo)" />
+            </li>
+        }
         <li class="list-group-item">Company name: @employer.Name</li>
         <li class="list-group-item">City: @employer.City</li>
         <li class="list-group-item text-center"><button class="btn btn-primary" id="edit-profile">Edit Profile</button> <button class="btn btn-primary" id="delete-profile">Delete Profile</button></li>
@@ -96,7 +97,7 @@
                         '<div class="alert alert-info">' + result.Message + '</div>');
                     setTimeout(() => location.reload(), 1500);
                 }
-                 
+
             },
             error: (data) => {
                 location.href = "/Pages/ErrorPage.cshtml";

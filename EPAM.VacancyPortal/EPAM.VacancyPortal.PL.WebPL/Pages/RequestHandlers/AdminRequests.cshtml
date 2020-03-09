@@ -1,4 +1,6 @@
-﻿@if (IsAjax)
+﻿@using EPAM.VacancyPortal.PL.WebPL.Models;
+
+@if (IsAjax)
 {
     string type = Request["type"];
 
@@ -7,23 +9,23 @@
         case "deleteAdmin":
             {
                 int id = int.Parse(Request["id"]);
-                EPAM.VacancyPortal.PL.WebPL.Models.AdminRequestHandler.Delete(id);
+                AdminRequestHandler.Delete(id);
                 break;
             }
         case "verifyAdmin":
             {
                 int id = int.Parse(Request["id"]);
-                EPAM.VacancyPortal.PL.WebPL.Models.AdminRequestHandler.Verify(id);
+                AdminRequestHandler.Verify(id);
                 break;
             }
         case "deleteEmployee":
             {
-                EPAM.VacancyPortal.PL.WebPL.Models.EmployeeRequestHandler.Delete(Request,Response);
+                EmployeeRequestHandler.Delete(Request,Response);
                 break;
             }
             case "deleteEmployer":
             {
-                EPAM.VacancyPortal.PL.WebPL.Models.EmployerRequestHandler.DeleteRequest(Request,Response);
+                EmployerRequestHandler.DeleteRequest(Request,Response);
                 break;
             }
     }

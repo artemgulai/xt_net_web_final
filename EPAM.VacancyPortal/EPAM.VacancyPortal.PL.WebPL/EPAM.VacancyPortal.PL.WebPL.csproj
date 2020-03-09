@@ -137,7 +137,6 @@
     <Content Include="Pages\Auth\SignUp\Employer.cshtml" />
     <Content Include="Pages\Partial\_EmployerNav.cshtml" />
     <Content Include="Pages\Employer\MyProfile.cshtml" />
-    <Content Include="Pages\Employer\EditProfile.cshtml" />
     <Content Include="Pages\Partial\Employer\EditProfile.cshtml" />
     <Content Include="Pages\RequestHandlers\EmployerRequests.cshtml" />
     <Content Include="Pages\ErrorPage.cshtml" />
@@ -164,6 +163,7 @@
     <Content Include="Pages\Employer\AllEmployees.cshtml" />
     <Content Include="Pages\Partial\Employer\EmployeesForVacancy.cshtml" />
     <Content Include="Pages\Employee\Responses.cshtml" />
+    <Content Include="Pages\Forbidden.cshtml" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
     <Content Include="Scripts\jquery-3.0.0.js" />
     <Content Include="Scripts\jquery-3.0.0.min.js" />

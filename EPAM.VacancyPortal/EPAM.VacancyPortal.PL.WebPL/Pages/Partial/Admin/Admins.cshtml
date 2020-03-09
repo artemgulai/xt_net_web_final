@@ -1,4 +1,9 @@
-﻿@using System.Web.Helpers;
+﻿@if (!User.IsInRole("ADMIN"))
+{
+    Response.Redirect("~/Pages/Forbidden.cshtml");
+    return;
+}
+
 
 @{
     var admins = EPAM.VacancyPortal.PL.WebPL.Models.AdminRequestHandler.GetAll();

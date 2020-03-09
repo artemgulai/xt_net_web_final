@@ -1,4 +1,10 @@
-﻿@{
+﻿@if (!User.IsInRole("EMPLOYER"))
+{
+    Response.Redirect("~/Pages/Forbidden.cshtml");
+    return;
+}
+
+@{
     Page.Title = "Add Vacancy";
     Layout = "~/Layouts/_MainLayout.cshtml";
 }

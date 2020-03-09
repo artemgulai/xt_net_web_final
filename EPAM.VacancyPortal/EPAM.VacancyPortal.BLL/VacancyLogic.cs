@@ -31,7 +31,7 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return _vacancyDao.Insert(vacancy);
             }
-            catch (SqlException)
+            catch
             {
                 return vacancy;
             }
@@ -43,7 +43,7 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return _vacancyDao.SelectAllByEmployer(employer);
             }
-            catch (SqlException)
+            catch
             {
                 return new Vacancy[] { };
             }
@@ -57,7 +57,7 @@ namespace EPAM.VacancyPortal.BLL
                 vacancy.Requirements = _vacancyDao.SelectRequirementsByVacancy(vacancy).ToList();
                 return vacancy;
             }
-            catch (SqlException)
+            catch
             {
                 return null;
             }
@@ -69,7 +69,7 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return _vacancyDao.Update(vacancy) != 0;
             }
-            catch (SqlException)
+            catch
             {
                 return false;
             }
@@ -81,7 +81,7 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return _vacancyDao.DeleteById(id) != 0;
             }
-            catch (SqlException)
+            catch
             {
                 return false;
             }
@@ -112,7 +112,7 @@ namespace EPAM.VacancyPortal.BLL
                 var result = _vacancyDao.UpdateRequirement(requirement);
                 return result != 0;
             }
-            catch (SqlException)
+            catch
             {
                 return false;
             }
@@ -134,7 +134,7 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return _vacancyDao.InsertRequirement(requirement,vacancyId) != 0;
             }
-            catch (SqlException)
+            catch
             {
                 return false;
             }
@@ -146,7 +146,7 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return _vacancyDao.DeleteRequirement(id) != 0;
             }
-            catch (SqlException)
+            catch
             {
                 return false;
             }
@@ -158,7 +158,7 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return _responseDao.InsertEmployeeResponse(employeeId,vacancyId) != 0;
             }
-            catch (SqlException)
+            catch
             {
                 return false;
             }
@@ -170,7 +170,7 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return _responseDao.DeleteEmployeeResponse(id) != 0;
             }
-            catch (SqlException)
+            catch
             {
                 return false;
             }
@@ -182,7 +182,7 @@ namespace EPAM.VacancyPortal.BLL
             {
                 return _responseDao.SelectAllEmployeeResponses();
             }
-            catch (SqlException)
+            catch
             {
                 return new List<Response>();
             }
@@ -195,7 +195,7 @@ namespace EPAM.VacancyPortal.BLL
                 _responseDao.DeleteHiredEmployeeResponses(employeeId,vacancyId);
                 return true;
             }
-            catch (SqlException)
+            catch
             {
                 return false;
             }

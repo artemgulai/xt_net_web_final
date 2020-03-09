@@ -10,21 +10,21 @@ namespace EPAM.VacancyPortal.BLL.Interfaces
     public interface ISkillLogic
     {
         /// <summary>
-        /// Invokes DAL's Insert method.
+        /// Add new Skill to database.
         /// </summary>
-        /// <param name="skill">Skill to be inserted into DB.</param>
-        /// <returns>Skill with Id != 0 if it is inserted, otherwise Id = 0.</returns>
+        /// <param name="skill">Skill to be added.</param>
+        /// <returns>Skill with Id != 0 if it has been added, otherwise Id = 0.</returns>
         Skill Insert(Skill skill);
 
         /// <summary>
-        /// Invokes DAL's SelectAll method.
+        /// Select all Skills from database.
         /// </summary>
         /// <returns>IEnumerable of Skills if a query is successfull, 
         /// otherwise empty List of Skills.</returns>
         IEnumerable<Skill> SelectAll();
 
         /// <summary>
-        /// Invokes DAL's DeleteById method.
+        /// Delete Skill with specified Id.
         /// </summary>
         /// <param name="id">Id of a Skill to be deleted.</param>
         /// <returns>Number of deleted rows.</returns>
