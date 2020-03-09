@@ -61,7 +61,6 @@ namespace EPAM.VacancyPortal.PL.WebPL.Models
             {
                 res.Write(JsonConvert.SerializeObject(new RequestResult("Error","Database error")));
                 return;
-                // TODO подумать над перенаправлением отсюда на Error Page
             }
 
 
